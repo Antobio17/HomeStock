@@ -9,14 +9,21 @@ class ServiceContainer:
         
         
     def __load_config(self, module_path: str) -> dict:
+        yaml_path = None
         if 'command_handler' in module_path:
+            split = module_path.split('.')
+            yaml_path = '/'.join(split[:3] + ['infrastructure/application/command_handlers.yaml'])
+            
+        if 'query_handler' in module_path:
             split = module_path.split('.')
             yaml_path = '/'.join(split[:3] + ['infrastructure/application/command_handlers.yaml'])
             
         if 'repository' in module_path:
             split = module_path.split('.')
             yaml_path = '/'.join(split[:3] + ['infrastructure/domain/model/repositories.yaml'])
-            
+        if yaml_path is None:
+            raise Exception('YAML file not found for module: ' + module_path)
+        
         with open(yaml_path, 'r') as file:
             return yaml.safe_load(file)
     
