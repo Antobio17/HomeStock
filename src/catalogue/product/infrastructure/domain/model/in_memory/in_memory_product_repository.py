@@ -1,4 +1,3 @@
-
 from src.catalogue.product.domain.repositories.product_repository import ProductRepository
 
 class InMemoryProductRepository(ProductRepository):
@@ -13,4 +12,4 @@ class InMemoryProductRepository(ProductRepository):
         return list(self.products.values())
 
     def save(self, product):
-        self.products[product.id] = product
+        self.products[product['id']] = product

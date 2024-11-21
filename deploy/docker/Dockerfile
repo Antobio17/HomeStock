@@ -6,6 +6,6 @@ COPY . /app/
 
 ENV PYTHONPATH=/app
 
-# RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r deploy/docker/requirements.txt
 
 CMD ["python", "src/app.py"]
