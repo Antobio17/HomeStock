@@ -13,4 +13,3 @@ class InMemoryProductRepository(ProductRepository):
 
     def save(self, product):
         self.products[product['id']] = product
-        print('Product saved:', product)
