@@ -1,13 +1,11 @@
+from dataclasses import dataclass, field
 from src.shared.cqrs.application.command import Command
-from src.shared.cqrs.application.command_handler import CommandHandler
 from src.shared.service_container.domain.service.service_container import ServiceContainer
 
+@dataclass
 class CommandBus():
-    
-    def __init__(self):
-        self.container = ServiceContainer()
+    container: ServiceContainer = field(default_factory=ServiceContainer)
 
-    
     def __get_handler_module(self, command: Command):
         context = command.__module__.split(".")[1]
         subcontext = command.__module__.split(".")[2]

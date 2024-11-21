@@ -1,9 +1,9 @@
+from dataclasses import dataclass, field
 from src.catalogue.product.domain.repositories.product_repository import ProductRepository
 
+@dataclass
 class InMemoryProductRepository(ProductRepository):
-    
-    def __init__(self):
-        self.products = {}
+    products: dict = field(default_factory=dict)
 
     def findById(self, id: str):
         return self.products.get(id)
@@ -13,3 +13,4 @@ class InMemoryProductRepository(ProductRepository):
 
     def save(self, product):
         self.products[product['id']] = product
+        print('Product saved:', product)

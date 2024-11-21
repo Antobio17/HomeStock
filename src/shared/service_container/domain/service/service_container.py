@@ -1,12 +1,11 @@
 import yaml
 from typing import Any, Dict
 from importlib import import_module
+from dataclasses import dataclass, field
 
+@dataclass
 class ServiceContainer:
-
-    def __init__(self):
-        self.services: Dict[str, Any] = {}
-        
+    services: Dict[str, Any] = field(default_factory=dict)    
         
     def __load_config(self, module_path: str) -> dict:
         yaml_path = None
