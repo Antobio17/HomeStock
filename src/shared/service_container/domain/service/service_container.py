@@ -9,16 +9,15 @@ class ServiceContainer:
         
     def __load_config(self, service: str) -> dict:
         yaml_path = None
+        split = service.split('.')
+        
         if 'command_handler' in service:
-            split = service.split('.')
             yaml_path = '/'.join(split[:3] + ['infrastructure/application/command_handlers.yaml'])
             
         if 'query_handler' in service:
-            split = service.split('.')
             yaml_path = '/'.join(split[:3] + ['infrastructure/application/query_handlers.yaml'])
             
         if 'repository' in service:
-            split = service.split('.')
             yaml_path = '/'.join(split[:3] + ['infrastructure/domain/model/repositories.yaml'])
             
         if yaml_path is None:
