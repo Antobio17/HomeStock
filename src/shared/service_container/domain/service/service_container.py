@@ -7,30 +7,39 @@ from dataclasses import dataclass, field
 class ServiceContainer:
     services: Dict[str, Any] = field(default_factory=dict)    
         
-    def __load_config(self, module_path: str) -> dict:
+    def __load_config(self, service: str) -> dict:
         yaml_path = None
-        if 'command_handler' in module_path:
-            split = module_path.split('.')
+        if 'command_handler' in service:
+            split = service.split('.')
             yaml_path = '/'.join(split[:3] + ['infrastructure/application/command_handlers.yaml'])
             
-        if 'query_handler' in module_path:
-            split = module_path.split('.')
-            yaml_path = '/'.join(split[:3] + ['infrastructure/application/command_handlers.yaml'])
+        if 'query_handler' in service:
+            split = service.split('.')
+            yaml_path = '/'.join(split[:3] + ['infrastructure/application/query_handlers.yaml'])
             
-        if 'repository' in module_path:
-            split = module_path.split('.')
+        if 'repository' in service:
+            split = service.split('.')
             yaml_path = '/'.join(split[:3] + ['infrastructure/domain/model/repositories.yaml'])
+            
         if yaml_path is None:
-            raise Exception('YAML file not found for module: ' + module_path)
+            raise FileNotFoundError(f'YAML file not found for module: {service}')
         
         with open(yaml_path, 'r') as file:
-            return yaml.safe_load(file)
+            config = yaml.safe_load(file)
+        
+        if 'services' not in config:
+            raise KeyError(f'The \'services\' key not found in YAML file: {yaml_path}')
+        
+        if service not in config['services']:
+            raise KeyError(f'Service "{service}" not found in YAML file: {yaml_path}')
+        
+        return config['services'][service]
     
     
-    def __get_class(self, module_path: str) -> type:
-        module_name, class_name = module_path.rsplit('.', 1)
+    def __get_class(self, reference_class: str) -> type:
+        class_name = reference_class.rsplit('.', 1)[-1]
 
-        module = import_module(module_name + '.' + class_name)
+        module = import_module(reference_class)
         class_name_cammel_case = ''.join(word.capitalize() for word in class_name.split('_'))
         return getattr(module, class_name_cammel_case)
         
@@ -40,18 +49,15 @@ class ServiceContainer:
         if service in self.services:
             return self.services[service]
         
-        config = self.__load_config(service)
-        service_config = config['services'][service]
+        service_config = self.__load_config(service)
         
-        args = []
-        if 'arguments' in service_config:
-            for arg in service_config['arguments']:
-                if isinstance(arg, str) and arg.startswith('@'):
-                    args.append(self.get(arg[1:]))
-                else:
-                    args.append(arg)
+        arguments = []
+        for argument in service_config.get('arguments', []):
+            if not argument.startswith('@'):
+                continue
+            
+            arguments.append(self.get(argument[1:]))
         
-        class_imported = self.__get_class(service_config['class'])
-        self.services[service] = class_imported(*args)
+        self.services[service] =  self.__get_class(service_config['class'])(*arguments)
         
         return self.services[service]
