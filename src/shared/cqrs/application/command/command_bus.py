@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from src.shared.cqrs.application.command import Command
+from src.shared.cqrs.application.command.command import Command
 from src.shared.service_container.domain.service.service_container import ServiceContainer
 
 @dataclass
@@ -11,7 +11,7 @@ class CommandBus():
         subcontext = command.__module__.split(".")[2]
         command_name = type(command).__name__
         command_name_snake_case = ''.join(['_' + i.lower() if i.isupper() else i for i in command_name]).lstrip('_')
-        return f'src.{context}.{subcontext}.application.use_cases.' + command_name_snake_case + '_handler'
+        return f'src.{context}.{subcontext}.application.command.' + command_name_snake_case + '_handler'
         
     
     def handle(self, command: Command) -> None:

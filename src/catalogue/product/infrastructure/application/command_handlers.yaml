@@ -1,5 +1,5 @@
 services:
-    src.catalogue.product.application.use_cases.create_product_command_handler:
-        class: src.catalogue.product.application.use_cases.create_product_command_handler
+    src.catalogue.product.application.command.create_product_command_handler:
+        class: src.catalogue.product.application.command.create_product_command_handler
         arguments:
             - '@src.catalogue.product.domain.model.product_repository'

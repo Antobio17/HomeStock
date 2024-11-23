@@ -1,6 +1,5 @@
-from src.catalogue.product.application.use_cases.create_product_command import CreateProductCommand
-from src.shared.cqrs.application.command_bus import CommandBus
-
+from src.catalogue.product.application.command.create_product_command import CreateProductCommand
+from src.shared.cqrs.application.command.command_bus import CommandBus
 
 class CreateProductCommandCli:
     

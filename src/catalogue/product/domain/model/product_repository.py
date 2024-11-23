@@ -1,14 +1,9 @@
-
 from abc import ABC, abstractmethod
 
 class ProductRepository(ABC):
 
     @abstractmethod
-    def findById(self, id: str):
-        pass
-
-    @abstractmethod
-    def findAll(self):
+    def find_by_id(self, id: str):
         pass
 
     @abstractmethod
