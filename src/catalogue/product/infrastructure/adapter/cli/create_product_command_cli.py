@@ -8,7 +8,17 @@ class CreateProductCommandCli:
     
     def execute(self) -> None:
         
-        command = CreateProductCommand(1, 'hola')
+        command = CreateProductCommand(
+            '124', 
+            'hola1',
+            1.0,
+            1,
+            1,
+            1,
+            1,
+            1,
+            True
+        )
         self.command_bus.handle(command)
     
     

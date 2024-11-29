@@ -1,11 +1,31 @@
-version: '3.8'
+networks:
+  hometock-network:
 
 services:
   homestock:
     build:
       context: ../../
       dockerfile: ./deploy/docker/Dockerfile
+    container_name: homestock-python-container
     ports:
       - "8080:8080"
     volumes:
       - ../../.:/app
+    networks:
+      - hometock-network
+
+  homestock-mysql:
+    image: mysql:8
+    container_name: homestock-mysql-container
+    ports:
+      - "4306:3306"
+    volumes:
+      - ./mysql:/var/lib/mysql
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=secret
+      - MYSQL_PASSWORD=secret
+      - MYSQL_DATABASE=db
+    networks:
+      - hometock-network

@@ -1,11 +1,13 @@
-from src.shared.sqlalchemy.infrastructure.domain.model.db import Base
+from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import CHAR, Column, DateTime, Boolean, Float, Integer
 
+Base = declarative_base()
 
 class ProductModel(Base):
     __tablename__ = 'product'
     
     id = Column(CHAR(32), primary_key=True)
+    name = Column(CHAR(64),  nullable=False)
     price = Column(Float, nullable=False)
     calories = Column(Integer, nullable=False)
     carbohydrates = Column(Integer, nullable=False)
@@ -22,6 +24,7 @@ class ProductModel(Base):
         return (
             f"""
             ProductModel(
+                id={self.id}, 
                 id={self.id}, 
                 price={self.price},
                 calories={self.calories},

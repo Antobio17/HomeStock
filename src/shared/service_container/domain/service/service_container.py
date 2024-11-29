@@ -2,10 +2,11 @@ import yaml
 from typing import Any, Dict
 from importlib import import_module
 from dataclasses import dataclass, field
+from src.shared.sqlalchemy.infrastructure.domain.model.database_session import DatabaseSession
 
 @dataclass
 class ServiceContainer:
-    services: Dict[str, Any] = field(default_factory=dict)    
+    services: Dict[str, Any] = field(default_factory=dict)
         
     def __load_config(self, service: str) -> dict:
         yaml_path = None
@@ -51,6 +52,10 @@ class ServiceContainer:
         service_config = self.__load_config(service)
         
         arguments = []
+        
+        if 'repository' in service:
+            arguments.append(DatabaseSession().writer_session)
+            
         for argument in service_config.get('arguments', []):
             if not argument.startswith('@'):
                 continue

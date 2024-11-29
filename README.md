@@ -37,3 +37,6 @@ HomeStock/
 ├── requirements.txt
 └── README.md
 ```
+
+https://github.com/Iazzetta/hexagonal-fastapi-sentry-sqlalchemy/tree/main
+https://blog.szymonmiks.pl/p/domain-model-with-sqlalchemy/
