@@ -16,10 +16,8 @@ class ServiceContainer:
         
         if 'command_handler' in service:
             yaml_path = '/'.join(split[:3] + ['infrastructure/application/command_handlers.yaml'])
-            
         if 'query_handler' in service:
             yaml_path = '/'.join(split[:3] + ['infrastructure/application/query_handlers.yaml'])
-            
         if 'repository' in service:
             yaml_path = '/'.join(split[:3] + ['infrastructure/domain/model/repositories.yaml'])
             
@@ -31,7 +29,6 @@ class ServiceContainer:
         
         if 'services' not in config:
             raise KeyError(f'The \'services\' key not found in YAML file: {yaml_path}')
-        
         if service not in config['services']:
             raise KeyError(f'Service "{service}" not found in YAML file: {yaml_path}')
         
@@ -58,11 +55,9 @@ class ServiceContainer:
         for argument in service_config.get('arguments', []):
             if not argument.startswith('@'):
                 continue
-            
             if argument == '@sqlalchemy_writer_session':
                 arguments.append(WriterDatabaseSession(os.getenv('DATABASE_WRITER_URL')).session)
                 continue
-            
             if argument == '@sqlalchemy_reader_session':
                 arguments.append(ReaderDatabaseSession(os.getenv('DATABASE_READER_URL')).session)
                 continue
