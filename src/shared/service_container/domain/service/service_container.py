@@ -4,6 +4,7 @@ from typing import Any, Dict
 from importlib import import_module
 from dataclasses import dataclass, field
 from src.shared.sqlalchemy.infrastructure.domain.model.writer_database_session import WriterDatabaseSession
+from src.shared.sqlalchemy.infrastructure.domain.model.reader_database_session import ReaderDatabaseSession
 
 @dataclass
 class ServiceContainer:
@@ -60,6 +61,10 @@ class ServiceContainer:
             
             if argument == '@sqlalchemy_writer_session':
                 arguments.append(WriterDatabaseSession(os.getenv('DATABASE_WRITER_URL')).session)
+                continue
+            
+            if argument == '@sqlalchemy_reader_session':
+                arguments.append(ReaderDatabaseSession(os.getenv('DATABASE_READER_URL')).session)
                 continue
             
             arguments.append(self.get(argument[1:]))
