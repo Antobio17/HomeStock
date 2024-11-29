@@ -1,8 +1,9 @@
+import os
 import yaml
 from typing import Any, Dict
 from importlib import import_module
 from dataclasses import dataclass, field
-from src.shared.sqlalchemy.infrastructure.domain.model.database_session import DatabaseSession
+from src.shared.sqlalchemy.infrastructure.domain.model.writer_database_session import WriterDatabaseSession
 
 @dataclass
 class ServiceContainer:
@@ -52,12 +53,13 @@ class ServiceContainer:
         service_config = self.__load_config(service)
         
         arguments = []
-        
-        if 'repository' in service:
-            arguments.append(DatabaseSession().writer_session)
             
         for argument in service_config.get('arguments', []):
             if not argument.startswith('@'):
+                continue
+            
+            if argument == '@sqlalchemy_writer_session':
+                arguments.append(WriterDatabaseSession(os.getenv('DATABASE_WRITER_URL')).session)
                 continue
             
             arguments.append(self.get(argument[1:]))
