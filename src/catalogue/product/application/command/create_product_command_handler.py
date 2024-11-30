@@ -10,7 +10,7 @@ class CreateProductCommandHandler(CommandHandler):
     product_repository: ProductRepository
 
     def handle(self, command: CreateProductCommand) -> None:
-        product = Product (
+        product = Product.create (
             command.id,
             command.name,
             command.price,
