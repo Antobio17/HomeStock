@@ -67,18 +67,20 @@ class Product:
             datetime.now(),
             datetime.now()
         )
-        product.record(ProductCreated(
-            id,
-            name,
-            price,
-            calories,
-            carbohydrates,
-            proteins,
-            fats,
-            sugar,
-            is_enabled,
-            created_at,
-            enabled_at                              
-        ))
+        product.record(
+            ProductCreated(
+                id,
+                name,
+                price,
+                calories,
+                carbohydrates,
+                proteins,
+                fats,
+                sugar,
+                is_enabled,
+                created_at,
+                enabled_at                              
+            )
+        )
         
         return product
