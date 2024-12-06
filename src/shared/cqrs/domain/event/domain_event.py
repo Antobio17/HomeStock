@@ -2,9 +2,9 @@ from abc import ABC, abstractmethod
 
 class DomainEvent(ABC):
     @abstractmethod
-    def event_name(self) -> str:
+    def get_aggregate_id(self) -> dict:
         pass
     
     @abstractmethod
-    def aggregate_id(self) -> dict:
+    def event_name() -> str:
         pass

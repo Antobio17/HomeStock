@@ -1,6 +1,7 @@
 import os
 import yaml
 from typing import Any, Dict
+from sqlalchemy.orm import Session
 from importlib import import_module
 from dataclasses import dataclass, field
 from src.shared.sqlalchemy.infrastructure.domain.model.writer_database_session import WriterDatabaseSession
@@ -9,7 +10,9 @@ from src.shared.sqlalchemy.infrastructure.domain.model.reader_database_session i
 @dataclass
 class ServiceContainer:
     services: Dict[str, Any] = field(default_factory=dict)
-        
+    __writer_session = None
+    __reader_session = None
+    
     def __load_config(self, service: str) -> dict:
         yaml_path = None
         split = service.split('.')
@@ -41,8 +44,7 @@ class ServiceContainer:
         module = import_module(reference_class)
         class_name_cammel_case = ''.join(word.capitalize() for word in class_name.split('_'))
         return getattr(module, class_name_cammel_case)
-        
-        
+  
     
     def get(self, service: str) -> Any:
         if service in self.services:
@@ -56,10 +58,10 @@ class ServiceContainer:
             if not argument.startswith('@'):
                 continue
             if argument == '@sqlalchemy_writer_session':
-                arguments.append(WriterDatabaseSession(os.getenv('DATABASE_WRITER_URL')).session)
+                arguments.append(self.get_writer_session())
                 continue
             if argument == '@sqlalchemy_reader_session':
-                arguments.append(ReaderDatabaseSession(os.getenv('DATABASE_READER_URL')).session)
+                arguments.append(self.get_reader_session())
                 continue
             
             arguments.append(self.get(argument[1:]))
@@ -67,3 +69,17 @@ class ServiceContainer:
         self.services[service] =  self.__get_class(service_config['class'])(*arguments)
         
         return self.services[service]
+
+
+    def get_writer_session(self) -> Session:
+        if self.__writer_session is None:
+            self.__writer_session = WriterDatabaseSession(os.getenv('DATABASE_WRITER_URL')).session
+            
+        return self.__writer_session
+    
+    
+    def get_reader_session(self) -> Session:
+        if self.__reader_session is None:
+            self.__reader_session = WriterDatabaseSession(os.getenv('DATABASE_WRITER_URL')).session
+            
+        return self.__reader_session

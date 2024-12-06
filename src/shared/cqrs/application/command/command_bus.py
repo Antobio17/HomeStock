@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from src.shared.cqrs.application.command.command import Command
-from src.shared.service_container.domain.service.service_container import ServiceContainer
+from src.shared.service_container.infrastructure.domain.service.service_container import ServiceContainer
 
 @dataclass
 class CommandBus():
@@ -18,4 +18,6 @@ class CommandBus():
         handler_class = self.__get_handler_module(command)
         command_handler = self.container.get(handler_class)
         command_handler.handle(command)
+        
+        self.container.get_writer_session().commit()
         

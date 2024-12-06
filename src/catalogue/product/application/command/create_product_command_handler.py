@@ -10,17 +10,5 @@ class CreateProductCommandHandler(CommandHandler):
     product_repository: ProductRepository
 
     def handle(self, command: CreateProductCommand) -> None:
-        product = Product.create (
-            command.id,
-            command.name,
-            command.price,
-            command.calories,
-            command.carbohydrates,
-            command.proteins,
-            command.fats,
-            command.sugar,
-            command.is_enabled,
-            datetime.now(timezone.utc),
-            datetime.now(timezone.utc),
-        )
+        product = Product.create(command)
         self.product_repository.save(product)

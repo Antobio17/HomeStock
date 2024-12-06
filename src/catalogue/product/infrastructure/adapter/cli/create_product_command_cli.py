@@ -9,8 +9,7 @@ class CreateProductCommandCli:
     def execute(self) -> None:
         
         command = CreateProductCommand(
-            '124', 
-            'hola1',
+            'holaa2',
             1.0,
             1,
             1,

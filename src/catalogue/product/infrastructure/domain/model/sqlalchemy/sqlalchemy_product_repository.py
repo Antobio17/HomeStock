@@ -52,4 +52,3 @@ class SqlalchemyProductRepository(ProductRepository):
 
     def save(self, product: Product) -> None:
         self.__session.merge(self.__to_model(product))
-        self.__session.commit()

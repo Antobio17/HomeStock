@@ -6,7 +6,7 @@ Base = declarative_base()
 class ProductModel(Base):
     __tablename__ = 'product'
     
-    id = Column(CHAR(32), primary_key=True)
+    id = Column(CHAR(36), primary_key=True)
     name = Column(CHAR(64),  nullable=False)
     price = Column(Float, nullable=False)
     calories = Column(Integer, nullable=False)

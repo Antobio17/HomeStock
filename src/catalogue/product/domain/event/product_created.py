@@ -16,7 +16,7 @@ class ProductCreated(DomainEvent):
     created_at: datetime
     enabled_at: datetime
     
-    def aggregate_id(self) -> str:
+    def get_aggregate_id(self) -> str:
         return self.aggregate_id
     
     @staticmethod
