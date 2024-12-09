@@ -1,7 +1,6 @@
 import os
 import yaml
 from typing import Any, Dict
-from sqlalchemy.orm import Session
 from importlib import import_module
 from dataclasses import dataclass, field
 from src.shared.sqlalchemy.infrastructure.domain.model.writer_database_session import WriterDatabaseSession
@@ -71,15 +70,15 @@ class ServiceContainer:
         return self.services[service]
 
 
-    def get_writer_session(self) -> Session:
+    def get_writer_session(self) -> object:
         if self.__writer_session is None:
             self.__writer_session = WriterDatabaseSession(os.getenv('DATABASE_WRITER_URL')).session
             
         return self.__writer_session
     
     
-    def get_reader_session(self) -> Session:
+    def get_reader_session(self) -> object:
         if self.__reader_session is None:
-            self.__reader_session = WriterDatabaseSession(os.getenv('DATABASE_WRITER_URL')).session
+            self.__reader_session = ReaderDatabaseSession(os.getenv('DATABASE_READER_URL')).session
             
         return self.__reader_session
