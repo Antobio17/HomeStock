@@ -1,12 +1,19 @@
 from dataclasses import dataclass, field
 from src.shared import service_container
 from src.shared.cqrs.application.command.command import Command
+from src.shared.cqrs.application.middleware.middleware import Middleware
+from src.shared.cqrs.application.middleware.transaction_middleware import TransactionMiddleware
 from src.shared.service_container.infrastructure.domain.service.service_container import ServiceContainer
 
 @dataclass
 class CommandBus():
-    container: ServiceContainer = field(default_factory=lambda: service_container)
+    __container: ServiceContainer = field(default_factory=lambda: service_container)
 
+    def middlewares(self) -> list[Middleware]:
+        return [
+            TransactionMiddleware(self.__container.transaction_manager)
+        ]
+        
     def __get_handler_module(self, command: Command):
         context = command.__module__.split(".")[1]
         subcontext = command.__module__.split(".")[2]
@@ -17,8 +24,13 @@ class CommandBus():
     
     def handle(self, command: Command) -> None:
         handler_class = self.__get_handler_module(command)
-        command_handler = self.container.get(handler_class)
+        command_handler = self.__container.get(handler_class)
+        
+        for middleware in self.middlewares():
+            middleware.before_handle()
+            
         command_handler.handle(command)
         
-        self.container.get_writer_session().commit()
-        
+        for middleware in self.middlewares():
+            middleware.after_handle()
+                

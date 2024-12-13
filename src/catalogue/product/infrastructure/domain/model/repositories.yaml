@@ -2,5 +2,5 @@ services:
     src.catalogue.product.domain.model.product_repository:
         class: src.catalogue.product.infrastructure.domain.model.sqlalchemy.sqlalchemy_product_repository
         arguments:
-            - '@sqlalchemy_writer_session'
+            - '@src.shared.database.domain.manager.transaction_manager'
 

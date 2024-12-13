@@ -1,16 +1,12 @@
-import os
 import yaml
-from typing import Any, Dict
+from typing import Any, Dict, Union
 from importlib import import_module
 from dataclasses import dataclass, field
-from src.shared.sqlalchemy.infrastructure.domain.model.writer_database_session import WriterDatabaseSession
-from src.shared.sqlalchemy.infrastructure.domain.model.reader_database_session import ReaderDatabaseSession
+from src.shared.database.domain.manager.transaction_manager import TransactionManager
 
 @dataclass
 class ServiceContainer:
     services: Dict[str, Any] = field(default_factory=dict)
-    __writer_session = None
-    __reader_session = None
     
     def __load_config(self, service: str) -> dict:
         yaml_path = None
@@ -22,6 +18,8 @@ class ServiceContainer:
             yaml_path = '/'.join(split[:3] + ['infrastructure/application/query_handlers.yaml'])
         if 'repository' in service:
             yaml_path = '/'.join(split[:3] + ['infrastructure/domain/model/repositories.yaml'])
+        if 'manager' in service:
+            yaml_path = '/'.join(split[:3] + ['infrastructure/domain/manager/managers.yaml'])
             
         if yaml_path is None:
             raise FileNotFoundError(f'YAML file not found for module: {service}')
@@ -56,29 +54,13 @@ class ServiceContainer:
         for argument in service_config.get('arguments', []):
             if not argument.startswith('@'):
                 continue
-            if argument == '@sqlalchemy_writer_session':
-                arguments.append(self.get_writer_session())
-                continue
-            if argument == '@sqlalchemy_reader_session':
-                arguments.append(self.get_reader_session())
-                continue
             
             arguments.append(self.get(argument[1:]))
         
         self.services[service] =  self.__get_class(service_config['class'])(*arguments)
-        
+
         return self.services[service]
-
-
-    def get_writer_session(self) -> object:
-        if self.__writer_session is None:
-            self.__writer_session = WriterDatabaseSession(os.getenv('DATABASE_WRITER_URL')).session
-            
-        return self.__writer_session
     
-    
-    def get_reader_session(self) -> object:
-        if self.__reader_session is None:
-            self.__reader_session = ReaderDatabaseSession(os.getenv('DATABASE_READER_URL')).session
-            
-        return self.__reader_session
+    @property
+    def transaction_manager(self) ->  Union[TransactionManager, None]:
+        return self.services.get('src.shared.database.domain.manager.transaction_manager', None)

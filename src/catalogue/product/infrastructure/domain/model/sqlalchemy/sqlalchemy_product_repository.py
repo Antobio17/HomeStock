@@ -1,14 +1,15 @@
 from typing import Optional
 from dataclasses import dataclass
+from sqlalchemy.orm import joinedload
 from sqlalchemy.exc import NoResultFound
-from sqlalchemy.orm import Session, joinedload
 from src.catalogue.product.domain.model.product import Product
 from src.catalogue.product.domain.model.product_repository import ProductRepository
+from src.shared.database.domain.manager.transaction_manager import TransactionManager
 from src.catalogue.product.infrastructure.domain.model.sqlalchemy.persistence.model import ProductModel
 
 @dataclass
 class SqlalchemyProductRepository(ProductRepository):
-    __session: Session
+    __transaction_manager: TransactionManager
 
     def __to_model(self, product: Product) -> ProductModel:
         return ProductModel(
@@ -30,7 +31,9 @@ class SqlalchemyProductRepository(ProductRepository):
     def find_by_id(self, product_id: str) -> Optional[Product]:
         try:
             result: ProductModel = (
-                self.__session.query(ProductModel).options(joinedload("*")).filter_by(id=str(product_id)).one()
+                self.__transaction_manager.session.query(ProductModel)\
+                    .options(joinedload("*"))\
+                    .filter_by(id=str(product_id)).one()
             )
         except NoResultFound:
             return None
@@ -51,4 +54,4 @@ class SqlalchemyProductRepository(ProductRepository):
         )
 
     def save(self, product: Product) -> None:
-        self.__session.merge(self.__to_model(product))
+        self.__transaction_manager.session.merge(self.__to_model(product))
