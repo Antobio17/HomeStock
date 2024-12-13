@@ -14,7 +14,7 @@ class CommandBus():
             TransactionMiddleware(self.__container.transaction_manager)
         ]
         
-    def __get_handler_module(self, command: Command):
+    def __get_handler_module(self, command: Command) -> str:
         context = command.__module__.split(".")[1]
         subcontext = command.__module__.split(".")[2]
         command_name = type(command).__name__
