@@ -1,9 +1,9 @@
 from datetime import datetime
 from dataclasses import dataclass
+from src.shared.cqrs.domain.service.dto.message import Message
 from src.shared.cqrs.domain.event.domain_event import DomainEvent
-
 @dataclass
-class ProductCreated(DomainEvent):
+class ProductCreated(DomainEvent, Message):
     aggregate_id: str
     name: str
     price: float
@@ -21,4 +21,8 @@ class ProductCreated(DomainEvent):
     
     @staticmethod
     def event_name() -> str:
+        return 'homestock.catalogue.1.event.product.created'
+    
+    @staticmethod
+    def routing_key(self) -> str:
         return 'homestock.catalogue.1.event.product.created'

@@ -1,13 +1,12 @@
 from dataclasses import dataclass, field
-from src.shared import service_container
 from src.shared.cqrs.application.command.command import Command
 from src.shared.cqrs.application.middleware.middleware import Middleware
+from src.shared.service_container.domain.service.service_container import ServiceContainer
 from src.shared.cqrs.application.middleware.transaction_middleware import TransactionMiddleware
-from src.shared.service_container.infrastructure.domain.service.service_container import ServiceContainer
 
 @dataclass
 class CommandBus():
-    __container: ServiceContainer = field(default_factory=lambda: service_container)
+    __container: ServiceContainer = field(default_factory=lambda: ServiceContainer())
 
     def middlewares(self) -> list[Middleware]:
         return [

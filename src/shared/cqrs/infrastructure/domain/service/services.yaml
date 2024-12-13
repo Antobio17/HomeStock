@@ -1,0 +1,3 @@
+services:
+    src.shared.cqrs.domain.service.message_publisher:
+        class: src.shared.cqrs.domain.service.message_publisher

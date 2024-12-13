@@ -4,6 +4,7 @@ from datetime import datetime
 from dataclasses import dataclass, field
 from src.shared.cqrs.domain.event.domain_event import DomainEvent
 from src.catalogue.product.domain.event.product_created import ProductCreated
+from src.catalogue.product.domain.model.product_repository import ProductRepository
 from src.catalogue.product.application.command.create_product_command import CreateProductCommand
 from src.catalogue.product.domain.exception.create_product_exception import CreateProductException
 
@@ -34,7 +35,10 @@ class Product:
         return domain_events
     
     @staticmethod
-    def create(command: CreateProductCommand) -> 'Product':
+    def create(
+        command: CreateProductCommand,
+        product_repository: ProductRepository
+    ) -> 'Product':
         if len(command.name) > 64:
             raise CreateProductException(
                 'Name only accepts 64 characters', 
@@ -63,6 +67,8 @@ class Product:
             now,
             now
         )
+        
+        product_repository.save(product)
         product.record(
             ProductCreated(
                 id,
