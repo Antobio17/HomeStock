@@ -3,6 +3,7 @@ from src.shared.cqrs.application.command.command import Command
 from src.shared.cqrs.application.middleware.middleware import Middleware
 from src.shared.service_container.domain.service.service_container import ServiceContainer
 from src.shared.cqrs.application.middleware.transaction_middleware import TransactionMiddleware
+from src.shared.cqrs.application.middleware.message_publisher_middleware import MessagePuclisherMiddleware
 
 @dataclass
 class CommandBus():
@@ -10,7 +11,8 @@ class CommandBus():
 
     def middlewares(self) -> list[Middleware]:
         return [
-            TransactionMiddleware(self.__container.transaction_manager)
+            TransactionMiddleware(self.__container.transaction_manager),
+            MessagePuclisherMiddleware(self.__container.message_publisher)
         ]
         
     def __get_handler_module(self, command: Command) -> str:

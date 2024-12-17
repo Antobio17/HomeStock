@@ -1,0 +1,3 @@
+services:
+    src.shared.message_broker.domain.connection.connection:
+        class: src.shared.message_broker.infrastructure.domain.connection.rabbitmq.rabbitmq_producer

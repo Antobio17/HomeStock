@@ -2,3 +2,4 @@
 deploy/docker/mysql/
 deploy/docker/init/
 .env.local
+poetry.lock

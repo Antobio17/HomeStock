@@ -6,7 +6,7 @@ from src.shared.database.domain.manager.transaction_manager import TransactionMa
 
 @dataclass
 class ServiceContainer:
-    services: Dict[str, Any] = field(default_factory=dict)
+    __services: Dict[str, Any] = field(default_factory=dict)
     
     def __load_config(self, service: str) -> dict:
         yaml_path = None
@@ -46,8 +46,8 @@ class ServiceContainer:
   
     
     def get(self, service: str) -> Any:
-        if service in self.services:
-            return self.services[service]
+        if service in self.__services:
+            return self.__services[service]
         
         service_config = self.__load_config(service)
         
@@ -59,10 +59,14 @@ class ServiceContainer:
             
             arguments.append(self.get(argument[1:]))
         
-        self.services[service] =  self.__get_class(service_config['class'])(*arguments)
+        self.__services[service] =  self.__get_class(service_config['class'])(*arguments)
 
-        return self.services[service]
+        return self.__services[service]
     
     @property
     def transaction_manager(self) ->  Union[TransactionManager, None]:
-        return self.services.get('src.shared.database.domain.manager.transaction_manager', None)
+        return self.__services.get('src.shared.database.domain.manager.transaction_manager', None)
+    
+    @property
+    def message_publisher(self) ->  Union[TransactionManager, None]:
+        return self.__services.get('src.shared.cqrs.domain.service.message_publisher', None)
