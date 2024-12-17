@@ -6,8 +6,3 @@ class Connection(ABC):
     @abstractmethod
     def connection(self):
         pass
-    
-    @property
-    @abstractmethod
-    def channel(self):
-        pass

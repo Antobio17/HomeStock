@@ -24,7 +24,3 @@ class RabbitmqConnection(Connection):
             )
             
         return self.__connection
-    
-    @property
-    def channel(self):
-        return self.__connection.channel()
