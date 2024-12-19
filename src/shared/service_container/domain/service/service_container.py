@@ -22,6 +22,8 @@ class ServiceContainer:
             yaml_path = '/'.join(split[:3] + ['infrastructure/domain/manager/managers.yaml'])
         if 'service' in service:
             yaml_path = '/'.join(split[:3] + ['infrastructure/domain/service/services.yaml'])
+        if 'connection' in service:
+            yaml_path = '/'.join(split[:3] + ['infrastructure/domain/connection/connections.yaml'])
             
         if yaml_path is None:
             raise FileNotFoundError(f'YAML file not found for module: {service}')

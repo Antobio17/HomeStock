@@ -1,3 +1,5 @@
 services:
     src.shared.message_broker.domain.service.producer:
         class: src.shared.message_broker.infrastructure.domain.service.rabbitmq.rabbitmq_producer
+        arguments:
+            - '@src.shared.message_broker.domain.connection.connection'

@@ -15,9 +15,9 @@ class MessagePublisher():
         
         print('Publishing one message...')
     
-    def execute_messages(self) -> None:
-        print('Publishing messages...')
-        print(self.__messages)
+    def flush(self) -> None:
+        for message in self.__messages:
+            print('Publishing message...')
         
     def disable_publish_instantly(self) -> None:
         self.__publish_instantly = False

@@ -29,3 +29,16 @@ services:
       - MYSQL_DATABASE=db
     networks:
       - hometock-network
+
+  homestock-rabbitmq:
+    image: rabbitmq:3-management
+    container_name: homestock-rabbitmq-container
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    restart: always
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    networks:
+      - hometock-network

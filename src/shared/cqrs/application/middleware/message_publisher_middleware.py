@@ -11,4 +11,4 @@ class MessagePuclisherMiddleware(Middleware):
         self.__message_publisher.disable_publish_instantly()
 
     def after_handle(self) -> None:
-        self.__message_publisher.execute_messages()
+        self.__message_publisher.flush()
