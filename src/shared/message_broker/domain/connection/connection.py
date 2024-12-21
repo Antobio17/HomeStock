@@ -19,3 +19,23 @@ class Connection(ABC):
         auto_delete: bool = False
     ):
         pass
+    
+    @abstractmethod
+    def queue_declare(
+        self, 
+        queue: str, 
+        arguments: dict = {},
+        durable: bool = True, 
+        auto_delete: bool = False,
+        exclusive: bool = False,
+    ):
+        pass
+    
+    @abstractmethod
+    def queue_bind(
+        self, 
+        queue: str, 
+        exchange: str, 
+        routing_key: str
+    ):
+        pass

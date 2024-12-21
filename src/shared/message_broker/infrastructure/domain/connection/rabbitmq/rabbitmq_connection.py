@@ -64,3 +64,35 @@ class RabbitmqConnection(Connection):
             auto_delete = auto_delete
         )
         channel.close()
+        
+    def queue_declare(
+        self, 
+        queue: str, 
+        arguments: dict = {},
+        durable: bool = True, 
+        auto_delete: bool = False,
+        exclusive: bool = False,
+    ):
+        channel = self.__connect.channel()
+        channel.queue_declare(
+            queue = queue,
+            durable = durable,
+            auto_delete = auto_delete,
+            exclusive = exclusive,
+            arguments = arguments
+        )
+        channel.close()
+        
+    def queue_bind(
+        self, 
+        queue: str, 
+        exchange: str, 
+        routing_key: str
+    ):
+        channel = self.__connect.channel()
+        channel.queue_bind(
+            queue = queue,
+            exchange = exchange,
+            routing_key = routing_key
+        )
+        channel.close()

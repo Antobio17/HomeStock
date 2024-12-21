@@ -18,7 +18,7 @@ class RabbitmqSetupFabric:
         for yaml_path in yaml_paths:
             with open(yaml_path, 'r') as file:
                 config = yaml.safe_load(file)
-                exchanges += config['rabbitmq']['exchange']
+                exchanges += config['rabbitmq']['exchanges']
         
         for exchange in exchanges:     
             self.rabbitmq_connection.exchange_declare(
@@ -29,26 +29,28 @@ class RabbitmqSetupFabric:
             )
             
     def __declare_queues(self):
-        yaml_paths = glob.glob('/app/src/*/shared/infrastructure/adapter/messaging/rabbitmq.yaml')
+        yaml_paths = glob.glob('/app/src/*/*/infrastructure/adapter/messaging/rabbitmq.yaml')
 
         queues = []
         for yaml_path in yaml_paths:
             with open(yaml_path, 'r') as file:
                 config = yaml.safe_load(file)
-                queues += config['rabbitmq']['queue']
+                queues += config['rabbitmq'].get('queues', [])
         
         for queue in queues:
             self.rabbitmq_connection.queue_declare(
                 queue = queue['name'],
+                arguments = queue.get('arguments', {}),
                 durable = queue.get('durable', True),
-                auto_delete = queue.get('auto_delete', False)
+                auto_delete = queue.get('auto_delete', False),
+                exclusive = queue.get('exclusive', False)
             )
             
-            for binding in queue.get('bindings', []):
+            for binding in queue.get('routing_key', []):
                 self.rabbitmq_connection.queue_bind(
                     queue = queue['name'],
-                    exchange = binding['exchange'],
-                    routing_key = binding['routing_key']
+                    exchange = queue['exchange'],
+                    routing_key = binding
                 )
         
 

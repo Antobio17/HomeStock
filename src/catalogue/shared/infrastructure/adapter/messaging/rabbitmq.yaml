@@ -1,4 +1,10 @@
 rabbitmq:
-  exchange: 
+  exchanges: 
     - name: catalogue
+      type: topic
+
+    - name: catalogue-delay
+      type: topic
+
+    - name: catalogue-failure
       type: topic
