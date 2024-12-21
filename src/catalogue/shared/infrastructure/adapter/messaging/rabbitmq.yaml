@@ -1,0 +1,4 @@
+rabbitmq:
+  exchange: 
+    - name: catalogue
+      type: topic
