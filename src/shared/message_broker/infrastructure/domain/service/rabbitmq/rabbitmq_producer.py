@@ -8,14 +8,14 @@ class RabbitmqProducer(Producer):
         
     def publish(
         self, 
-        routine_key: str,
         message: str,
         headers: dict = {},
         to_delay: bool = False,
+        routing_key: str = '',
     ) -> None:
         self.__connection.publish_message(
-            exchange = RabbitmqProducer.__exchange_name(routine_key, to_delay),
-            routing_key = routine_key,
+            exchange = RabbitmqProducer.__exchange_name(routing_key, to_delay),
+            routing_key = routing_key,
             headers = headers,
             body = message
         )
@@ -29,4 +29,4 @@ class RabbitmqProducer(Producer):
                 'Correct format: <app>.<context>.<version>.<subcontext>.<message_type>.<action>'
             )
                         
-        return parts[3] + '-delay' if to_delay else parts[3]
+        return parts[1] + '-delay' if to_delay else parts[1]

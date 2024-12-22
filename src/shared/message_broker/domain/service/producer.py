@@ -8,6 +8,6 @@ class Producer(ABC):
         message: str,
         headers: dict = {},
         to_delay: bool = False,
-        routine_key: str = ''
+        routing_key: str = '',
     ) -> None:
         pass

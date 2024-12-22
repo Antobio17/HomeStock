@@ -19,10 +19,6 @@ class ProductCreated(DomainEvent, Message):
     def get_aggregate_id(self) -> str:
         return self.aggregate_id
     
-    @staticmethod
-    def event_name() -> str:
-        return 'homestock.catalogue.1.event.product.created'
-    
-    @staticmethod
+    @property
     def routing_key(self) -> str:
         return 'homestock.catalogue.1.event.product.created'
