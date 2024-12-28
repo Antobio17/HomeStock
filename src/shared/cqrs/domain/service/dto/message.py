@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 class Message(ABC):
     
-    @property
+    @staticmethod
     @abstractmethod
-    def routing_key(self) -> str:
+    def get_name() -> str:
         pass

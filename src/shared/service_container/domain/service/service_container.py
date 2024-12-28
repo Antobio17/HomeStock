@@ -1,12 +1,17 @@
 import yaml
+import uuid
 from typing import Any, Dict, Union
 from importlib import import_module
 from dataclasses import dataclass, field
+from src.shared.cqrs.domain.service.dto.metadata import Metadata
+from src.shared.cqrs.domain.service.message_publisher import MessagePublisher
 from src.shared.database.domain.manager.transaction_manager import TransactionManager
 
 @dataclass
 class ServiceContainer:
     __services: Dict[str, Any] = field(default_factory=dict)
+    __metadata: Metadata = None
+
     
     def __load_config(self, service: str) -> dict:
         yaml_path = None
@@ -70,5 +75,23 @@ class ServiceContainer:
         return self.__services.get('src.shared.database.domain.manager.transaction_manager', None)
     
     @property
-    def message_publisher(self) ->  Union[TransactionManager, None]:
+    def message_publisher(self) ->  Union[MessagePublisher, None]:
         return self.__services.get('src.shared.cqrs.domain.service.message_publisher', None)
+    
+    @property
+    def metadata(self) -> Metadata:
+        if self.__metadata:
+            return Metadata(
+                message_id = str(uuid.uuid4()),
+                causation_id = self.__metadata.message_id,
+                correlation_id = self.__metadata.correlation_id
+            )
+            
+        return Metadata(
+            message_id = str(uuid.uuid4()),
+            causation_id = str(uuid.uuid4()),
+            correlation_id = str(uuid.uuid4())
+        )
+        
+    def initialize_metadata(self, metadata: Metadata) -> None:
+        self.__metadata = metadata
