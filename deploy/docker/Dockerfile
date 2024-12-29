@@ -12,4 +12,6 @@ ENV PYTHONPATH=/app
 RUN poetry config virtualenvs.create false && \
     poetry install
 
+EXPOSE 80
+
 CMD ["python", "src/app.py"]

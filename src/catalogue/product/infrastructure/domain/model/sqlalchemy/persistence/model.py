@@ -25,7 +25,6 @@ class ProductModel(Base):
             f"""
             ProductModel(
                 id={self.id}, 
-                id={self.id}, 
                 price={self.price},
                 calories={self.calories},
                 carbohydrates={self.carbohydrates},

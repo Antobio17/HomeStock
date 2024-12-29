@@ -1,0 +1,15 @@
+CREATE TABLE `db`.`product` (
+  `id` VARCHAR(36) NOT NULL,
+  `name` VARCHAR(64) NOT NULL,
+  `price` FLOAT NOT NULL,
+  `calories` INTEGER NOT NULL,
+  `carbohydrates` INTEGER NOT NULL,
+  `proteins` INTEGER NOT NULL,
+  `fats`INTEGER NOT NULL,
+  `sugar` INTEGER NOT NULL,
+  `is_enabled` TINYINT NOT NULL DEFAULT 1,
+  `created_at` TIMESTAMP NOT NULL,
+  `updated_at` TIMESTAMP DEFAULT NULL,
+  `enabled_at` TIMESTAMP NOT NULL,
+  `disabled_at` TIMESTAMP DEFAULT NULL,
+  PRIMARY KEY (`id`));

@@ -40,3 +40,5 @@ HomeStock/
 
 https://github.com/Iazzetta/hexagonal-fastapi-sentry-sqlalchemy/tree/main
 https://blog.szymonmiks.pl/p/domain-model-with-sqlalchemy/
+
+python src/manage.py run -h 0.0.0.0

@@ -8,7 +8,7 @@ services:
       dockerfile: ./deploy/docker/Dockerfile
     container_name: homestock-python-container
     ports:
-      - "8080:8080"
+      - "8080:80"
     volumes:
       - ../../.:/app
     networks:
