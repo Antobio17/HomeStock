@@ -66,7 +66,7 @@ class ServiceContainer:
             
             arguments.append(self.get(argument[1:]))
         
-        self.__services[service] =  self.__get_class(service_config['class'])(*arguments)
+        self.__services[service] = self.__get_class(service_config['class'])(*arguments)
 
         return self.__services[service]
     

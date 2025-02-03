@@ -1,4 +1,4 @@
-FROM python:3.9.21-slim
+FROM python:3.13.1-slim
 
 RUN apt-get update && \
     pip install poetry

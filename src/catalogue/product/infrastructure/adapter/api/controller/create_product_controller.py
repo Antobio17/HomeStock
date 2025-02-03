@@ -1,4 +1,4 @@
-from flask import Blueprint, request, Response
+from flask import Blueprint, request, Response # type: ignore
 from src.shared.cqrs.application.command.command_bus import CommandBus
 from src.shared.utils.infrastructure.domain.service.check_param import CheckParam
 from src.catalogue.product.application.command.create_product_command import CreateProductCommand
@@ -32,10 +32,9 @@ class CreateProductController:
                 is_enabled
             )      
             self.command_bus.handle(command)  
-        except Exception as e:
+        except ValueError as e:
             return Response(str(e), status = 400)
+        except Exception as e:
+            return Response(str(e), status = 500)
         
         return Response(status = 201)
-    
-
-main = CreateProductController().main
