@@ -1,4 +1,4 @@
-import yaml
+import yaml # type: ignore
 import uuid
 from typing import Any, Dict, Union
 from importlib import import_module
