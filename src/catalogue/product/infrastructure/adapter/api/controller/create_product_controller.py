@@ -2,6 +2,7 @@ from flask import Blueprint, request, Response # type: ignore
 from src.shared.cqrs.application.command.command_bus import CommandBus
 from src.shared.utils.infrastructure.domain.service.check_param import CheckParam
 from src.catalogue.product.application.command.create_product_command import CreateProductCommand
+from src.authentication.oauth.infrastructure.domain.decorator.authorization_required_decorator import auth_required
 
 class CreateProductController:
     def __init__(self):
@@ -9,7 +10,7 @@ class CreateProductController:
         self.main.add_url_rule('/v1/products', view_func = self.__invoke__, methods = ['POST'])
         self.command_bus = CommandBus()
     
-    
+    @auth_required
     def __invoke__(self):
         try:
             name = CheckParam.get_form_param(request, 'name')

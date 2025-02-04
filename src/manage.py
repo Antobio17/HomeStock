@@ -1,7 +1,7 @@
 import glob
 from flask import Flask # type: ignore
 from flask.cli import FlaskGroup # type: ignore
-from src.config import init_oauth
+from src.oauth import init_oauth
 from importlib import import_module
 
 

@@ -1,4 +1,4 @@
-from src.config import google
+from src.oauth import google
 from flask import Blueprint, url_for # type: ignore
 
 class LoginController:

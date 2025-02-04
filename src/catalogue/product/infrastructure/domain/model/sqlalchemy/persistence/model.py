@@ -24,18 +24,18 @@ class ProductModel(Base):
         return (
             f"""
             ProductModel(
-                id={self.id}, 
-                price={self.price},
-                calories={self.calories},
-                carbohydrates={self.carbohydrates},
-                proteins={self.proteins},
-                fats={self.fats},
-                sugar={self.sugar}, 
-                is_enabled={self.is_enabled},
-                created_at={self.created_at},	
-                updated_at={self.updated_at},
-                enabled_at={self.enabled_at},
-                disabled_at={self.disabled_at}
+                id = {self.id}, 
+                price = {self.price},
+                calories = {self.calories},
+                carbohydrates = {self.carbohydrates},
+                proteins = {self.proteins},
+                fats = {self.fats},
+                sugar = {self.sugar}, 
+                is_enabled = {self.is_enabled},
+                created_at = {self.created_at},	
+                updated_at = {self.updated_at},
+                enabled_at = {self.enabled_at},
+                disabled_at = {self.disabled_at}
             )
             """
         )

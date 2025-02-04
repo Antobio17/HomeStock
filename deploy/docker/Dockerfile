@@ -10,7 +10,7 @@ COPY . /app/
 ENV PYTHONPATH=/app
 
 RUN poetry config virtualenvs.create false && \
-    poetry install
+    poetry install --no-root
 
 EXPOSE 80
 

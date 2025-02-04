@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS `db`.`user` (
+  `id` VARCHAR(36) NOT NULL,
+  `email` VARCHAR(255) NOT NULL,
+  `sub` VARCHAR(255) NOT NULL,
+  `created_at` DATETIME NOT NULL,
+  PRIMARY KEY (`id`));
