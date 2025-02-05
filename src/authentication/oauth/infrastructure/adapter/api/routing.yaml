@@ -1,0 +1,10 @@
+endpoints:
+  src.authentication.oauth.infrastructure.adapter.api.controller.authorize_controller:
+    path: /v1/authorize
+    methods: ['GET']
+    name: authentication_oauth_authorize
+
+  src.authentication.oauth.infrastructure.adapter.api.controller.login_controller:
+    path: /v1/login
+    methods: ['GET']
+    name: authentication_oauth_login

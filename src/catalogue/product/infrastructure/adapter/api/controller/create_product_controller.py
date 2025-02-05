@@ -1,4 +1,4 @@
-from flask import Blueprint, request, Response # type: ignore
+from flask import request, Response # type: ignore
 from src.shared.cqrs.application.command.command_bus import CommandBus
 from src.shared.utils.infrastructure.domain.service.check_param import CheckParam
 from src.catalogue.product.application.command.create_product_command import CreateProductCommand
@@ -6,8 +6,6 @@ from src.authentication.oauth.infrastructure.domain.decorator.authorization_requ
 
 class CreateProductController:
     def __init__(self):
-        self.main = Blueprint('create_product', __name__)
-        self.main.add_url_rule('/v1/products', view_func = self.__invoke__, methods = ['POST'])
         self.command_bus = CommandBus()
     
     @auth_required

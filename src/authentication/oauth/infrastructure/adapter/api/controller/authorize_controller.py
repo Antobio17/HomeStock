@@ -1,11 +1,8 @@
+from flask import jsonify # type: ignore
 from src.oauth import google
-from flask import Blueprint, jsonify # type: ignore
 from datetime import datetime, timezone
 
 class AuthorizeController:
-    def __init__(self):
-        self.main = Blueprint('authorize', __name__)
-        self.main.add_url_rule('/v1/authorize', view_func = self.__invoke__, methods = ['GET'])    
     
     def __invoke__(self):
         response = google.authorize_access_token()
