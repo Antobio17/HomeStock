@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `db`.`product` (
+CREATE TABLE IF NOT EXISTS `product` (
   `id` VARCHAR(36) NOT NULL,
   `name` VARCHAR(64) NOT NULL,
   `price` FLOAT NOT NULL,

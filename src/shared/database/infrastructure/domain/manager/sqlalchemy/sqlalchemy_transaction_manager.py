@@ -1,7 +1,7 @@
 import os
 from dataclasses import dataclass
 from sqlalchemy import create_engine
-from sqlalchemy.orm import Session, sessionmaker
+from sqlalchemy.orm import Session, sessionmaker # type: ignore
 from src.shared.database.domain.manager.transaction_manager import TransactionManager
 
 @dataclass

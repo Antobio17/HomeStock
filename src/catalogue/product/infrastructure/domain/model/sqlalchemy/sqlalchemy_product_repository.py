@@ -1,7 +1,7 @@
 from typing import Optional
 from dataclasses import dataclass
-from sqlalchemy.orm import joinedload
-from sqlalchemy.exc import NoResultFound
+from sqlalchemy.orm import joinedload # type: ignore
+from sqlalchemy.exc import NoResultFound # type: ignore
 from src.catalogue.product.domain.model.product import Product
 from src.catalogue.product.domain.model.product_repository import ProductRepository
 from src.shared.database.domain.manager.transaction_manager import TransactionManager
