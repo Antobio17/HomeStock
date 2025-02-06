@@ -1,6 +1,6 @@
-import os
 import json
 from functools import wraps
+from src import thread_local
 from google.auth import jwt # type: ignore
 from flask import request, jsonify # type: ignore
 
@@ -39,8 +39,8 @@ def auth_required(f):
                     ]
                 }
             ), 401
-            
-        os.environ['DATABASE_SCHEMA'] = claims['sub']
+        
+        thread_local.schema_name = claims['sub']
         
         return f(*args, **kwargs)
     
