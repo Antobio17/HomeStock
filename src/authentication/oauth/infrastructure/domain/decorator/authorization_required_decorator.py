@@ -1,3 +1,4 @@
+import os
 import json
 from functools import wraps
 from google.auth import jwt # type: ignore
@@ -39,7 +40,7 @@ def auth_required(f):
                 }
             ), 401
             
-        # TODO check if the user exists. Study if database is needed.
+        os.environ['DATABASE_SCHEMA'] = claims['sub']
         
         return f(*args, **kwargs)
     

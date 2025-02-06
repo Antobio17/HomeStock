@@ -7,11 +7,13 @@ from src.shared.database.domain.manager.transaction_manager import TransactionMa
 @dataclass
 class SqlalchemyTransactionManager(TransactionManager):
     __session: Session = None
+    __database_writer_url: str = os.getenv('DATABASE_WRITER_URL')
+    __schema: str = os.getenv('DATABASE_SCHEMA')
     
     @property
     def session(self) -> Session:
         if self.__session is None:
-            engine = create_engine(os.getenv('DATABASE_WRITER_URL'), future=True, echo=True)
+            engine = create_engine(self.__database_writer_url + self.__schema, future=True, echo=True)
             session_factory = sessionmaker(bind=engine, future=True)
             self.__session = session_factory()
             
