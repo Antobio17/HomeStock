@@ -13,11 +13,11 @@ class Product:
     id: str
     name: str
     price: float
-    calories: int
-    carbohydrates: int
-    proteins: int
-    fats: int
-    sugar: int
+    calories: float
+    carbohydrates: float
+    proteins: float
+    fats: float
+    sugar: float
     is_enabled: bool
     created_at: datetime
     enabled_at: datetime
