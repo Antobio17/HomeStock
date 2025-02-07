@@ -1,12 +1,13 @@
 from flask import request, Response # type: ignore
+from dataclasses import dataclass, field
 from src.shared.cqrs.application.command.command_bus import CommandBus
 from src.shared.utils.infrastructure.domain.service.check_param import CheckParam
 from src.catalogue.product.application.command.create_product_command import CreateProductCommand
 from src.authentication.oauth.infrastructure.domain.decorator.authorization_required_decorator import auth_required
 
+@dataclass
 class CreateProductController:
-    def __init__(self):
-        self.command_bus = CommandBus()
+    __command_bus: CommandBus = field(default_factory=lambda: CommandBus())
     
     @auth_required
     def __invoke__(self):
@@ -30,7 +31,7 @@ class CreateProductController:
                 sugar,
                 is_enabled
             )      
-            self.command_bus.handle(command)  
+            self.__command_bus.handle(command)  
         except ValueError as e:
             return Response(str(e), status = 400)
         except Exception as e:
