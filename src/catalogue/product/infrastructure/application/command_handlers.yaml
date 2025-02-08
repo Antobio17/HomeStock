@@ -1,0 +1,6 @@
+services:
+    src.catalogue.product.application.command.create_product_command_handler:
+        class: src.catalogue.product.application.command.create_product_command_handler
+        arguments:
+            - '@src.catalogue.product.domain.model.product_repository'
+            - '@src.shared.cqrs.domain.service.message_publisher'

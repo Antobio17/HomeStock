@@ -1,0 +1,9 @@
+services:
+    src.shared.message_broker.domain.connection.connection:
+        class: src.shared.message_broker.infrastructure.domain.connection.rabbitmq.rabbitmq_connection
+        arguments:
+            - '%RABBITMQ_USER'
+            - '%RABBITMQ_PASSWORD'
+            - '%RABBITMQ_HOST'
+            - '%RABBITMQ_PORT'
+            - '%RABBITMQ_VHOST'

@@ -1,0 +1,10 @@
+endpoints:
+  src.catalogue.product.infrastructure.adapter.api.controller.create_product_controller:
+    path: /v1/catalogue/products
+    methods: ['POST']
+    name: catalogue_product_post
+
+  src.catalogue.product.infrastructure.adapter.api.controller.get_products_controller:
+    path: /v1/catalogue/products
+    methods: ['GET']
+    name: catalogue_products_get

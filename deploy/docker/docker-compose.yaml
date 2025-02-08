@@ -1,0 +1,44 @@
+networks:
+  hometock-network:
+
+services:
+  homestock:
+    build:
+      context: ../../
+      dockerfile: ./deploy/docker/Dockerfile.worker
+    container_name: homestock-python-container
+    ports:
+      - "8080:80"
+    volumes:
+      - ../../.:/app
+    networks:
+      - hometock-network
+
+  homestock-mysql:
+    image: mysql:8
+    container_name: homestock-mysql-container
+    ports:
+      - "4306:3306"
+    volumes:
+      - ./mysql:/var/lib/mysql
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=secret
+      - MYSQL_PASSWORD=secret
+      - MYSQL_DATABASE=db
+    networks:
+      - hometock-network
+
+  homestock-rabbitmq:
+    image: rabbitmq:3-management
+    container_name: homestock-rabbitmq-container
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    restart: always
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    networks:
+      - hometock-network

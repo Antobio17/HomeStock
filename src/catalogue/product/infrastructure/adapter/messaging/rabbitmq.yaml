@@ -1,0 +1,21 @@
+rabbitmq:
+  queues:
+    - name: product
+      exchange: catalogue
+      routing_key: 
+        - '*.catalogue.*.*.product.*'
+      arguments:
+        x-dead-letter-exchange: catalogue-failure
+        x-dead-letter-routing-key: catalogue-product-failed
+
+    - name: product-delay
+      exchange: catalogue-delay
+      routing_key: 
+        - '*.catalogue.*.*.product.*'
+      arguments:
+        x-dead-letter-exchange: catalogue
+
+    - name: product-failure
+      exchange: catalogue-failure
+      routing_key: 
+        - 'catalogue-product-failed'

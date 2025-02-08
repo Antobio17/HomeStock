@@ -1,0 +1,5 @@
+services:
+    src.shared.cqrs.domain.service.message_publisher:
+        class: src.shared.cqrs.domain.service.message_publisher
+        arguments:
+            - '@src.shared.message_broker.domain.service.producer'
