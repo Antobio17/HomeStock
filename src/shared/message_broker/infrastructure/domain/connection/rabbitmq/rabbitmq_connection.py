@@ -1,10 +1,15 @@
 import os
-import pika
+import pika # type: ignore
 from dataclasses import dataclass
 from src.shared.message_broker.domain.connection.connection import Connection
 
 @dataclass
 class RabbitmqConnection(Connection):
+    __username: str
+    __password: str
+    __host: str
+    __port: str
+    __vhost: str
     __connection = None
     
     
@@ -12,14 +17,14 @@ class RabbitmqConnection(Connection):
     def __connect(self):
         if self.__connection is None:
             credentials = pika.PlainCredentials(
-                username = os.getenv('RABBITMQ_USER'),
-                password = os.getenv('RABBITMQ_PASSWORD')                                   
+                username = self.__username,
+                password = self.__password                                   
             )
             self.__connection = pika.BlockingConnection(
                 pika.ConnectionParameters(
-                    host = os.getenv('RABBITMQ_HOST'),
-                    port = os.getenv('RABBITMQ_PORT'),
-                    virtual_host = os.getenv('RABBITMQ_VHOST'),
+                    host = self.__host,
+                    port = self.__port,
+                    virtual_host = self.__vhost,
                     credentials = credentials
                 )
             )

@@ -7,7 +7,7 @@ from src.shared.database.domain.manager.transaction_manager import TransactionMa
 
 @dataclass
 class SqlalchemyTransactionManager(TransactionManager):
-    __database_writer_url: str = os.getenv('DATABASE_WRITER_URL')
+    __database_writer_url: str
     __session: Session = None
     __engine: Session = None
     

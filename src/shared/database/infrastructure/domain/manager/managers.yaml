@@ -1,3 +1,5 @@
 services:
     src.shared.database.domain.manager.transaction_manager:
         class: src.shared.database.infrastructure.domain.manager.sqlalchemy.sqlalchemy_transaction_manager
+        arguments:
+            - '%DATABASE_WRITER_URL'
