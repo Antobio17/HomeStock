@@ -1,3 +1,4 @@
+import os
 import yaml # type: ignore
 import uuid
 from typing import Any, Dict, Union
@@ -27,6 +28,8 @@ class ServiceContainer:
             yaml_path = '/'.join(split[:3] + ['infrastructure/domain/manager/managers.yaml'])
         if 'service' in service:
             yaml_path = '/'.join(split[:3] + ['infrastructure/domain/service/services.yaml'])
+        if 'query_model' in service:
+            yaml_path = '/'.join(split[:3] + ['infrastructure/domain/query_model/queries.yaml'])
         if 'connection' in service:
             yaml_path = '/'.join(split[:3] + ['infrastructure/domain/connection/connections.yaml'])
             
@@ -61,10 +64,10 @@ class ServiceContainer:
         arguments = []
             
         for argument in service_config.get('arguments', []):
-            if not argument.startswith('@'):
-                continue
-            
-            arguments.append(self.get(argument[1:]))
+            if  argument.startswith('@'):
+                arguments.append(self.get(argument[1:]))
+            if  argument.startswith('%'):
+                arguments.append(os.getenv(argument[1:]))
         
         self.__services[service] = self.__get_class(service_config['class'])(*arguments)
 

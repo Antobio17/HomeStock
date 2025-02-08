@@ -1,7 +1,8 @@
 from dataclasses import dataclass, field
 from src.shared.cqrs.application.query.query import Query
 from src.shared.service_container.domain.service.service_container import ServiceContainer
- 
+from src.shared.cqrs.application.query.dto.query_result import QueryResult
+
 @dataclass
 class QueryBus():
     __container: ServiceContainer = field(default_factory=lambda: ServiceContainer())
@@ -13,9 +14,9 @@ class QueryBus():
         query_name_snake_case = ''.join(['_' + i.lower() if i.isupper() else i for i in query_name]).lstrip('_')
         return f'src.{context}.{subcontext}.application.query.' + query_name_snake_case + '_handler'
     
-    def handle(self, query: Query) -> None:
+    def handle(self, query: Query) -> QueryResult:
         handler_class = self.__get_handler_module(query)
         query_handler = self.__container.get(handler_class)
             
-        query_handler.handle(query)
+        return query_handler.handle(query)
                 

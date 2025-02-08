@@ -5,5 +5,5 @@ from dataclasses import dataclass
 class QueryResult:
     result: Union[list, dict]
     page: int
-    pageSize: int
+    page_size: int
     total: int

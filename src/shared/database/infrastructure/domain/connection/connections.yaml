@@ -1,0 +1,5 @@
+services:
+  src.shared.database.domain.connection.connection:
+    class: src.shared.database.infrastructure.domain.connection.sqlalchemy.sqlalchemy_reader_connection
+    arguments:
+      - '%DATABASE_READER_URL'

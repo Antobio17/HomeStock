@@ -1,0 +1,5 @@
+services:
+    src.catalogue.product.application.query.get_products_query_handler:
+        class: src.catalogue.product.application.query.get_products_query_handler
+        arguments:
+            - '@src.catalogue.product.domain.query_model.get_products_query_model'

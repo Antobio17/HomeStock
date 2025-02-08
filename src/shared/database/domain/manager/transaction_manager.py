@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 
 class TransactionManager(ABC):
+    
     @property
     @abstractmethod
     def session(self) -> object:

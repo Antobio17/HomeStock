@@ -32,3 +32,20 @@ class CheckParam:
     def get_boolean_form_param(request, param_name: str, required: bool = True) -> Union[bool, None]:
         value = CheckParam.get_form_param(request, param_name, required)
         return value.lower() == 'true' or value == '1' if value is not None else None
+    
+    @staticmethod
+    def get_filters_query(request) -> dict:
+        filters = {}
+        for key in request.args:
+            if '[' not in key:
+                filters[key] = request.args.get(key)
+                continue
+                
+            param_name, operator = key.split('[')
+            operator = operator.rstrip(']')
+            if param_name not in filters:
+                filters[param_name] = {}
+            
+            filters[param_name][operator] = request.args.get(key)
+        
+        return filters

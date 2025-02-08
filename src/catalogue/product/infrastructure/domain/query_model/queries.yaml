@@ -1,0 +1,5 @@
+services:
+  src.catalogue.product.domain.query_model.get_products_query_model:
+    class: src.catalogue.product.infrastructure.domain.query_model.sqlalchemy.sqlalchemy_get_products_query_model
+    arguments:
+      - '@src.shared.database.domain.connection.connection'
