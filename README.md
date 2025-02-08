@@ -1,11 +1,11 @@
 # HomeStock
 
-La aplicación HomeStock tiene como objetivo facilitar los problemas cotidianos como puede ser la organización de la alimentación de la casa. 
-Podrás gestionar los productos de tu frigorifico, elaboraciones, lista de la compra, seguimiento de los macros, etc.
+The HomeStock application aims to make everyday problems easier, such as organising the household food supply. 
+You will be able to manage the products in your fridge, preparations, shopping list, follow up of macros, etc.
 
-## Arquitectura
+## Architecture
 
-Se usará arquitectura hexagonal para el desarrollo de esta aplicación Python.
+Hexagonal architecture will be used for the development of this Python application.
 
 ```
 HomeStock/
@@ -13,34 +13,78 @@ HomeStock/
 │   ├── context/
 │   │   ├── aggregate/
 │   │   │   ├── application/
-│   │   │   │   ├── services/
-│   │   │   │   └── use_cases/
+│   │   │   │   ├── query/
+│   │   │   │   └── command/
 │   │   │   ├── domain/
-│   │   │   │   ├── entities/
-│   │   │   │   ├── events/
-│   │   │   │   ├── exceptions/
-│   │   │   │   ├── repositories/
-│   │   │   │   └── query_models/
+│   │   │   │   ├── service/
+│   │   │   │   ├── model/
+│   │   │   │   ├── event/
+│   │   │   │   ├── exception/
+│   │   │   │   └── query_model/
 │   │   │   ├── infrastructure/
+│   │   │   │   ├── application/
+│   │   │   │   │   ├── command_handlers.yaml/
+│   │   │   │   │   └── query_handlers.yaml
 │   │   │   │   ├── domain/
-│   │   │   │   │   ├── repositories/
-│   │   │   │   │   ├── query_models/
-│   │   │   │   │   └── persistence/
-│   │   │   │   ├── web/
+│   │   │   │   │   ├── model/
+│   │   │   │   │   │   ├── {implementation}/
+│   │   │   │   │   │   │   ├── migration/
+│   │   │   │   │   │   │   └── persistence/
+│   │   │   │   │   │   └── repositories.yaml
+│   │   │   │   │   ├── service/
+│   │   │   │   │   │   ├── {implementation}/
+│   │   │   │   │   │   └── services.yaml
+│   │   │   │   │   ├── query_model/
+│   │   │   │   │   │   ├── {implementation}/
+│   │   │   │   │   │   └── queries.yaml
+│   │   │   │   │   ├── connection/
+│   │   │   │   │   │   ├── {implementation}/
+│   │   │   │   │   │   └── connections.yaml
+│   │   │   │   ├── adapter/
+│   │   │   │   │   ├── api/
+│   │   │   │   │   ├── cli/
+│   │   │   │   │   └── messaging/
 │   │   │   │   └── cli/
-│   │   │   └── __init__.py
+│   │   │   ├── __init__.py
+│   │   │   ├── app.py
+│   │   │   ├── manage.py
+│   │   │   └── oauth.py
 ├── tests/
-│   ├── application/
-│   ├── domain/
-│   ├── infrastructure/
+│   ├── context/
+│   │   ├── aggregate/
+│   │   │   ├── application/
+│   │   │   │   ├── command/
+│   │   │   │   │   └── __init__.py
+│   │   │   │   └── __init__.py
+│   │   │   ├── domain/
+│   │   │   │   ├── services/
+│   │   │   │   │   └── __init__.py
+│   │   │   │   └── __init__.py
+│   │   │   └── __init__.py
 │   └── __init__.py
-├── requirements.txt
+├── LICENSE
+├── .env
+├── .gitignore
+├── pyproject.toml
 └── README.md
 ```
 
-https://github.com/Iazzetta/hexagonal-fastapi-sentry-sqlalchemy/tree/main
-https://blog.szymonmiks.pl/p/domain-model-with-sqlalchemy/
 
-python src/manage.py run -h 0.0.0.
+## Useful Links
 
-https://www.googleapis.com/oauth2/v1/certs
+- https://github.com/Iazzetta/hexagonal-fastapi-sentry-sqlalchemy/tree/main
+- https://blog.szymonmiks.pl/p/domain-model-with-sqlalchemy/
+- https://www.googleapis.com/oauth2/v1/certs
+
+
+## Useful command
+
+Start Flask App:
+```shell
+python src/manage.py
+```
+
+Run tests:
+```shell
+python -m unittest discover -s tests -p "test*.py" -v
+```
