@@ -1,4 +1,5 @@
 from typing import Union
+from src.shared.utils.infrastructure.domain.service.utils import Utils
 
 class CheckParam:
     
@@ -49,3 +50,16 @@ class CheckParam:
             filters[param_name][operator] = request.args.get(key)
         
         return filters
+    
+    @staticmethod
+    def numeric_filter(param_name: str, filter, required: bool = True) -> None:
+        if filter[param_name] is None and required:
+            raise ValueError(f'Param {param_name} is required.')
+        
+        if not isinstance(filter[param_name], dict):
+            raise ValueError(f'Numeric filter format should be `param[operation]=value` for {param_name}.')
+        
+        for operation in filter[param_name].keys():
+            Utils.mapping_operations(operation)
+            if not isinstance(filter[param_name][operation], (int, float, complex)):
+                raise ValueError(f'Values from {param_name} should be numeric.')
