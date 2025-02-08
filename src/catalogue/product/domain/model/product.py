@@ -45,7 +45,8 @@ class Product:
                 'nameOnlyAccepts64Characters'
             )
         if any(value < 0 for value in [
-            command.calories, command.carbohydrates, command.proteins, command.fats, command.sugar
+            command.price, command.calories, command.carbohydrates, 
+            command.proteins, command.fats, command.sugar
         ]):
             raise CreateProductException(
                 'All numeric fields must be greater than or equal to 0',
