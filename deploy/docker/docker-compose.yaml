@@ -5,7 +5,7 @@ services:
   homestock:
     build:
       context: ../../
-      dockerfile: ./deploy/docker/Dockerfile
+      dockerfile: ./deploy/docker/Dockerfile.worker
     container_name: homestock-python-container
     ports:
       - "8080:80"
