@@ -6,3 +6,7 @@ class Connection(ABC):
     @abstractmethod
     def session(self) -> object:
         pass
+    
+    @abstractmethod
+    def close(self) -> None:
+        pass

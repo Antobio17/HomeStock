@@ -14,3 +14,7 @@ class TransactionManager(ABC):
     @abstractmethod
     def commit(self) -> None:
         pass
+    
+    @abstractmethod
+    def close(self) -> None:
+        pass

@@ -1,6 +1,5 @@
 from typing import Protocol
 from abc import abstractmethod
-from src.shared.cqrs.application.command.command import Command
 
 class Middleware(Protocol):
     @abstractmethod

@@ -67,5 +67,3 @@ class CheckParam:
                 float(filter[param_name][operation])
             except Exception:
                 raise ValueError(f'Values from {param_name} should be numeric.')
-
-        print(param_name)

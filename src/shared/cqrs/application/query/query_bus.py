@@ -1,11 +1,19 @@
 from dataclasses import dataclass, field
 from src.shared.cqrs.application.query.query import Query
-from src.shared.service_container.domain.service.service_container import ServiceContainer
+from src.shared.cqrs.application.middleware.middleware import Middleware
 from src.shared.cqrs.application.query.dto.query_result import QueryResult
+from src.shared.service_container.domain.service.service_container import ServiceContainer
+from src.shared.cqrs.application.middleware.database_connection_middleware import DatabaseConnectionMiddleware
+
 
 @dataclass
 class QueryBus():
     __container: ServiceContainer = field(default_factory=lambda: ServiceContainer())
+    
+    def middlewares(self) -> list[Middleware]:
+        return [
+            DatabaseConnectionMiddleware(self.__container.database_connection),
+        ]
         
     def __get_handler_module(self, query: Query) -> str:
         context = query.__module__.split(".")[1]
@@ -17,6 +25,14 @@ class QueryBus():
     def handle(self, query: Query) -> QueryResult:
         handler_class = self.__get_handler_module(query)
         query_handler = self.__container.get(handler_class)
+        
+        for middleware in self.middlewares():
+            middleware.before_handle()
             
-        return query_handler.handle(query)
+        query_result = query_handler.handle(query)
+    
+        for middleware in reversed(self.middlewares()):
+            middleware.after_handle()
+            
+        return query_result
                 

@@ -78,6 +78,10 @@ class ServiceContainer:
         return self.__services.get('src.shared.database.domain.manager.transaction_manager', None)
     
     @property
+    def database_connection(self) ->  Union[TransactionManager, None]:
+        return self.__services.get('src.shared.database.domain.connection.connection', None)
+    
+    @property
     def message_publisher(self) ->  Union[MessagePublisher, None]:
         return self.__services.get('src.shared.cqrs.domain.service.message_publisher', None)
     

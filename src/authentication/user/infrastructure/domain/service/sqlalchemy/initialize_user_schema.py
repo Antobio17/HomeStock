@@ -23,9 +23,12 @@ class InitializeUserSchema:
             result = connection.execute(text(sql), {'schema_name': self.__schema_name})
             schema_exists = result.fetchone() 
             if schema_exists is not None:
+                connection.close()
+                engine.dispose()
                 return
             
             connection.execute(CreateSchema(self.__schema_name))
+            connection.close()
         engine.dispose()
         
         engine = create_engine(self.__database_writer_url + self.__schema_name)
@@ -46,5 +49,6 @@ class InitializeUserSchema:
                 'created_at': datetime.now(timezone.utc).isoformat()
             })    
             connection.commit()
+            connection.close()
             
         engine.dispose()
