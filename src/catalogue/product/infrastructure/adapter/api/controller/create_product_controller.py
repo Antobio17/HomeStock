@@ -1,4 +1,4 @@
-from flask import request, Response # type: ignore
+from flask import request, jsonify # type: ignore
 from dataclasses import dataclass, field
 from src.shared.cqrs.application.command.command_bus import CommandBus
 from src.shared.utils.infrastructure.domain.service.check_param import CheckParam
@@ -33,8 +33,26 @@ class CreateProductController:
             )      
             self.__command_bus.handle(command)  
         except ValueError as e:
-            return Response(str(e), status = 400)
+            return jsonify(
+                {
+                    'errors': [
+                        {
+                            'status': 400,
+                            'title': 'An error occurred while checking form params.',
+                            'details': str(e)
+                        }
+                    ]
+                }    
+            ), 400
         except Exception as e:
-            return Response(str(e), status = 500)
+            return {
+                    'errors': [
+                        {
+                            'status': 500,
+                            'title': 'An error occurred while creating product.',
+                            'details': str(e)
+                        }
+                    ]
+                }, 500
         
-        return Response(status = 201)
+        return '', 201

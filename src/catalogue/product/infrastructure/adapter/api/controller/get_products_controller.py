@@ -1,5 +1,5 @@
+from flask import request, jsonify # type: ignore
 from dataclasses import dataclass, field
-from flask import request, jsonify, Response # type: ignore
 from src.shared.cqrs.application.query.query_bus import QueryBus
 from src.shared.utils.infrastructure.domain.service.check_param import CheckParam
 from src.catalogue.product.application.query.get_products_query import GetProductsQuery
@@ -35,9 +35,27 @@ class GetProductsController:
                 page_size = filters.get('page_size', 10)                                     
             ))
         except ValueError as e:
-            return Response(str(e), status = 400)
+            return jsonify(
+                {
+                    'errors': [
+                        {
+                            'status': 400,
+                            'title': 'An error occurred while checking filters.',
+                            'details': str(e)
+                        }
+                    ]
+                }    
+            ), 400
         except Exception as e:
-            return Response(str(e), status = 500)
+            return {
+                    'errors': [
+                        {
+                            'status': 500,
+                            'title': 'An error occurred while retrieving products.',
+                            'details': str(e)
+                        }
+                    ]
+                }, 500
             
         return jsonify(
             ApiGetProductsQueryDataTransform().execute(result)    
