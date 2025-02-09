@@ -1,33 +1,95 @@
-# Caso de uso
+# Use case: Update {aggregate}
 
-## Implementación
+## Implementation
 
-- Lenguaje de la aplicación Python 3.13
-- Crear los directorios necesarios para el desarrollo.
-- Crear los archivos que sean necesarios y si ya existieran se modificar.
-- Crear/modificar dentro de la carpeta src en el contexto y agregado que correspondan.
-- Usar la información del archivo README.md
-- Todos los parámetros de funciones, propiedades de dtos y entidades deberán estar tipados.
+- Application language: Python 3.13.
+- Create/modify the necessary files within the `src` folder, adhering to the specified directory structure.  Do not create any files or directories not explicitly listed below.
+- All function parameters, data properties, and entities shall be typed.
+- Maintain the existing programming style of the project.  Pay close attention to naming conventions, code formatting, and the use of docstrings.
+- Do not modify existing methods.  Create new methods as needed.
 
 ## Context
 
-Necesito un caso de uso para la creación de productos. El identificador será un uuid.
+This use case updates an existing {aggregate}. The working path for this use case is `src/{context}/{aggregate}/`.
 
-La ruta donde se trabajará para este caso de uso será src/catalogue/product/
+The properties that can be modified are:
 
-### Parámetros de entrada
+- `price`
+- `calories`
+- `carbohydrates`
+- `proteins`
+- `fats`
+- `sugar`
 
-- name (64 Caracteres)
-- price (float)
-- ingredientes (text) es un parámetro opcional
-- calorias (int)
+The `updated_at` field must be set to the current date and time.
 
-### Validaciones
+### Validations
 
-Realizar comprobaciónes pertinentes para la validaciones del caso de uso. Estas validaciones en el caso de no complirlas se devolverán con una excepción.
+Implement the same validations as the {aggregate} creation use case.  This includes:
 
-- No puede exister un producto con el mismo nombre.
+- Name length must not exceed 64 characters.
+- All numeric fields (price, calories, carbohydrates, proteins, fats, sugar) must be greater than or equal to 0.
 
-### Evento de salida
+### Files involved (Create/Modify)
 
-Crear un evento si el caso de uso se ha ejecutado con exito.
+```
+HomeStock/
+├── src/
+│   ├── context/
+│   │   ├── {aggregate}/
+│   │   │   ├── application/
+│   │   │   │   ├── command/
+│   │   │   │   │   ├── {action}_{aggregate}_command.py
+│   │   │   │   │   └── {action}_{aggregate}_command_handler.py
+│   │   │   ├── domain/
+│   │   │   │   ├── model/
+│   │   │   │   │   ├── {aggregate}_repository.py
+│   │   │   │   │   └── {aggregate}.py
+│   │   │   │   ├── event/
+│   │   │   │   │   └── {aggregate}_{action_in_pass}.py
+│   │   │   │   ├── exception/
+│   │   │   │   │   └── {acttion}_{aggregate}_exception.py
+│   │   │   ├── infrastructure/
+│   │   │   │   ├── application/
+│   │   │   │   │   └── command_handlers.yaml/
+│   │   │   │   ├── domain/
+│   │   │   │   │   ├── model/
+│   │   │   │   │   │   ├── {implementation}/
+│   │   │   │   │   │   │   ├── persistence/
+│   │   │   │   │   │   │   │   └── model.py
+│   │   │   │   │   │   │   └── {implementation}_{aggregate}_repository.py
+│   │   │   │   │   │   └── repositories.yaml
+│   │   │   │   └── adapter/
+│   │   │   │       └── api/
+│   │   │   │           ├── controller/
+│   │   │   │           │   └── {action}_{aggregate}_controller.py
+│   │   │   │           └── routing.yaml
+│   │   │   ├── __init__.py
+│   │   │   ├── app.py
+│   │   │   ├── manage.py
+│   │   │   └── oauth.py
+├── tests/
+│   ├── context/
+│   │   ├── aggregate/
+│   │   │   ├── application/
+│   │   │   │   ├── command/
+│   │   │   │   │   └── __init__.py
+│   │   │   │   └── __init__.py
+│   │   │   └── __init__.py
+│   └── __init__.py
+```
+
+### Mapping
+
+- `{action}` = `update`
+- `{action_in_pass}` = `updated`
+- `{context}` = `catalogue`
+- `{aggregate}` = `product`
+- `{implementation}` = `sqlalchemy`
+
+### Constraints
+
+- Do not create any files or directories that are not specified in the file tree above.
+- Do not modify methods that already exist.  Create new methods as needed.  Ensure new methods are clearly documented with docstrings, including type hints.
+- Adhere to the project's existing coding style and conventions.  This includes naming conventions, code formatting, and the use of docstrings.  Pay particular attention to how exceptions are handled and raised in the existing codebase and replicate that pattern.
+- Ensure that the use case is fully testable. Consider how the different components (command handler, repository, etc.) can be easily mocked or stubbed for testing purposes.  While test files are not being created in this prompt, the code should be written with testability in mind.
