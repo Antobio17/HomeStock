@@ -14,14 +14,13 @@ class TestCreateProduct(unittest.TestCase):
 
     def test_create_product_success(self):
         command = CreateProductCommand(
-            name="Test Product",
-            price=10.0,
-            calories=100,
-            carbohydrates=20,
-            proteins=5,
-            fats=2,
-            sugar=10,
-            is_enabled=True
+            name = "Test Product",
+            price = 10.0,
+            calories = 100,
+            carbohydrates = 20,
+            proteins = 5,
+            fats = 2,
+            sugar = 10
         )
 
         product = Product.create(command, self.product_repository)
@@ -35,7 +34,7 @@ class TestCreateProduct(unittest.TestCase):
         self.assertEqual(product.proteins, command.proteins)
         self.assertEqual(product.fats, command.fats)
         self.assertEqual(product.sugar, command.sugar)
-        self.assertEqual(product.is_enabled, command.is_enabled)
+        self.assertEqual(product.is_enabled, True)
         self.assertIsInstance(product.created_at, datetime)
         self.assertIsInstance(product.enabled_at, datetime)
         self.assertEqual(product.updated_at, None)
@@ -49,14 +48,13 @@ class TestCreateProduct(unittest.TestCase):
 
     def test_create_product_name_too_long(self):
         command = CreateProductCommand(
-            name="a" * 65,
-            price=10.0,
-            calories=100,
-            carbohydrates=20,
-            proteins=5,
-            fats=2,
-            sugar=10,
-            is_enabled=True
+            name = "a" * 65,
+            price = 10.0,
+            calories = 100,
+            carbohydrates = 20,
+            proteins = 5,
+            fats = 2,
+            sugar = 10
         )
 
         with self.assertRaises(CreateProductException) as context:
@@ -69,14 +67,13 @@ class TestCreateProduct(unittest.TestCase):
 
     def test_create_product_negative_values(self):
         command = CreateProductCommand(
-            name="Test Product",
-            price=-1.0,
-            calories=100,
-            carbohydrates=20,
-            proteins=5,
-            fats=2,
-            sugar=10,
-            is_enabled=True
+            name = "Test Product",
+            price = -1.0,
+            calories = 100,
+            carbohydrates = 20,
+            proteins = 5,
+            fats = 2,
+            sugar = 10
         )
 
         with self.assertRaises(CreateProductException) as context:

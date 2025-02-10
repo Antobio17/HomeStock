@@ -75,7 +75,7 @@ class Product:
         repository.save(product)
         product.record(
             ProductCreated(
-                id = id,
+                aggregate_id = id,
                 name = command.name,
                 price = command.price,
                 calories = command.calories,
@@ -128,7 +128,7 @@ class Product:
         repository.save(product)
         product.record(
             ProductUpdated(
-                id = id,
+                aggregate_id = command.id,
                 name = command.name,
                 price = command.price,
                 calories = command.calories,
