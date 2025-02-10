@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Union
 from dataclasses import dataclass
 from sqlalchemy.orm import joinedload # type: ignore
 from sqlalchemy.exc import NoResultFound # type: ignore
@@ -28,7 +28,7 @@ class SqlalchemyProductRepository(ProductRepository):
             disabled_at = product.disabled_at
         )
 
-    def find_by_id(self, product_id: str) -> Optional[Product]:
+    def find_by_id(self, product_id: str) -> Union[Product, None]:
         try:
             result: ProductModel = (
                 self.__transaction_manager.session.query(ProductModel)\
@@ -39,18 +39,19 @@ class SqlalchemyProductRepository(ProductRepository):
             return None
 
         return Product(
-            id=result.id,
-            price=result.price,
-            calories=result.calories,
-            carbohydrates=result.carbohydrates,
-            proteins=result.proteins,
-            fats=result.fats,
-            sugar=result.sugar,
-            is_enabled=result.is_enabled,
-            created_at=result.created_at,
-            updated_at=result.updated_at,
-            enabled_at=result.enabled_at,
-            disabled_at=result.disabled_at
+            id = result.id,
+            name = result.name,
+            price = result.price,
+            calories = result.calories,
+            carbohydrates = result.carbohydrates,
+            proteins = result.proteins,
+            fats = result.fats,
+            sugar = result.sugar,
+            is_enabled = result.is_enabled,
+            created_at = result.created_at,
+            updated_at = result.updated_at,
+            enabled_at = result.enabled_at,
+            disabled_at = result.disabled_at
         )
 
     def save(self, product: Product) -> None:

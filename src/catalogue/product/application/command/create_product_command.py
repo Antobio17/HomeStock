@@ -11,7 +11,6 @@ class CreateProductCommand(Command, Message):
     proteins: int
     fats: int
     sugar: int
-    is_enabled: bool
     
     @staticmethod
     def get_name() -> str:

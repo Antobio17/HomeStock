@@ -2,16 +2,16 @@ from flask import request, jsonify # type: ignore
 from dataclasses import dataclass, field
 from src.shared.cqrs.application.command.command_bus import CommandBus
 from src.shared.utils.infrastructure.domain.service.check_param import CheckParam
-from src.catalogue.product.application.command.create_product_command import CreateProductCommand
-from src.catalogue.product.domain.exception.create_product_exception import CreateProductException
+from src.catalogue.product.application.command.update_product_command import UpdateProductCommand
+from src.catalogue.product.domain.exception.update_product_exception import UpdateProductException
 from src.authentication.oauth.infrastructure.domain.decorator.authorization_required_decorator import auth_required
 
 @dataclass
-class CreateProductController:
+class UpdateProductController:
     __command_bus: CommandBus = field(default_factory=lambda: CommandBus())
     
     @auth_required
-    def __invoke__(self):
+    def __invoke__(self, id: str):
         try:
             name = CheckParam.get_form_param(request, 'name')
             price = CheckParam.get_float_form_param(request, 'price')
@@ -21,7 +21,8 @@ class CreateProductController:
             fats = CheckParam.get_int_form_param(request, 'fats')
             sugar = CheckParam.get_int_form_param(request, 'sugar')
             
-            command = CreateProductCommand(
+            command = UpdateProductCommand(
+                id,
                 name,
                 price,
                 calories,
@@ -43,13 +44,13 @@ class CreateProductController:
                     ]
                 }    
             ), 400
-        except CreateProductException as e:
+        except UpdateProductException as e:
             return jsonify(
                 {
                     'errors': [
                         {
                             'status': 400,
-                            'title': 'An error occurred before creating product.',
+                            'title': 'An error occurred before updating product.',
                             'details': str(e)
                         }
                     ]
@@ -60,7 +61,7 @@ class CreateProductController:
                     'errors': [
                         {
                             'status': 500,
-                            'title': 'An error occurred while creating product.',
+                            'title': 'An error occurred while updating product.',
                             'details': str(e)
                         }
                     ]
