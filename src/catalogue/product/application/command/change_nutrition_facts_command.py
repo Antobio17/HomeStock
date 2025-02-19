@@ -1,10 +1,8 @@
 from dataclasses import dataclass
 
 @dataclass
-class UpdateProductCommand:
+class ChangeNutritionFactsCommand:
     id: str
-    name: str
-    price: float
     calories: float
     carbohydrates: float
     proteins: float

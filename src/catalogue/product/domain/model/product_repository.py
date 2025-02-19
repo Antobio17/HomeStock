@@ -1,10 +1,11 @@
 from typing import Union
 from abc import ABC, abstractmethod
+from src.catalogue.product.domain.model.product import Product
 
 class ProductRepository(ABC):
 
     @abstractmethod
-    def find_by_id(self, id: str) -> Union[object, None]:
+    def find_by_id(self, id: str) -> Union[Product, None]:
         pass
 
     @abstractmethod

@@ -2,29 +2,25 @@ from flask import request, jsonify # type: ignore
 from dataclasses import dataclass, field
 from src.shared.cqrs.application.command.command_bus import CommandBus
 from src.shared.utils.infrastructure.domain.service.check_param import CheckParam
-from src.catalogue.product.application.command.update_product_command import UpdateProductCommand
-from src.catalogue.product.domain.exception.update_product_exception import UpdateProductException
+from src.catalogue.product.application.command.change_nutrition_facts_command import ChangeNutritionFactsCommand
+from src.catalogue.product.domain.exception.change_nutrition_facts_exception import ChangeNutritionFactsException
 from src.authentication.oauth.infrastructure.domain.decorator.authorization_required_decorator import auth_required
 
 @dataclass
-class UpdateProductController:
+class ChangeNutritionFactsController:
     __command_bus: CommandBus = field(default_factory=lambda: CommandBus())
     
     @auth_required
     def __invoke__(self, id: str):
         try:
-            name = CheckParam.get_form_param(request, 'name')
-            price = CheckParam.get_float_form_param(request, 'price')
             calories = CheckParam.get_int_form_param(request, 'calories')
             carbohydrates = CheckParam.get_int_form_param(request, 'carbohydrates')
             proteins = CheckParam.get_int_form_param(request, 'proteins')
             fats = CheckParam.get_int_form_param(request, 'fats')
             sugar = CheckParam.get_int_form_param(request, 'sugar')
             
-            command = UpdateProductCommand(
+            command = ChangeNutritionFactsCommand(
                 id,
-                name,
-                price,
                 calories,
                 carbohydrates,
                 proteins,
@@ -44,7 +40,7 @@ class UpdateProductController:
                     ]
                 }    
             ), 400
-        except UpdateProductException as e:
+        except ChangeNutritionFactsException as e:
             return jsonify(
                 {
                     'errors': [

@@ -4,12 +4,9 @@ from datetime import datetime
 from dataclasses import dataclass, field
 from src.shared.cqrs.domain.event.domain_event import DomainEvent
 from src.catalogue.product.domain.event.product_created import ProductCreated
-from src.catalogue.product.domain.event.product_updated import ProductUpdated
-from src.catalogue.product.domain.model.product_repository import ProductRepository
-from src.catalogue.product.application.command.create_product_command import CreateProductCommand
-from src.catalogue.product.application.command.update_product_command import UpdateProductCommand
+from src.catalogue.product.domain.event.nutrition_facts_changed import NutritionFactsChanged
 from src.catalogue.product.domain.exception.create_product_exception import CreateProductException
-from src.catalogue.product.domain.exception.update_product_exception import UpdateProductException
+from src.catalogue.product.domain.exception.change_nutrition_facts_exception import ChangeNutritionFactsException
 
 @dataclass
 class Product:
@@ -58,60 +55,44 @@ class Product:
             ProductCreated(
                 id,
                 name,
-                created_at = now,
-                enabled_at = now                              
+                product.created_at,
+                product.enabled_at                              
             )
         )
 
         return product
 
-    @staticmethod
-    def update(
-        command: UpdateProductCommand, 
-        repository: ProductRepository
+    def change_nutrition_facts(
+        self,
+        calories: float,
+        carbohydrates: float,
+        proteins: float,
+        fats: float,
+        sugar: float
     ) -> 'Product':
-        product = repository.find_by_id(command.id)
-        if product is None:
-            raise UpdateProductException(
-                f'Product with ID {command.id} not found'
-                f'productWithID{command.id}NotFound'
-            )
-        if len(command.name) > 64:
-            raise UpdateProductException(
-                'Name only accepts 64 characters', 
-                'nameOnlyAccepts64Characters'
-            )
         if any(value < 0 for value in [
-            command.price, command.calories, command.carbohydrates, 
-            command.proteins, command.fats, command.sugar
+            calories, carbohydrates, proteins, fats, sugar
         ]):
-            raise UpdateProductException(
+            raise ChangeNutritionFactsException(
                 'All numeric fields must be greater than or equal to 0',
                 'allNumericFieldsMustBeGreaterThanOrEqualToZero'
             )
 
-        product.name = command.name
-        product.price = command.price
-        product.calories = command.calories
-        product.carbohydrates = command.carbohydrates
-        product.proteins = command.proteins
-        product.fats = command.fats
-        product.sugar = command.sugar
-        product.updated_at = datetime.now()
+        self.calories = calories
+        self.carbohydrates = carbohydrates
+        self.proteins = proteins
+        self.fats = fats
+        self.sugar = sugar
+        self.updated_at = datetime.now()
         
-        repository.save(product)
-        product.record(
-            ProductUpdated(
-                aggregate_id = command.id,
-                name = command.name,
-                price = command.price,
-                calories = command.calories,
-                carbohydrates = command.carbohydrates,
-                proteins = command.proteins,
-                fats = command.fats,
-                sugar = command.sugar,
-                updated_at = product.updated_at
+        self.record(
+            NutritionFactsChanged(
+                self.id,
+                calories,
+                carbohydrates,
+                proteins,
+                fats,
+                sugar,
+                self.updated_at
             )
         )
-        
-        return product

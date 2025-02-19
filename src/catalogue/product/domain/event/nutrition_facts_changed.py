@@ -4,10 +4,8 @@ from src.shared.cqrs.domain.service.dto.message import Message
 from src.shared.cqrs.domain.event.domain_event import DomainEvent
 
 @dataclass
-class ProductUpdated(DomainEvent, Message):
+class NutritionFactsChanged(DomainEvent, Message):
     aggregate_id: str
-    name: str
-    price: float
     calories: int
     carbohydrates: int
     proteins: int

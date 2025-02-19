@@ -4,7 +4,7 @@ endpoints:
     methods: ['POST']
     name: catalogue_product_post
 
-  src.catalogue.product.infrastructure.adapter.api.controller.update_product_controller:
+  src.catalogue.product.infrastructure.adapter.api.controller.change_nutrition_facts_controller:
     path: /v1/catalogue/products/<id>
     methods: ['PUT']
     name: catalogue_product_put

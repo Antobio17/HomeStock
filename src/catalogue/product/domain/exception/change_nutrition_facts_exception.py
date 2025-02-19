@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
 @dataclass
-class UpdateProductException(Exception):
+class ChangeNutritionFactsException(Exception):
     message: str
     keyTraslate: str
