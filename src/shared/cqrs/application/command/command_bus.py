@@ -19,8 +19,8 @@ class CommandBus():
         ]
         
     def __get_handler_module(self, command: Command) -> str:
-        context = command.__module__.split(".")[1]
-        subcontext = command.__module__.split(".")[2]
+        context = command.__module__.split('.')[1]
+        subcontext = command.__module__.split('.')[2]
         command_name = type(command).__name__
         command_name_snake_case = ''.join(['_' + i.lower() if i.isupper() else i for i in command_name]).lstrip('_')
         return f'src.{context}.{subcontext}.application.command.' + command_name_snake_case + '_handler'

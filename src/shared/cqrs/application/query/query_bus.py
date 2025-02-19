@@ -16,8 +16,8 @@ class QueryBus():
         ]
         
     def __get_handler_module(self, query: Query) -> str:
-        context = query.__module__.split(".")[1]
-        subcontext = query.__module__.split(".")[2]
+        context = query.__module__.split('.')[1]
+        subcontext = query.__module__.split('.')[2]
         query_name = type(query).__name__
         query_name_snake_case = ''.join(['_' + i.lower() if i.isupper() else i for i in query_name]).lstrip('_')
         return f'src.{context}.{subcontext}.application.query.' + query_name_snake_case + '_handler'

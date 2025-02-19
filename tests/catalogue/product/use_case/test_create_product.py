@@ -54,7 +54,7 @@ class TestCreateProduct(unittest.TestCase):
     def test_create_product_name_too_long(self):
         in_memory_repository = InMemoryProductRepository()
         
-        command = CreateProductCommand("a" * 65)
+        command = CreateProductCommand('a' * 65)
         command_handler = CreateProductCommandHandler(
             in_memory_repository,
             self.__message_publisher

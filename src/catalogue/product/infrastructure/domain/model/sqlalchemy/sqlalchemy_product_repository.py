@@ -32,7 +32,7 @@ class SqlalchemyProductRepository(ProductRepository):
         try:
             result: ProductModel = (
                 self.__transaction_manager.session.query(ProductModel)\
-                    .options(joinedload("*"))\
+                    .options(joinedload('*'))\
                     .filter_by(id=str(product_id)).one()
             )
         except NoResultFound:
