@@ -1,14 +1,19 @@
 from typing import Union
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from src.catalogue.product.domain.model.product import Product
 from src.catalogue.product.domain.model.product_repository import ProductRepository
 
 @dataclass
 class InMemoryProductRepository(ProductRepository):
-    products: dict = field(default_factory=dict)
+    product: Product = None
 
     def find_by_id(self, id: str) -> Union[Product, None]:
-        return self.products.get(id)
+        if self.product == None or self.product.id != id:
+            return None
+        return self.product
 
     def save(self, product: Product) -> None:
-        self.products[product['id']] = product
+        self.product = product
+        
+    def spy(self):
+        return self.product
