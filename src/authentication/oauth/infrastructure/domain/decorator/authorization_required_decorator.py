@@ -1,4 +1,4 @@
-import json
+import requests # type: ignore
 from functools import wraps
 from src import thread_local
 from google.auth import jwt # type: ignore
@@ -24,8 +24,9 @@ def auth_required(f):
             ), 401
 
         try:
-            with open('/app/conf/security/certs.json', 'r') as certs_file:
-                certs = json.load(certs_file)
+            response = requests.get('https://www.googleapis.com/oauth2/v1/certs')
+            response.raise_for_status()
+            certs = response.json()
             claims = jwt.decode(token[len('Bearer '):], certs = certs, verify = True)
         except Exception as e:
             return jsonify(

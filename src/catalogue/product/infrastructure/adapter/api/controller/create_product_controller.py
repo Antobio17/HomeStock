@@ -1,3 +1,4 @@
+import traceback
 from flask import request, jsonify # type: ignore
 from dataclasses import dataclass, field
 from src.shared.cqrs.application.command.command_bus import CommandBus
@@ -14,23 +15,11 @@ class CreateProductController:
     def __invoke__(self):
         try:
             name = CheckParam.get_form_param(request, 'name')
-            price = CheckParam.get_float_form_param(request, 'price')
-            calories = CheckParam.get_int_form_param(request, 'calories')
-            carbohydrates = CheckParam.get_int_form_param(request, 'carbohydrates')
-            proteins = CheckParam.get_int_form_param(request, 'proteins')
-            fats = CheckParam.get_int_form_param(request, 'fats')
-            sugar = CheckParam.get_int_form_param(request, 'sugar')
             
-            command = CreateProductCommand(
-                name,
-                price,
-                calories,
-                carbohydrates,
-                proteins,
-                fats,
-                sugar
-            )      
-            self.__command_bus.handle(command)  
+            command = CreateProductCommand(name)     
+            self.__command_bus.handle(command) 
+            
+            return '', 201 
         except ValueError as e:
             return jsonify(
                 {
@@ -56,7 +45,8 @@ class CreateProductController:
                 }    
             ), 400
         except Exception as e:
-            return {
+            return jsonify(
+                {
                     'errors': [
                         {
                             'status': 500,
@@ -64,6 +54,6 @@ class CreateProductController:
                             'details': str(e)
                         }
                     ]
-                }, 500
-        
-        return '', 201
+                }
+            ), 500  
+             

@@ -7,13 +7,6 @@ from src.shared.cqrs.domain.event.domain_event import DomainEvent
 class ProductCreated(DomainEvent, Message):
     aggregate_id: str
     name: str
-    price: float
-    calories: int
-    carbohydrates: int
-    proteins: int
-    fats: int
-    sugar: int
-    is_enabled: bool
     created_at: datetime
     enabled_at: datetime
     

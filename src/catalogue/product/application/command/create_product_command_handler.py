@@ -11,10 +11,8 @@ class CreateProductCommandHandler(CommandHandler):
     __message_publisher: MessagePublisher
 
     def handle(self, command: CreateProductCommand) -> None:
-        product = Product.create(
-            command,
-            self.__product_repository
-        )
+        product = Product.create(command.name)
         
+        self.__product_repository.save(product)
         for event in product.pull_domain_events():
             self.__message_publisher.execute(event)

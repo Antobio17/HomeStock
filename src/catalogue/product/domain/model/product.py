@@ -15,15 +15,15 @@ from src.catalogue.product.domain.exception.update_product_exception import Upda
 class Product:
     id: str
     name: str
-    price: float
-    calories: float
-    carbohydrates: float
-    proteins: float
-    fats: float
-    sugar: float
-    is_enabled: bool
     created_at: datetime
     enabled_at: datetime
+    is_enabled: bool = True
+    price: float = 0
+    calories: float = 0
+    carbohydrates: float = 0
+    proteins: float = 0
+    fats: float = 0
+    sugar: float = 0
     updated_at: Optional[datetime] = None
     disabled_at: Optional[datetime] = None
     domain_events: list[DomainEvent] = field(default_factory=list)
@@ -38,52 +38,26 @@ class Product:
         return domain_events
     
     @staticmethod
-    def create(
-        command: CreateProductCommand,
-        repository: ProductRepository
-    ) -> 'Product':
-        if len(command.name) > 64:
+    def create(name: str) -> 'Product':
+        if len(name) > 64:
             raise CreateProductException(
                 'Name only accepts 64 characters', 
                 'nameOnlyAccepts64Characters'
             )
-        if any(value < 0 for value in [
-            command.price, command.calories, command.carbohydrates, 
-            command.proteins, command.fats, command.sugar
-        ]):
-            raise CreateProductException(
-                'All numeric fields must be greater than or equal to 0',
-                'allNumericFieldsMustBeGreaterThanOrEqualToZero'
-            )
-   
+        
         id = str(uuid.uuid4())
         now = datetime.now()
         product = Product(
-            id = id,
-            name = command.name,
-            price = command.price,
-            calories = command.calories,
-            carbohydrates = command.carbohydrates,
-            proteins = command.proteins,
-            fats = command.fats,
-            sugar = command.sugar,
-            is_enabled = True,
+            id,
+            name,
             created_at = now,
             enabled_at = now
         )
-        
-        repository.save(product)
+
         product.record(
             ProductCreated(
-                aggregate_id = id,
-                name = command.name,
-                price = command.price,
-                calories = command.calories,
-                carbohydrates = command.carbohydrates,
-                proteins = command.proteins,
-                fats = command.fats,
-                sugar = command.sugar,
-                is_enabled = True,
+                id,
+                name,
                 created_at = now,
                 enabled_at = now                              
             )
