@@ -27,7 +27,9 @@ class ChangeNutritionFactsController:
                 fats,
                 sugar
             )      
-            self.__command_bus.handle(command)  
+            self.__command_bus.handle(command)
+        
+            return '', 202
         except ValueError as e:
             return jsonify(
                 {
@@ -62,5 +64,3 @@ class ChangeNutritionFactsController:
                         }
                     ]
                 }, 500
-        
-        return '', 201
