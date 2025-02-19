@@ -41,7 +41,6 @@ class TestCreateProduct(unittest.TestCase):
         self.assertIsInstance(product.enabled_at, datetime)
         self.assertEqual(product.updated_at, None)
         self.assertEqual(product.disabled_at, None)
-
         self.__message_publisher.execute.assert_called_once_with(
             ProductCreated(
                 product.id,

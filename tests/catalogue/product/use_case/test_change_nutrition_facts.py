@@ -66,7 +66,6 @@ class TestChangeNutritionFacts(unittest.TestCase):
         self.assertIsNotNone(product.updated_at)
         self.assertIsInstance(product.updated_at, datetime)
         self.assertIsNone(product.disabled_at)
-
         self.__message_publisher.execute.assert_called_once_with(
             NutritionFactsChanged(
                 product.id,
