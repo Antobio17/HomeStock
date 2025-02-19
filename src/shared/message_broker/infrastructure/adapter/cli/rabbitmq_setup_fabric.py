@@ -1,5 +1,5 @@
 import glob
-import yaml
+import yaml # type: ignore
 from src.shared.message_broker.infrastructure.domain.connection.rabbitmq.rabbitmq_connection import RabbitmqConnection
 
 class RabbitmqSetupFabric:
@@ -54,6 +54,5 @@ class RabbitmqSetupFabric:
                 )
         
 
-    
 if __name__ == '__main__':
     RabbitmqSetupFabric().execute()
