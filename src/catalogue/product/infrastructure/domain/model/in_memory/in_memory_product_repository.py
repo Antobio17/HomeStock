@@ -15,5 +15,8 @@ class InMemoryProductRepository(ProductRepository):
     def save(self, product: Product) -> None:
         self.product = product
         
-    def spy(self):
+    def spy(self) -> Product:
         return self.product
+    
+    def will_return(self, product: Product) -> None:
+        self.product = product

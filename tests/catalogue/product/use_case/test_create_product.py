@@ -18,7 +18,7 @@ class TestCreateProduct(unittest.TestCase):
     def test_create_product_success(self):
         in_memory_repository = InMemoryProductRepository()
         
-        command = CreateProductCommand("Test Product")
+        command = CreateProductCommand('Test Product')
         command_handler = CreateProductCommandHandler(
             in_memory_repository,
             self.__message_publisher
@@ -29,7 +29,7 @@ class TestCreateProduct(unittest.TestCase):
 
         self.assertIsInstance(product, Product)
         self.assertTrue(uuid.UUID(product.id))
-        self.assertEqual(product.name, "Test Product")
+        self.assertEqual(product.name, 'Test Product')
         self.assertEqual(product.price, 0)
         self.assertEqual(product.calories, 0)
         self.assertEqual(product.carbohydrates, 0)
@@ -62,9 +62,10 @@ class TestCreateProduct(unittest.TestCase):
         with self.assertRaises(CreateProductException) as context:
             command_handler.handle(command)
 
-        self.assertEqual(context.exception.message, "Name only accepts 64 characters")
-        self.assertEqual(context.exception.keyTraslate, "nameOnlyAccepts64Characters")
+        self.assertEqual(context.exception.message, 'Name only accepts 64 characters')
+        self.assertEqual(context.exception.keyTraslate, 'nameOnlyAccepts64Characters')
         self.assertIsNone(in_memory_repository.spy())
+        self.__message_publisher.execute.assert_not_called()
 
 
 if __name__ == '__main__':

@@ -69,7 +69,7 @@ class Product:
         proteins: float,
         fats: float,
         sugar: float
-    ) -> 'Product':
+    ) -> None:
         if any(value < 0 for value in [
             calories, carbohydrates, proteins, fats, sugar
         ]):
