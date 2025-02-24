@@ -51,7 +51,8 @@ class CreateProductController:
                         {
                             'status': 500,
                             'title': 'An error occurred while creating product.',
-                            'details': str(e)
+                            'details': str(e),
+                            'trace': traceback.format_exc()
                         }
                     ]
                 }

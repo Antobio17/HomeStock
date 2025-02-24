@@ -3,30 +3,30 @@ from flask import request, jsonify # type: ignore
 from dataclasses import dataclass, field
 from src.shared.cqrs.application.command.command_bus import CommandBus
 from src.shared.utils.infrastructure.domain.service.check_param import CheckParam
-from src.catalogue.product.application.command.change_nutrition_facts_command import ChangeNutritionFactsCommand
-from src.catalogue.product.domain.exception.change_nutrition_facts_exception import ChangeNutritionFactsException
+from src.catalogue.product.application.command.change_equivalence_units_command import ChangeEquivalenceUnitsCommand
+from src.catalogue.product.domain.exception.change_equivalence_units_exception import ChangeEquivalenceUnitsException
 from src.authentication.oauth.infrastructure.domain.decorator.authorization_required_decorator import auth_required
 
 @dataclass
-class ChangeNutritionFactsController:
+class ChangeEquivalenceUnitsController:
     __command_bus: CommandBus = field(default_factory=lambda: CommandBus())
     
     @auth_required
     def __invoke__(self, id: str):
         try:
-            calories = CheckParam.get_float_form_param(request, 'calories')
-            carbohydrates = CheckParam.get_float_form_param(request, 'carbohydrates')
-            proteins = CheckParam.get_float_form_param(request, 'proteins')
-            fats = CheckParam.get_float_form_param(request, 'fats')
-            sugar = CheckParam.get_float_form_param(request, 'sugar')
+            recipe_unit = CheckParam.get_form_param(request, 'recipe_unit')
+            storage_unit = CheckParam.get_form_param(request, 'storage_unit')
+            storage_unit_equivalence = CheckParam.get_float_form_param(request, 'storage_unit_equivalence')
+            purchase_unit = CheckParam.get_form_param(request, 'purchase_unit')
+            purchase_unit_equivalence = CheckParam.get_float_form_param(request, 'purchase_unit_equivalence')
             
-            command = ChangeNutritionFactsCommand(
+            command = ChangeEquivalenceUnitsCommand(
                 id,
-                calories,
-                carbohydrates,
-                proteins,
-                fats,
-                sugar
+                recipe_unit,
+                storage_unit,
+                storage_unit_equivalence,
+                purchase_unit,
+                purchase_unit_equivalence
             )      
             self.__command_bus.handle(command)
         
@@ -43,13 +43,13 @@ class ChangeNutritionFactsController:
                     ]
                 }    
             ), 400
-        except ChangeNutritionFactsException as e:
+        except ChangeEquivalenceUnitsException as e:
             return jsonify(
                 {
                     'errors': [
                         {
                             'status': 400,
-                            'title': 'An error occurred before changing nutrition facts.',
+                            'title': 'An error occurred before changing equivalence units.',
                             'details': str(e)
                         }
                     ]
@@ -60,7 +60,7 @@ class ChangeNutritionFactsController:
                     'errors': [
                         {
                             'status': 500,
-                            'title': 'An error occurred while changing nutrition facts.',
+                            'title': 'An error occurred while changing equivalence units.',
                             'details': str(e),
                             'trace': traceback.format_exc()
                         }

@@ -1,3 +1,4 @@
+import traceback
 from flask import request, jsonify # type: ignore
 from dataclasses import dataclass, field
 from src.shared.cqrs.application.query.query_bus import QueryBus
@@ -52,7 +53,8 @@ class GetProductsController:
                         {
                             'status': 500,
                             'title': 'An error occurred while retrieving products.',
-                            'details': str(e)
+                            'details': str(e),
+                            'trace': traceback.format_exc()
                         }
                     ]
                 }, 500

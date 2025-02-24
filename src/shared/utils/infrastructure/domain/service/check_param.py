@@ -14,7 +14,7 @@ class CheckParam:
     @staticmethod
     def get_numeric_form_param(request, param_name: str, required: bool = True) -> Union[str, None]:
         value = CheckParam.get_form_param(request, param_name, required)
-        if not value.isnumeric():
+        if not value.replace('.', '').isnumeric():
             raise ValueError(f'Parameter {param_name} must be numeric.')
         
         return value

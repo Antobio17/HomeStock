@@ -10,3 +10,9 @@ services:
         arguments:
             - '@src.catalogue.product.domain.model.product_repository'
             - '@src.shared.cqrs.domain.service.message_publisher'
+
+    src.catalogue.product.application.command.change_equivalence_units_command_handler:
+        class: src.catalogue.product.application.command.change_equivalence_units_command_handler
+        arguments:
+            - '@src.catalogue.product.domain.model.product_repository'
+            - '@src.shared.cqrs.domain.service.message_publisher'
