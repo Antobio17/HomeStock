@@ -60,6 +60,11 @@ class TestChangeNutritionFacts(unittest.TestCase):
         self.assertEqual(product.proteins, command.proteins)
         self.assertEqual(product.fats, command.fats)
         self.assertEqual(product.sugar, command.sugar)
+        self.assertEqual(product.recipe_unit, '')
+        self.assertEqual(product.storage_unit, '')
+        self.assertEqual(product.storage_unit_equivalence, 1.0)
+        self.assertEqual(product.purchase_unit, '')
+        self.assertEqual(product.purchase_unit_equivalence, 1.0)
         self.assertEqual(product.is_enabled, True)
         self.assertIsInstance(product.created_at, datetime)
         self.assertIsInstance(product.enabled_at, datetime)
@@ -78,7 +83,7 @@ class TestChangeNutritionFacts(unittest.TestCase):
             )
         )
 
-    def test_update_product_negative_values(self):
+    def test_change_nutrition_facts_negative_values(self):
         id = str(uuid.uuid4())
         in_memory_repository = InMemoryProductRepository()
         in_memory_repository.will_return(
@@ -104,24 +109,10 @@ class TestChangeNutritionFacts(unittest.TestCase):
         )
         with self.assertRaises(ChangeNutritionFactsException) as context:
             command_handler.handle(command)
-
-        product = in_memory_repository.spy()
         
         self.assertEqual(context.exception.message, 'All numeric fields must be greater than or equal to 0')
         self.assertEqual(context.exception.keyTraslate, 'allNumericFieldsMustBeGreaterThanOrEqualToZero')
-        self.assertTrue(uuid.UUID(product.id))
-        self.assertEqual(product.name, 'Test Product')
-        self.assertEqual(product.price, 0)
-        self.assertEqual(product.calories, 0)
-        self.assertEqual(product.carbohydrates, 0)
-        self.assertEqual(product.proteins, 0)
-        self.assertEqual(product.fats, 0)
-        self.assertEqual(product.sugar, 0)
-        self.assertEqual(product.is_enabled, True)
-        self.assertIsInstance(product.created_at, datetime)
-        self.assertIsInstance(product.enabled_at, datetime)
-        self.assertIsNone(product.updated_at)
-        self.assertIsNone(product.disabled_at)
+        self.assertIsNone(in_memory_repository.spy())
         self.__message_publisher.execute.assert_not_called()
 
 

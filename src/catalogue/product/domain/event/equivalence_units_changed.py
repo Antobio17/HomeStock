@@ -4,13 +4,13 @@ from src.shared.cqrs.domain.service.dto.message import Message
 from src.shared.cqrs.domain.event.domain_event import DomainEvent
 
 @dataclass
-class NutritionFactsChanged(DomainEvent, Message):
+class EquivalenceUnitsChanged(DomainEvent, Message):
     aggregate_id: str
-    calories: float
-    carbohydrates: float
-    proteins: float
-    fats: float
-    sugar: float
+    recipe_unit: str
+    storage_unit: str
+    storage_unit_equivalence: float
+    purchase_unit: str
+    purchase_unit_equivalence: float
     updated_at: datetime
     
     def get_aggregate_id(self) -> str:
@@ -18,4 +18,4 @@ class NutritionFactsChanged(DomainEvent, Message):
     
     @staticmethod
     def get_name() -> str:
-        return 'homestock.catalogue.1.event.product.nutrition_facts_changed'
+        return 'homestock.catalogue.1.event.product.equivalence_units_changed'
