@@ -1,4 +1,9 @@
 endpoints:
+  src.catalogue.format.infrastructure.adapter.api.controller.create_format_controller:
+    path: /v1/catalogue/format/create-format
+    methods: ['POST']
+    name: catalogue_format_create_format
+
   src.catalogue.format.infrastructure.adapter.api.controller.change_equivalence_units_controller:
     path: /v1/catalogue/format/change-equivalence-units/<id>
     methods: ['PUT']

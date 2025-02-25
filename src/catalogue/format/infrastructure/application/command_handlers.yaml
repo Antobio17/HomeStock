@@ -1,4 +1,11 @@
 services:
+    src.catalogue.format.application.command.create_format_command_handler:
+        class: src.catalogue.format.application.command.create_format_command_handler
+        arguments:
+            - '@src.catalogue.format.domain.query_model.create_format_needle_data_query'
+            - '@src.catalogue.format.domain.model.format_repository'
+            - '@src.shared.cqrs.domain.service.message_publisher'
+
     src.catalogue.format.application.command.change_equivalence_units_command_handler:
         class: src.catalogue.format.application.command.change_equivalence_units_command_handler
         arguments:

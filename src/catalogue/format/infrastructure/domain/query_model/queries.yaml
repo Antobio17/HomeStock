@@ -1,0 +1,5 @@
+services:
+  src.catalogue.format.domain.query_model.create_format_needle_data_query:
+    class: src.catalogue.format.infrastructure.domain.query_model.sqlalchemy.sqlalchemy_create_format_needle_data_query
+    arguments:
+      - '@src.shared.database.domain.connection.connection'

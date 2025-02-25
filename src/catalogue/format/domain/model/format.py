@@ -3,7 +3,9 @@ from typing import Optional
 from datetime import datetime
 from dataclasses import dataclass, field
 from src.shared.cqrs.domain.event.domain_event import DomainEvent
+from src.catalogue.format.domain.event.format_created import FormatCreated
 from src.catalogue.format.domain.event.equivalence_units_changed import EquivalenceUnitsChanged
+from src.catalogue.format.domain.exception.create_format_exception import CreateFormatException
 from src.catalogue.format.domain.exception.change_equivalence_units_exception import ChangeEquivalenceUnitsException
 
 @dataclass
@@ -32,6 +34,36 @@ class Format:
         domain_events = self.domain_events
         self.domain_events = []
         return domain_events
+    
+    @staticmethod
+    def create(product_id: str, name: str) -> 'Format':
+        if len(name) > 64:
+            raise CreateFormatException(
+                'Name only accepts 64 characters', 
+                'nameOnlyAccepts64Characters'
+            )
+        
+        id = str(uuid.uuid4())
+        now = datetime.now()
+        format = Format(
+            id,
+            product_id,
+            name,
+            created_at = now,
+            enabled_at = now
+        )
+
+        format.record(
+            FormatCreated(
+                id,
+                product_id,
+                name,
+                format.created_at,
+                format.enabled_at                              
+            )
+        )
+
+        return format
     
     def change_equivalence_units(
         self,
