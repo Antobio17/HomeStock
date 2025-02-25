@@ -1,0 +1,6 @@
+services:
+    src.catalogue.format.domain.model.format_repository:
+        class: src.catalogue.format.infrastructure.domain.model.sqlalchemy.sqlalchemy_format_repository
+        arguments:
+            - '@src.shared.database.domain.manager.transaction_manager'
+

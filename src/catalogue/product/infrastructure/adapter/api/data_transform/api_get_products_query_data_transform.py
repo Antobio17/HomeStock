@@ -20,7 +20,6 @@ class ApiGetProductsQueryDataTransform:
             output['data'].append({
                 'id': item.id,
                 'name': item.name,
-                'price': item.price,
                 'calories': item.calories,
                 'carbohydrates': item.carbohydrates,
                 'proteins': item.proteins,

@@ -5,7 +5,6 @@ from dataclasses import dataclass
 class GetProductResult:
     id: int
     name: str
-    price: float
     calories: float
     carbohydrates: float
     proteins: float

@@ -1,0 +1,5 @@
+endpoints:
+  src.catalogue.format.infrastructure.adapter.api.controller.change_equivalence_units_controller:
+    path: /v1/catalogue/format/change-equivalence-units/<id>
+    methods: ['PUT']
+    name: catalogue_format_change_equivalence_units

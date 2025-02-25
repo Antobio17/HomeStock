@@ -11,6 +11,7 @@ class EquivalenceUnitsChanged(DomainEvent, Message):
     storage_unit_equivalence: float
     purchase_unit: str
     purchase_unit_equivalence: float
+    purchase_price: float
     updated_at: datetime
     
     def get_aggregate_id(self) -> str:

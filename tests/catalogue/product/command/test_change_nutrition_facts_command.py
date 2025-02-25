@@ -22,7 +22,6 @@ class TestChangeNutritionFacts(unittest.TestCase):
             Product(
                 id = id,
                 name = 'Test Product',
-                price = 0,
                 calories = 0,
                 carbohydrates = 0,
                 proteins = 0,
@@ -54,17 +53,11 @@ class TestChangeNutritionFacts(unittest.TestCase):
 
         self.assertTrue(uuid.UUID(product.id))
         self.assertEqual(product.name, 'Test Product')
-        self.assertEqual(product.price, 0)
         self.assertEqual(product.calories, command.calories)
         self.assertEqual(product.carbohydrates, command.carbohydrates)
         self.assertEqual(product.proteins, command.proteins)
         self.assertEqual(product.fats, command.fats)
         self.assertEqual(product.sugar, command.sugar)
-        self.assertEqual(product.recipe_unit, '')
-        self.assertEqual(product.storage_unit, '')
-        self.assertEqual(product.storage_unit_equivalence, 1.0)
-        self.assertEqual(product.purchase_unit, '')
-        self.assertEqual(product.purchase_unit_equivalence, 1.0)
         self.assertEqual(product.is_enabled, True)
         self.assertIsInstance(product.created_at, datetime)
         self.assertIsInstance(product.enabled_at, datetime)

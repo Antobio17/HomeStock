@@ -9,5 +9,5 @@ class ProductRepository(ABC):
         pass
 
     @abstractmethod
-    def save(self, product)  -> None:
+    def save(self, product: Product)  -> None:
         pass

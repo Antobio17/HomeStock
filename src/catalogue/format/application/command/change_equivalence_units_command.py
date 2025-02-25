@@ -8,3 +8,4 @@ class ChangeEquivalenceUnitsCommand:
     storage_unit_equivalence: float
     purchase_unit: str
     purchase_unit_equivalence: float
+    purchase_price: float

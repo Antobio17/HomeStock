@@ -3,9 +3,9 @@ from flask import request, jsonify # type: ignore
 from dataclasses import dataclass, field
 from src.shared.cqrs.application.command.command_bus import CommandBus
 from src.shared.utils.infrastructure.domain.service.check_param import CheckParam
-from src.catalogue.product.application.command.change_equivalence_units_command import ChangeEquivalenceUnitsCommand
-from src.catalogue.product.domain.exception.change_equivalence_units_exception import ChangeEquivalenceUnitsException
 from src.authentication.oauth.infrastructure.domain.decorator.authorization_required_decorator import auth_required
+from src.catalogue.format.application.command.change_equivalence_units_command import ChangeEquivalenceUnitsCommand
+from src.catalogue.format.domain.exception.change_equivalence_units_exception import ChangeEquivalenceUnitsException
 
 @dataclass
 class ChangeEquivalenceUnitsController:
@@ -19,6 +19,7 @@ class ChangeEquivalenceUnitsController:
             storage_unit_equivalence = CheckParam.get_float_form_param(request, 'storage_unit_equivalence')
             purchase_unit = CheckParam.get_form_param(request, 'purchase_unit')
             purchase_unit_equivalence = CheckParam.get_float_form_param(request, 'purchase_unit_equivalence')
+            purchase_price = CheckParam.get_float_form_param(request, 'purchase_price')
             
             command = ChangeEquivalenceUnitsCommand(
                 id,
@@ -26,7 +27,8 @@ class ChangeEquivalenceUnitsController:
                 storage_unit,
                 storage_unit_equivalence,
                 purchase_unit,
-                purchase_unit_equivalence
+                purchase_unit_equivalence,
+                purchase_price
             )      
             self.__command_bus.handle(command)
         

@@ -16,7 +16,6 @@ class GetProductsController:
         filters = CheckParam.get_filters_query(request)
 
         try:
-            CheckParam.numeric_filter('price', filters, is_required = False)
             CheckParam.numeric_filter('calories', filters, is_required = False)
             CheckParam.numeric_filter('carbohydrates' ,filters, is_required = False)
             CheckParam.numeric_filter('proteins', filters, is_required = False)
@@ -25,7 +24,6 @@ class GetProductsController:
             
             result = self.__query_bus.handle(GetProductsQuery(
                 name = filters.get('name', None),
-                price = filters.get('price', None),
                 calories = filters.get('calories', None),
                 carbohydrates = filters.get('carbohydrates', None),
                 proteins = filters.get('proteins', None),
@@ -35,6 +33,10 @@ class GetProductsController:
                 page = filters.get('page', 1),
                 page_size = filters.get('page_size', 10)                                     
             ))
+            
+            return jsonify(
+                ApiGetProductsQueryDataTransform().execute(result)    
+            ), 200
         except ValueError as e:
             return jsonify(
                 {
@@ -58,8 +60,4 @@ class GetProductsController:
                         }
                     ]
                 }, 500
-            
-        return jsonify(
-            ApiGetProductsQueryDataTransform().execute(result)    
-        ), 200
     

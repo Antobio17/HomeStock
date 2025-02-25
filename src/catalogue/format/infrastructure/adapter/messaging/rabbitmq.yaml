@@ -1,0 +1,21 @@
+rabbitmq:
+  queues:
+    - name: format
+      exchange: catalogue
+      routing_key: 
+        - '*.catalogue.*.*.format.*'
+      arguments:
+        x-dead-letter-exchange: catalogue-failure
+        x-dead-letter-routing-key: catalogue-format-failed
+
+    - name: format-delay
+      exchange: catalogue-delay
+      routing_key: 
+        - '*.catalogue.*.*.format.*'
+      arguments:
+        x-dead-letter-exchange: catalogue
+
+    - name: format-failure
+      exchange: catalogue-failure
+      routing_key: 
+        - 'catalogue-format-failed'

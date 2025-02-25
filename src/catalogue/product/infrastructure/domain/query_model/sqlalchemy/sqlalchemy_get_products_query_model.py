@@ -29,7 +29,7 @@ class SqlalchemyGetProductsQueryModel(GetProductsQueryModel):
     def __build_sql(self, query: GetProductsQuery, count: bool = False) -> str:
         sql_query = """
         SELECT 
-        id, name, price, calories, carbohydrates, 
+        id, name, calories, carbohydrates, 
         proteins, fats, sugar, is_enabled
         FROM product
         """
@@ -39,8 +39,6 @@ class SqlalchemyGetProductsQueryModel(GetProductsQueryModel):
         where_clause = ' WHERE'
         if query.name is not None:
             where_clause += f' name = "{query.name}" AND'
-        if query.price is not None:
-            where_clause = Utils.add_condition_query(where_clause, 'price', query.price)
         if query.calories is not None:
             where_clause = Utils.add_condition_query(where_clause, 'calories', query.calories)
         if query.carbohydrates is not None:
