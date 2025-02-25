@@ -16,7 +16,7 @@ class CreateFormatCommandHandler(CommandHandler):
     def handle(self, command: CreateFormatCommand) -> None:
         if not self.__needle_data_query.product_exists(command.product_id):
             raise CreateFormatException(
-                f'Product with ID {command.product_id} not found to assign format'
+                f'Product with ID {command.product_id} not found to assign format',
                 f'productWithID{command.product_id}NotFoundToAssignFormat'
             )
             

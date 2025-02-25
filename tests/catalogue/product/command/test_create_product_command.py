@@ -10,7 +10,7 @@ from src.catalogue.product.domain.exception.create_product_exception import Crea
 from src.catalogue.product.application.command.create_product_command_handler import CreateProductCommandHandler
 from src.catalogue.product.infrastructure.domain.model.in_memory.in_memory_product_repository import InMemoryProductRepository
 
-class TestCreateProduct(unittest.TestCase):
+class TestCreateProductCommand(unittest.TestCase):
 
     def setUp(self):
         self.__message_publisher = Mock(spec=MessagePublisher)

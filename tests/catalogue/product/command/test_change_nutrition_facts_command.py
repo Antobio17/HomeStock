@@ -10,7 +10,7 @@ from src.catalogue.product.domain.exception.change_nutrition_facts_exception imp
 from src.catalogue.product.application.command.change_nutrition_facts_command_handler import ChangeNutritionFactsCommandHandler
 from src.catalogue.product.infrastructure.domain.model.in_memory.in_memory_product_repository import InMemoryProductRepository
 
-class TestChangeNutritionFacts(unittest.TestCase):
+class TestChangeNutritionFactsCommand(unittest.TestCase):
 
     def setUp(self):
         self.__message_publisher = Mock(spec=MessagePublisher)
@@ -75,6 +75,30 @@ class TestChangeNutritionFacts(unittest.TestCase):
                 product.updated_at
             )
         )
+        
+    def test_change_nutrition_facts_product_does_not_exist(self):
+        id = str(uuid.uuid4())
+        in_memory_repository = InMemoryProductRepository()
+        
+        command = ChangeNutritionFactsCommand(
+            id = id,
+            calories = 10,
+            carbohydrates = 10,
+            proteins = 10,
+            fats = 10,
+            sugar = -10
+        )
+        command_handler = ChangeNutritionFactsCommandHandler(
+            in_memory_repository,
+            self.__message_publisher
+        )
+        with self.assertRaises(ChangeNutritionFactsException) as context:
+            command_handler.handle(command)
+        
+        self.assertEqual(context.exception.message, f'Product with ID {command.id} not found')
+        self.assertEqual(context.exception.keyTraslate, f'productWithID{command.id}NotFound')
+        self.assertIsNone(in_memory_repository.spy())
+        self.__message_publisher.execute.assert_not_called()
 
     def test_change_nutrition_facts_negative_values(self):
         id = str(uuid.uuid4())

@@ -10,7 +10,7 @@ from src.catalogue.format.domain.exception.change_equivalence_units_exception im
 from src.catalogue.format.infrastructure.domain.model.in_memory.in_memory_format_repository import InMemoryFormatRepository
 from src.catalogue.format.application.command.change_equivalence_units_command_handler import ChangeEquivalenceUnitsCommandHandler
 
-class TestEquivalenceUnits(unittest.TestCase):
+class TestEquivalenceUnitsCommand(unittest.TestCase):
 
     def setUp(self):
         self.__message_publisher = Mock(spec=MessagePublisher)

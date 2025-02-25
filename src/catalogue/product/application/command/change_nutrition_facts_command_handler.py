@@ -14,7 +14,7 @@ class ChangeNutritionFactsCommandHandler:
         product = self.__product_repository.find_by_id(command.id)
         if product is None:
             raise ChangeNutritionFactsException(
-                f'Product with ID {command.id} not found'
+                f'Product with ID {command.id} not found',
                 f'productWithID{command.id}NotFound'
             )
             
