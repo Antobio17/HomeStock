@@ -14,21 +14,21 @@ class SqlalchemyFormatRepository(FormatRepository):
     __transaction_manager: SqlalchemyTransactionManager
 
     @staticmethod
-    def __to_model(model: Format) -> FormatModel:
+    def __to_model(fmt: Format) -> FormatModel:
         return FormatModel(
-            id = model.id,
-            product_id = model.product_id,
-            name = model.name,
-            recipe_unit = model.recipe_unit,
-            storage_unit = model.storage_unit,
-            storage_unit_equivalence = model.storage_unit_equivalence,
-            purchase_unit = model.purchase_unit,
-            purchase_unit_equivalence = model.purchase_unit_equivalence,
-            is_enabled = model.is_enabled,
-            created_at = model.created_at,
-            updated_at = model.updated_at,
-            enabled_at = model.enabled_at,
-            disabled_at = model.disabled_at
+            id = fmt.id,
+            product_id = fmt.product_id,
+            name = fmt.name,
+            recipe_unit = fmt.recipe_unit,
+            storage_unit = fmt.storage_unit,
+            storage_unit_equivalence = fmt.storage_unit_equivalence,
+            purchase_unit = fmt.purchase_unit,
+            purchase_unit_equivalence = fmt.purchase_unit_equivalence,
+            is_enabled = fmt.is_enabled,
+            created_at = fmt.created_at,
+            updated_at = fmt.updated_at,
+            enabled_at = fmt.enabled_at,
+            disabled_at = fmt.disabled_at
         )
 
     def find_by_id(self, format_id: str) -> Union[Format, None]:
@@ -57,5 +57,5 @@ class SqlalchemyFormatRepository(FormatRepository):
             disabled_at = result.disabled_at
         )
 
-    def save(self, model: Format) -> None:
-        self.__transaction_manager.session.merge(self.__to_model(model))
+    def save(self, fmt: Format) -> None:
+        self.__transaction_manager.session.merge(self.__to_model(fmt))

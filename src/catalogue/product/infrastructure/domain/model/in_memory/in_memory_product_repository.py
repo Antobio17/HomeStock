@@ -8,8 +8,8 @@ class InMemoryProductRepository(ProductRepository):
     product: Product = None
     saved: Product = None
 
-    def find_by_id(self, id: str) -> Union[Product, None]:
-        if self.product == None or self.product.id != id:
+    def find_by_id(self, product_id: str) -> Union[Product, None]:
+        if self.product is None or self.product.id != id:
             return None
         return self.product
 

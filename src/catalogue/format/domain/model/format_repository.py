@@ -5,9 +5,9 @@ from src.catalogue.format.domain.model.format import Format
 class FormatRepository(ABC):
 
     @abstractmethod
-    def find_by_id(self, id: str) -> Union[Format, None]:
+    def find_by_id(self, format_id: str) -> Union[Format, None]:
         pass
 
     @abstractmethod
-    def save(self, format: Format)  -> None:
+    def save(self, fmt: Format)  -> None:
         pass

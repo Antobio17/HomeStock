@@ -43,27 +43,27 @@ class Format:
                 'nameOnlyAccepts64Characters'
             )
         
-        id = str(uuid.uuid4())
+        format_id = str(uuid.uuid4())
         now = datetime.now()
-        format = Format(
-            id,
+        fmt = Format(
+            format_id,
             product_id,
             name,
             created_at = now,
             enabled_at = now
         )
 
-        format.record(
+        fmt.record(
             FormatCreated(
-                id,
+                format_id,
                 product_id,
                 name,
-                format.created_at,
-                format.enabled_at                              
+                fmt.created_at,
+                fmt.enabled_at
             )
         )
 
-        return format
+        return fmt
     
     def change_equivalence_units(
         self,

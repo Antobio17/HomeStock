@@ -5,7 +5,7 @@ from src.catalogue.product.domain.model.product import Product
 class ProductRepository(ABC):
 
     @abstractmethod
-    def find_by_id(self, id: str) -> Union[Product, None]:
+    def find_by_id(self, product_id: str) -> Union[Product, None]:
         pass
 
     @abstractmethod

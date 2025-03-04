@@ -5,19 +5,19 @@ from src.catalogue.format.domain.model.format_repository import FormatRepository
 
 @dataclass
 class InMemoryFormatRepository(FormatRepository):
-    product: Format = None
+    fmt: Format = None
     saved: Format = None
 
-    def find_by_id(self, id: str) -> Union[Format, None]:
-        if self.product == None or self.product.id != id:
+    def find_by_id(self, format_id: str) -> Union[Format, None]:
+        if self.fmt is None or self.fmt.id != id:
             return None
-        return self.product
+        return self.fmt
 
-    def save(self, product: Format) -> None:
-        self.saved = product
+    def save(self, fmt: Format) -> None:
+        self.saved = fmt
         
     def spy(self) -> Format:
         return self.saved
     
-    def will_return(self, product: Format) -> None:
-        self.product = product
+    def will_return(self, fmt: Format) -> None:
+        self.fmt = fmt
