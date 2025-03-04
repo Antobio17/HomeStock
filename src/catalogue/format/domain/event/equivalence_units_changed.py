@@ -1,10 +1,9 @@
 from datetime import datetime
 from dataclasses import dataclass
-from src.shared.cqrs.domain.service.dto.message import Message
 from src.shared.cqrs.domain.event.domain_event import DomainEvent
 
 @dataclass
-class EquivalenceUnitsChanged(DomainEvent, Message):
+class EquivalenceUnitsChanged(DomainEvent):
     aggregate_id: str
     recipe_unit: str
     storage_unit: str

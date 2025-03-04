@@ -20,8 +20,8 @@ class CreateFormatCommandHandler(CommandHandler):
                 f'productWithID{command.product_id}NotFoundToAssignFormat'
             )
             
-        format = Format.create(command.product_id, command.name)
+        fmt = Format.create(command.product_id, command.name)
         
-        self.__format_repository.save(format)
-        for event in format.pull_domain_events():
+        self.__format_repository.save(fmt)
+        for event in fmt.pull_domain_events():
             self.__message_publisher.execute(event)

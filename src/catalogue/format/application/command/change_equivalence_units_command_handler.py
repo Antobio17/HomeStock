@@ -11,14 +11,14 @@ class ChangeEquivalenceUnitsCommandHandler:
     __message_publisher: MessagePublisher
 
     def handle(self, command: ChangeEquivalenceUnitsCommand):
-        format = self.__format_repository.find_by_id(command.id)
-        if format is None:
+        fmt = self.__format_repository.find_by_id(command.id)
+        if fmt is None:
             raise ChangeEquivalenceUnitsException(
-                f'Format with ID {command.id} not found'
+                f'Format with ID {command.id} not found',
                 f'formatWithID{command.id}NotFound'
             )
             
-        format.change_equivalence_units(
+        fmt.change_equivalence_units(
             command.recipe_unit,
             command.storage_unit,
             command.storage_unit_equivalence,
@@ -27,6 +27,6 @@ class ChangeEquivalenceUnitsCommandHandler:
             command.purchase_price
         )
         
-        self.__format_repository.save(format)
-        for event in format.pull_domain_events():
+        self.__format_repository.save(fmt)
+        for event in fmt.pull_domain_events():
             self.__message_publisher.execute(event)

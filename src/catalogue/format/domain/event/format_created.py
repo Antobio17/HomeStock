@@ -1,10 +1,9 @@
 from datetime import datetime
 from dataclasses import dataclass
-from src.shared.cqrs.domain.service.dto.message import Message
 from src.shared.cqrs.domain.event.domain_event import DomainEvent
 
 @dataclass
-class FormatCreated(DomainEvent, Message):
+class FormatCreated(DomainEvent):
     aggregate_id: str
     product_id: str
     name: str
