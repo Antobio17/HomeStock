@@ -41,10 +41,10 @@ class Product:
                 'nameOnlyAccepts64Characters'
             )
         
-        id = str(uuid.uuid4())
+        product_id = str(uuid.uuid4())
         now = datetime.now()
         product = Product(
-            id,
+            product_id,
             name,
             created_at = now,
             enabled_at = now
@@ -52,7 +52,7 @@ class Product:
 
         product.record(
             ProductCreated(
-                id,
+                product_id,
                 name,
                 product.created_at,
                 product.enabled_at                              

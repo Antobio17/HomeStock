@@ -1,9 +1,8 @@
 from dataclasses import dataclass
-from src.shared.cqrs.domain.service.dto.message import Message
 from src.shared.cqrs.application.command.command import Command
 
 @dataclass
-class ChangeEquivalenceUnitsCommand(Command, Message):
+class ChangeEquivalenceUnitsCommand(Command):
     id: str
     recipe_unit: str
     storage_unit: str

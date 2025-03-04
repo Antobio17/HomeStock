@@ -12,7 +12,7 @@ class EquivalenceUnitsChanged(DomainEvent):
     purchase_unit_equivalence: float
     purchase_price: float
     updated_at: datetime
-    
+
     def get_aggregate_id(self) -> str:
         return self.aggregate_id
     

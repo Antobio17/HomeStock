@@ -1,9 +1,8 @@
 from dataclasses import dataclass
-from src.shared.cqrs.domain.service.dto.message import Message
 from src.shared.cqrs.application.command.command import Command
 
 @dataclass
-class ChangeNutritionFactsCommand(Command, Message):
+class ChangeNutritionFactsCommand(Command):
     id: str
     calories: float
     carbohydrates: float

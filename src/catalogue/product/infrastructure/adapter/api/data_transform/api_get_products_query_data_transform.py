@@ -2,7 +2,8 @@ from src.shared.cqrs.application.query.dto.query_result import QueryResult
 
 class ApiGetProductsQueryDataTransform:
     
-    def execute(self, result: QueryResult) -> dict:
+    @staticmethod
+    def execute(result: QueryResult) -> dict:
         output = {
             'meta': {
                 'aggregate': 'product',
@@ -14,8 +15,7 @@ class ApiGetProductsQueryDataTransform:
             },
             'data': []
         }
-        
-        
+
         for item in result.result:
             output['data'].append({
                 'id': item.id,

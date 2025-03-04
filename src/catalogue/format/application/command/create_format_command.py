@@ -1,9 +1,8 @@
 from dataclasses import dataclass
-from src.shared.cqrs.domain.service.dto.message import Message
 from src.shared.cqrs.application.command.command import Command
 
 @dataclass
-class CreateFormatCommand(Command, Message):
+class CreateFormatCommand(Command):
     product_id: str
     name: str
     

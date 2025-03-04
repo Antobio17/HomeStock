@@ -35,7 +35,7 @@ class GetProductsController:
             ))
             
             return jsonify(
-                ApiGetProductsQueryDataTransform().execute(result)    
+                ApiGetProductsQueryDataTransform.execute(result)
             ), 200
         except ValueError as e:
             return jsonify(

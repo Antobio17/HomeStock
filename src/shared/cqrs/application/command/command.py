@@ -1,4 +1,5 @@
 from abc import ABC
+from shared.cqrs.domain.service.dto.message import Message
 
-class Command(ABC):
+class Command(Message, ABC):
     pass
