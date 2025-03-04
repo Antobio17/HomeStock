@@ -3,8 +3,8 @@ import uuid
 import glob
 from dataclasses import dataclass
 from datetime import datetime, timezone
-from sqlalchemy import create_engine, text # type: ignore
-from sqlalchemy.schema import CreateSchema # type: ignore
+from sqlalchemy import create_engine, text
+from sqlalchemy.schema import CreateSchema
 
 @dataclass
 class InitializeUserSchema:

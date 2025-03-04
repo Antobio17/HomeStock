@@ -24,7 +24,7 @@ class Connection(ABC):
     def queue_declare(
         self, 
         queue: str, 
-        arguments: dict = {},
+        arguments: dict,
         durable: bool = True, 
         auto_delete: bool = False,
         exclusive: bool = False,

@@ -1,11 +1,12 @@
-from flask import jsonify # type: ignore
+from flask import jsonify
 from src.oauth import google
 from datetime import datetime, timezone
 from src.authentication.user.infrastructure.domain.service.sqlalchemy.initialize_user_schema import InitializeUserSchema
 
 class AuthorizeController:
     
-    def __invoke__(self):
+    @staticmethod
+    def __invoke__():
         response = google.authorize_access_token()
 
         try:

@@ -5,6 +5,6 @@ endpoints:
     name: catalogue_format_create_format
 
   src.catalogue.format.infrastructure.adapter.api.controller.change_equivalence_units_controller:
-    path: /v1/catalogue/format/change-equivalence-units/<id>
+    path: /v1/catalogue/format/change-equivalence-units/<format_id>
     methods: ['PUT']
     name: catalogue_format_change_equivalence_units

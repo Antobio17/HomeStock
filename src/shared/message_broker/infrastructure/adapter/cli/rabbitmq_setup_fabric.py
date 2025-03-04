@@ -1,11 +1,19 @@
 import glob
-import yaml # type: ignore
+import os
+
+import yaml
 from src.shared.message_broker.infrastructure.domain.connection.rabbitmq.rabbitmq_connection import RabbitmqConnection
 
 class RabbitmqSetupFabric:
     
     def __init__(self):
-        self.rabbitmq_connection = RabbitmqConnection()
+        self.rabbitmq_connection = RabbitmqConnection(
+            os.getenv('RABBITMQ_USERNAME'),
+            os.getenv('RABBITMQ_PASSWORD'),
+            os.getenv('RABBITMQ_HOST'),
+            os.getenv('RABBITMQ_PORT'),
+            os.getenv('RABBITMQ_VHOST')
+        )
     
     def execute(self):
         self.__declare_exchanges()

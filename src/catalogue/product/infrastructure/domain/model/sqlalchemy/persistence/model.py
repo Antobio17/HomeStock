@@ -1,4 +1,4 @@
-from sqlalchemy.ext.declarative import declarative_base # type: ignore
+from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import CHAR, Column, DateTime, Boolean, Float
 
 Base = declarative_base()

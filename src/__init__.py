@@ -1,5 +1,5 @@
 import threading
-from dotenv import load_dotenv # type: ignore
+from dotenv import load_dotenv
 
 load_dotenv(dotenv_path='.env')
 load_dotenv(dotenv_path='.env.local', override=True)

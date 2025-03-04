@@ -1,5 +1,5 @@
 import traceback
-from flask import request, jsonify # type: ignore
+from flask import request, jsonify
 from dataclasses import dataclass, field
 from src.shared.cqrs.application.command.command_bus import CommandBus
 from src.shared.utils.infrastructure.domain.service.check_param import CheckParam
@@ -12,7 +12,7 @@ class ChangeNutritionFactsController:
     __command_bus: CommandBus = field(default_factory=lambda: CommandBus())
     
     @auth_required
-    def __invoke__(self, id: str):
+    def __invoke__(self, product_id: str):
         try:
             calories = CheckParam.get_float_form_param(request, 'calories')
             carbohydrates = CheckParam.get_float_form_param(request, 'carbohydrates')
@@ -21,7 +21,7 @@ class ChangeNutritionFactsController:
             sugar = CheckParam.get_float_form_param(request, 'sugar')
             
             command = ChangeNutritionFactsCommand(
-                id,
+                product_id,
                 calories,
                 carbohydrates,
                 proteins,

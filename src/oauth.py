@@ -1,5 +1,5 @@
 import os
-from authlib.integrations.flask_client import OAuth # type: ignore
+from authlib.integrations.flask_client import OAuth
 
 oauth = OAuth()
 google = None

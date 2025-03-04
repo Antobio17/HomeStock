@@ -1,8 +1,8 @@
-import requests # type: ignore
+import requests
 from functools import wraps
+from google.auth import jwt
 from src import thread_local
-from google.auth import jwt # type: ignore
-from flask import request, jsonify # type: ignore
+from flask import request, jsonify
 
 def auth_required(f):
     @wraps(f)
@@ -28,6 +28,10 @@ def auth_required(f):
             response.raise_for_status()
             certs = response.json()
             claims = jwt.decode(token[len('Bearer '):], certs = certs, verify = True)
+
+            thread_local.schema_name = claims['sub']
+
+            return f(*args, **kwargs)
         except Exception as e:
             return jsonify(
                 {
@@ -40,9 +44,5 @@ def auth_required(f):
                     ]
                 }
             ), 401
-        
-        thread_local.schema_name = claims['sub']
-        
-        return f(*args, **kwargs)
-    
+
     return decorated

@@ -1,5 +1,5 @@
 import traceback
-from flask import request, jsonify # type: ignore
+from flask import request, jsonify
 from dataclasses import dataclass, field
 from src.shared.cqrs.application.command.command_bus import CommandBus
 from src.shared.utils.infrastructure.domain.service.check_param import CheckParam
@@ -12,7 +12,7 @@ class ChangeEquivalenceUnitsController:
     __command_bus: CommandBus = field(default_factory=lambda: CommandBus())
     
     @auth_required
-    def __invoke__(self, id: str):
+    def __invoke__(self, format_id: str):
         try:
             recipe_unit = CheckParam.get_form_param(request, 'recipe_unit')
             storage_unit = CheckParam.get_form_param(request, 'storage_unit')
@@ -22,7 +22,7 @@ class ChangeEquivalenceUnitsController:
             purchase_price = CheckParam.get_float_form_param(request, 'purchase_price')
             
             command = ChangeEquivalenceUnitsCommand(
-                id,
+                format_id,
                 recipe_unit,
                 storage_unit,
                 storage_unit_equivalence,

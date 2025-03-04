@@ -1,15 +1,16 @@
-import os
+from typing import Optional
 from src import thread_local
 from dataclasses import dataclass
 from sqlalchemy import create_engine
-from sqlalchemy.orm import Session, sessionmaker # type: ignore
+from sqlalchemy.engine.base import Engine
+from sqlalchemy.orm import Session, sessionmaker
 from src.shared.database.domain.manager.transaction_manager import TransactionManager
 
 @dataclass
 class SqlalchemyTransactionManager(TransactionManager):
     __database_writer_url: str
-    __session: Session = None
-    __engine: Session = None
+    __session: Optional[Session] = None
+    __engine: Optional[Engine] = None
     
     @property
     def session(self) -> Session:
@@ -21,7 +22,6 @@ class SqlalchemyTransactionManager(TransactionManager):
             self.__session = session_factory()
             
         return self.__session
-    
     
     def begin(self):
         self.session.begin()

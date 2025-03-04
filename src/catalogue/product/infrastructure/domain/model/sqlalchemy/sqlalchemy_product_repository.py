@@ -1,17 +1,20 @@
-from typing import Union
+from typing import Union, Type
 from dataclasses import dataclass
-from sqlalchemy.orm import joinedload # type: ignore
-from sqlalchemy.exc import NoResultFound # type: ignore
+from sqlalchemy.orm import joinedload
+from sqlalchemy.exc import NoResultFound
 from src.catalogue.product.domain.model.product import Product
 from src.catalogue.product.domain.model.product_repository import ProductRepository
-from src.shared.database.domain.manager.transaction_manager import TransactionManager
 from src.catalogue.product.infrastructure.domain.model.sqlalchemy.persistence.model import ProductModel
+from src.shared.database.infrastructure.domain.manager.sqlalchemy.sqlalchemy_transaction_manager import (
+    SqlalchemyTransactionManager
+)
 
 @dataclass
 class SqlalchemyProductRepository(ProductRepository):
-    __transaction_manager: TransactionManager
+    __transaction_manager: SqlalchemyTransactionManager
 
-    def __to_model(self, product: Product) -> ProductModel:
+    @staticmethod
+    def __to_model(product: Product) -> ProductModel:
         return ProductModel(
             id = product.id,
             name = product.name,
@@ -29,10 +32,11 @@ class SqlalchemyProductRepository(ProductRepository):
 
     def find_by_id(self, product_id: str) -> Union[Product, None]:
         try:
-            result: ProductModel = (
-                self.__transaction_manager.session.query(ProductModel)\
-                    .options(joinedload('*'))\
-                    .filter_by(id=str(product_id)).one()
+            result: Type[ProductModel] = (
+                self.__transaction_manager.session.query(ProductModel)
+                    .options(joinedload('*'))
+                    .filter_by(id=str(product_id))
+                    .one()
             )
         except NoResultFound:
             return None

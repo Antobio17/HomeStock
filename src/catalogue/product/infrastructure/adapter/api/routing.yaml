@@ -5,12 +5,12 @@ endpoints:
     name: catalogue_product_create_product
 
   src.catalogue.product.infrastructure.adapter.api.controller.change_nutrition_facts_controller:
-    path: /v1/catalogue/product/change-nutrition-facts/<id>
+    path: /v1/catalogue/product/change-nutrition-facts/<product_id>
     methods: ['PUT']
     name: catalogue_product_change_nutrition_facts
 
   src.catalogue.product.infrastructure.adapter.api.controller.change_equivalence_units_controller:
-    path: /v1/catalogue/product/change-equivalence-units/<id>
+    path: /v1/catalogue/product/change-equivalence-units/<product_id>
     methods: ['PUT']
     name: catalogue_product_change_equivalence_units
 

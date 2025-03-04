@@ -1,5 +1,4 @@
-import os
-import pika # type: ignore
+import pika
 from dataclasses import dataclass
 from src.shared.message_broker.domain.connection.connection import Connection
 
@@ -72,8 +71,8 @@ class RabbitmqConnection(Connection):
         
     def queue_declare(
         self, 
-        queue: str, 
-        arguments: dict = {},
+        queue: str,
+        arguments: dict,
         durable: bool = True, 
         auto_delete: bool = False,
         exclusive: bool = False,

@@ -1,8 +1,8 @@
 import glob
-import yaml # type: ignore
-from flask import Flask, Blueprint # type: ignore
-from flask.cli import FlaskGroup # type: ignore
+import yaml
+from flask.cli import FlaskGroup
 from src.oauth import init_oauth
+from flask import Flask, Blueprint
 from importlib import import_module
 
 
@@ -10,8 +10,8 @@ def __get_class(reference_class: str) -> type:
     class_name = reference_class.rsplit('.', 1)[-1]
     
     module = import_module(reference_class)
-    class_name_cammel_case = ''.join(word.capitalize() for word in class_name.split('_'))
-    return getattr(module, class_name_cammel_case)
+    class_name_camel_case = ''.join(word.capitalize() for word in class_name.split('_'))
+    return getattr(module, class_name_camel_case)
 
 def __load_config(module: str) -> dict:
     split = module.split('.')
@@ -32,9 +32,9 @@ def __load_config(module: str) -> dict:
 
 
 def create_app():
-    app = Flask(__name__, instance_relative_config = True)
-    app.secret_key = 'your secret key'
-    init_oauth(app)
+    flask_app = Flask(__name__, instance_relative_config = True)
+    flask_app.secret_key = 'your secret key'
+    init_oauth(flask_app)
     
     pattern = 'src/*/*/infrastructure/adapter/api/controller/*.py'
     for filepath in glob.glob(pattern):
@@ -44,9 +44,9 @@ def create_app():
         
         main = Blueprint(config['name'], module_name)
         main.add_url_rule(config['path'], view_func = controller().__invoke__, methods = config['methods'])
-        app.register_blueprint(main)
+        flask_app.register_blueprint(main)
 
-    return app
+    return flask_app
 
 app = create_app()
 app.run(host='0.0.0.0', port=80)

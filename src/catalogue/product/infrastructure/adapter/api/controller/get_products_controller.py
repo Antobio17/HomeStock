@@ -1,5 +1,5 @@
 import traceback
-from flask import request, jsonify # type: ignore
+from flask import request, jsonify
 from dataclasses import dataclass, field
 from src.shared.cqrs.application.query.query_bus import QueryBus
 from src.shared.utils.infrastructure.domain.service.check_param import CheckParam

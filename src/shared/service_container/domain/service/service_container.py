@@ -1,5 +1,5 @@
 import os
-import yaml # type: ignore
+import yaml
 import uuid
 from typing import Any, Dict, Union
 from importlib import import_module
@@ -14,7 +14,8 @@ class ServiceContainer:
     __metadata: Metadata = None
 
     
-    def __load_config(self, service: str) -> dict:
+    @staticmethod
+    def __load_config(service: str) -> dict:
         yaml_path = None
         split = service.split('.')
         
@@ -47,7 +48,8 @@ class ServiceContainer:
         return config['services'][service]
     
     
-    def __get_class(self, reference_class: str) -> type:
+    @staticmethod
+    def __get_class(reference_class: str) -> type:
         class_name = reference_class.rsplit('.', 1)[-1]
 
         module = import_module(reference_class)
