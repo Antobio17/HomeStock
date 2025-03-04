@@ -4,7 +4,7 @@ class Connection(ABC):
     
     @property
     @abstractmethod
-    def session(self) -> object:
+    def session(self):
         pass
     
     @abstractmethod

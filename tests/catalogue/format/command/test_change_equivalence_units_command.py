@@ -111,7 +111,7 @@ class TestEquivalenceUnitsCommand(unittest.TestCase):
             command_handler.handle(command)
         
         self.assertEqual(context.exception.message, 'Equivalence values must be greater than or equal to 1')
-        self.assertEqual(context.exception.keyTraslate, 'equivalenceValuesMustBeGreaterThanOrEqualToOne')
+        self.assertEqual(context.exception.key_translate, 'equivalenceValuesMustBeGreaterThanOrEqualToOne')
         self.assertIsNone(in_memory_repository.spy())
         self.__message_publisher.execute.assert_not_called()
 

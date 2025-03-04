@@ -1,13 +1,16 @@
+from typing import Optional
 from src import thread_local
 from dataclasses import dataclass
 from sqlalchemy import create_engine
-from sqlalchemy.orm import Session, sessionmaker # type: ignore
+from sqlalchemy.engine.base import Engine
+from sqlalchemy.orm import Session, sessionmaker
+from src.shared.database.domain.connection.connection import Connection
 
 @dataclass
-class SqlalchemyReaderConnection:
+class SqlalchemyReaderConnection(Connection):
     __database_reader_url: str
-    __session: Session = None
-    __engine: Session = None
+    __session: Optional[Session] = None
+    __engine: Optional[Engine] = None
     
     @property
     def session(self) -> Session:
@@ -20,7 +23,7 @@ class SqlalchemyReaderConnection:
             
         return self.__session
     
-    def close(self):
+    def close(self) -> None:
         self.__session.close()
         self.__session = None
         self.__engine.dispose()

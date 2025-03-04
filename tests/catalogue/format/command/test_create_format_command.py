@@ -71,7 +71,7 @@ class TestCreateFormatCommand(unittest.TestCase):
             command_handler.handle(command)
 
         self.assertEqual(context.exception.message, 'Name only accepts 64 characters')
-        self.assertEqual(context.exception.keyTraslate, 'nameOnlyAccepts64Characters')
+        self.assertEqual(context.exception.key_translate, 'nameOnlyAccepts64Characters')
         self.assertIsNone(in_memory_repository.spy())
         self.__message_publisher.execute.assert_not_called()
         
@@ -90,7 +90,7 @@ class TestCreateFormatCommand(unittest.TestCase):
             command_handler.handle(command)
 
         self.assertEqual(context.exception.message, f'Product with ID {command.product_id} not found to assign format')
-        self.assertEqual(context.exception.keyTraslate, f'productWithID{command.product_id}NotFoundToAssignFormat')
+        self.assertEqual(context.exception.key_translate, f'productWithID{command.product_id}NotFoundToAssignFormat')
         self.assertIsNone(in_memory_repository.spy())
         self.__message_publisher.execute.assert_not_called()
 

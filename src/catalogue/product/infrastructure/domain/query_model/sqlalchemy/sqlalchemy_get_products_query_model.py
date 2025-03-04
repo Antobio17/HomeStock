@@ -1,15 +1,17 @@
-from sqlalchemy.sql import text # type: ignore
+from sqlalchemy.sql import text
 from dataclasses import dataclass
-from src.shared.database.domain.connection.connection import Connection
+from src.shared.utils.infrastructure.domain.service.utils import Utils
 from src.catalogue.product.application.query.get_products_query import GetProductsQuery
 from src.catalogue.product.domain.query_model.dto.get_product_result import GetProductResult
 from src.catalogue.product.domain.query_model.get_products_query_model import GetProductsQueryModel
-from src.shared.utils.infrastructure.domain.service.utils import Utils
+from src.shared.database.infrastructure.domain.connection.sqlalchemy.sqlalchemy_reader_connection import (
+    SqlalchemyReaderConnection
+)
 
 @dataclass
 class SqlalchemyGetProductsQueryModel(GetProductsQueryModel):
-    __connection: Connection
-    
+    __connection: SqlalchemyReaderConnection
+
     def get(self, query: GetProductsQuery) -> list[GetProductResult]:
         sql_query = self.__build_sql(query)
         if query.page and query.page_size:
@@ -24,9 +26,9 @@ class SqlalchemyGetProductsQueryModel(GetProductsQueryModel):
         
         results = self.__connection.session.execute(text(sql_query)).fetchone()
         return results[0]
-        
-    
-    def __build_sql(self, query: GetProductsQuery, count: bool = False) -> str:
+
+    @staticmethod
+    def __build_sql(query: GetProductsQuery, count: bool = False) -> str:
         sql_query = """
         SELECT 
         id, name, calories, carbohydrates, 

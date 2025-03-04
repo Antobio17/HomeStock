@@ -96,7 +96,7 @@ class TestChangeNutritionFactsCommand(unittest.TestCase):
             command_handler.handle(command)
         
         self.assertEqual(context.exception.message, f'Product with ID {command.id} not found')
-        self.assertEqual(context.exception.keyTraslate, f'productWithID{command.id}NotFound')
+        self.assertEqual(context.exception.key_translate, f'productWithID{command.id}NotFound')
         self.assertIsNone(in_memory_repository.spy())
         self.__message_publisher.execute.assert_not_called()
 
@@ -128,7 +128,7 @@ class TestChangeNutritionFactsCommand(unittest.TestCase):
             command_handler.handle(command)
         
         self.assertEqual(context.exception.message, 'All numeric fields must be greater than or equal to 0')
-        self.assertEqual(context.exception.keyTraslate, 'allNumericFieldsMustBeGreaterThanOrEqualToZero')
+        self.assertEqual(context.exception.key_translate, 'allNumericFieldsMustBeGreaterThanOrEqualToZero')
         self.assertIsNone(in_memory_repository.spy())
         self.__message_publisher.execute.assert_not_called()
 
