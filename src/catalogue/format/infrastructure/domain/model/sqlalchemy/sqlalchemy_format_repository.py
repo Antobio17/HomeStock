@@ -1,6 +1,5 @@
 from typing import Union, Type
 from dataclasses import dataclass
-from sqlalchemy.orm import joinedload
 from sqlalchemy.exc import NoResultFound
 from src.catalogue.format.domain.model.format import Format
 from src.catalogue.format.domain.model.format_repository import FormatRepository
@@ -35,7 +34,6 @@ class SqlalchemyFormatRepository(FormatRepository):
         try:
             result: Type[FormatModel] = (
                 self.__transaction_manager.session.query(FormatModel)
-                    .options(joinedload('*'))
                     .filter_by(id=str(format_id)).one()
             )
         except NoResultFound:

@@ -1,6 +1,5 @@
 from typing import Union, Type
 from dataclasses import dataclass
-from sqlalchemy.orm import joinedload
 from sqlalchemy.exc import NoResultFound
 from src.catalogue.product.domain.model.product import Product
 from src.catalogue.product.domain.model.product_repository import ProductRepository
@@ -34,7 +33,6 @@ class SqlalchemyProductRepository(ProductRepository):
         try:
             result: Type[ProductModel] = (
                 self.__transaction_manager.session.query(ProductModel)
-                    .options(joinedload('*'))
                     .filter_by(id=str(product_id))
                     .one()
             )
