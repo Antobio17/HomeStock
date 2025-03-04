@@ -5,7 +5,6 @@ from src.oauth import init_oauth
 from flask import Flask, Blueprint
 from importlib import import_module
 
-
 def __get_class(reference_class: str) -> type:
     class_name = reference_class.rsplit('.', 1)[-1]
     
