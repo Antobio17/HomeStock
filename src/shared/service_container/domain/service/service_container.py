@@ -5,6 +5,7 @@ from typing import Any, Dict, Union
 from importlib import import_module
 from dataclasses import dataclass, field
 from src.shared.cqrs.domain.service.dto.metadata import Metadata
+from src.shared.database.domain.connection.connection import Connection
 from src.shared.cqrs.domain.service.message_publisher import MessagePublisher
 from src.shared.database.domain.manager.transaction_manager import TransactionManager
 
@@ -80,7 +81,7 @@ class ServiceContainer:
         return self.__services.get('src.shared.database.domain.manager.transaction_manager', None)
     
     @property
-    def database_connection(self) ->  Union[TransactionManager, None]:
+    def database_connection(self) ->  Union[Connection, None]:
         return self.__services.get('src.shared.database.domain.connection.connection', None)
     
     @property

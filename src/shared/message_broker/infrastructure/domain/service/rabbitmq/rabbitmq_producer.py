@@ -9,14 +9,14 @@ class RabbitmqProducer(Producer):
     def publish(
         self, 
         message: str,
-        headers: dict = {},
+        headers: dict = None,
         to_delay: bool = False,
         routing_key: str = '',
     ) -> None:
         self.__connection.publish_message(
             exchange = RabbitmqProducer.__exchange_name(routing_key, to_delay),
             routing_key = routing_key,
-            headers = headers,
+            headers = headers if headers is not None else {},
             body = message
         )
         

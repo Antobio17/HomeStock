@@ -6,7 +6,7 @@ class Producer(ABC):
     def publish(
         self, 
         message: str,
-        headers: dict = {},
+        headers: dict = None,
         to_delay: bool = False,
         routing_key: str = '',
     ) -> None:

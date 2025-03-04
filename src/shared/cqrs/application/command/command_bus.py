@@ -6,7 +6,7 @@ from src.shared.cqrs.application.middleware.transaction_middleware import Transa
 from src.shared.cqrs.application.middleware.message_publisher_middleware import MessagePublisherMiddleware
  
 @dataclass
-class CommandBus():
+class CommandBus:
     __container: ServiceContainer = field(default_factory=lambda: ServiceContainer())
 
     def middlewares(self) -> list[Middleware]:
@@ -18,7 +18,8 @@ class CommandBus():
             TransactionMiddleware(self.__container.transaction_manager),
         ]
         
-    def __get_handler_module(self, command: Command) -> str:
+    @staticmethod
+    def __get_handler_module(command: Command) -> str:
         context = command.__module__.split('.')[1]
         subcontext = command.__module__.split('.')[2]
         command_name = type(command).__name__

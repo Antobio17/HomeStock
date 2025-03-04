@@ -7,7 +7,7 @@ from src.shared.cqrs.application.middleware.database_connection_middleware impor
 
 
 @dataclass
-class QueryBus():
+class QueryBus:
     __container: ServiceContainer = field(default_factory=lambda: ServiceContainer())
     
     def middlewares(self) -> list[Middleware]:
@@ -15,7 +15,8 @@ class QueryBus():
             DatabaseConnectionMiddleware(self.__container.database_connection),
         ]
         
-    def __get_handler_module(self, query: Query) -> str:
+    @staticmethod
+    def __get_handler_module(query: Query) -> str:
         context = query.__module__.split('.')[1]
         subcontext = query.__module__.split('.')[2]
         query_name = type(query).__name__

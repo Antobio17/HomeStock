@@ -6,21 +6,24 @@ from src.shared.cqrs.domain.service.dto.metadata import Metadata
 from src.shared.message_broker.domain.service.producer import Producer
 
 @dataclass
-class MessagePublisher():
+class MessagePublisher:
     __producer: Producer
     __publish_instantly: bool = True
     __messages: list[Message] = field(default_factory=list)
     
-    def execute(self, message: Message, headers: dict = {}, to_delay: bool = False) -> None:
+    def execute(
+        self,
+        message: Message,
+        headers: dict = None,
+        to_delay: bool = False
+    ) -> None:
         if not self.__publish_instantly:
             self.__messages.append(message)
             return
                 
-        dict = message.__dict__
-        
         self.__producer.publish(
-            message = json.dumps(dict, default=str),
-            headers = headers,
+            message = json.dumps(message.__dict__, default=str),
+            headers = headers if headers is not None else {},
             to_delay = to_delay,
             routing_key = message.get_name()
         )
