@@ -1,20 +1,20 @@
 endpoints:
   src.catalogue.product.infrastructure.adapter.api.controller.create_product_controller:
     path: /v1/catalogue/product/create-product
-    methods: ['POST']
+    methods: ["POST"]
     name: catalogue_product_create_product
 
   src.catalogue.product.infrastructure.adapter.api.controller.change_nutrition_facts_controller:
     path: /v1/catalogue/product/change-nutrition-facts/<product_id>
-    methods: ['PUT']
+    methods: ["PUT"]
     name: catalogue_product_change_nutrition_facts
 
   src.catalogue.product.infrastructure.adapter.api.controller.change_equivalence_units_controller:
     path: /v1/catalogue/product/change-equivalence-units/<product_id>
-    methods: ['PUT']
+    methods: ["PUT"]
     name: catalogue_product_change_equivalence_units
 
   src.catalogue.product.infrastructure.adapter.api.controller.get_products_controller:
     path: /v1/catalogue/products
-    methods: ['GET']
+    methods: ["GET"]
     name: catalogue_products_get
