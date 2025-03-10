@@ -15,6 +15,11 @@ class QueryBus:
             DatabaseConnectionMiddleware(self.__container.database_connection),
         ]
         
+    def in_exception_middlewares(self) -> list[Middleware]:
+        return [
+            DatabaseConnectionMiddleware(self.__container.database_connection),
+        ]
+        
     @staticmethod
     def __get_handler_module(query: Query) -> str:
         context = query.__module__.split('.')[1]
@@ -29,8 +34,13 @@ class QueryBus:
         
         for middleware in self.middlewares():
             middleware.before_handle()
-            
-        query_result = query_handler.handle(query)
+        
+        try:
+            query_result = query_handler.handle(query)
+        except Exception as e:
+            for middleware in reversed(self.in_exception_middlewares()):
+                middleware.after_handle()
+            raise e
     
         for middleware in reversed(self.middlewares()):
             middleware.after_handle()

@@ -57,7 +57,7 @@ class SubmitTicketController:
                     'errors': [
                         {
                             'status': 400,
-                            'title': 'An error occurred before creating format.',
+                            'title': 'An error occurred before submit ticket.',
                             'details': e.message
                         }
                     ]
@@ -69,7 +69,7 @@ class SubmitTicketController:
                     'errors': [
                         {
                             'status': 500,
-                            'title': 'An error occurred while creating format.',
+                            'title': 'An error occurred while submitting ticket.',
                             'details': str(e),
                             'trace': traceback.format_exc()
                         }

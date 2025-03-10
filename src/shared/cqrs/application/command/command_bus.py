@@ -4,6 +4,7 @@ from src.shared.cqrs.application.middleware.middleware import Middleware
 from src.shared.service_container.domain.service.service_container import ServiceContainer
 from src.shared.cqrs.application.middleware.transaction_middleware import TransactionMiddleware
 from src.shared.cqrs.application.middleware.message_publisher_middleware import MessagePublisherMiddleware
+from src.shared.cqrs.application.middleware.database_connection_middleware import DatabaseConnectionMiddleware
  
 @dataclass
 class CommandBus:
@@ -16,6 +17,13 @@ class CommandBus:
                 self.__container.metadata
             ),
             TransactionMiddleware(self.__container.transaction_manager),
+            DatabaseConnectionMiddleware(self.__container.database_connection)
+        ]
+    
+    def in_exception_middlewares(self) -> list[Middleware]:
+        return [
+            TransactionMiddleware(self.__container.transaction_manager),
+            DatabaseConnectionMiddleware(self.__container.database_connection)
         ]
         
     @staticmethod
@@ -32,9 +40,13 @@ class CommandBus:
         
         for middleware in self.middlewares():
             middleware.before_handle()
-            
-        command_handler.handle(command)
+        
+        try:
+            command_handler.handle(command)
+        except Exception as e:
+            for middleware in reversed(self.in_exception_middlewares()):
+                middleware.after_handle()     
+            raise e
         
         for middleware in reversed(self.middlewares()):
-            middleware.after_handle()
-                
+            middleware.after_handle()         
