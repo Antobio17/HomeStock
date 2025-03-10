@@ -1,37 +1,42 @@
-from typing import Union
+from typing import Optional
+from datetime import datetime
 from src.shared.utils.infrastructure.domain.service.utils import Utils
 
 class CheckParam:
     
     @staticmethod
-    def get_form_param(request, param_name: str, required: bool = True) -> Union[str, None]:
-        value = request.form.get(param_name)
+    def get_request_param(request, param_name: str, required: bool = True) -> Optional[str]:
+        try:
+            value = request.get_json().get(param_name)
+        except Exception:
+            raise ValueError(f'The request Content-Type was not "application/json".')
+            
         if required and value is None:
             raise ValueError(f'Parameter {param_name} is required.')
         
         return value
     
     @staticmethod
-    def get_numeric_form_param(request, param_name: str, required: bool = True) -> Union[str, None]:
-        value = CheckParam.get_form_param(request, param_name, required)
-        if not value.replace('.', '').isnumeric():
+    def get_numeric_request_param(request, param_name: str, required: bool = True) -> Optional[str]:
+        value = CheckParam.get_request_param(request, param_name, required)
+        if not isinstance(value, float) and not isinstance(value, int):
             raise ValueError(f'Parameter {param_name} must be numeric.')
         
         return value
     
     @staticmethod
-    def get_int_form_param(request, param_name: str, required: bool = True) -> Union[int, None]:
-        value = CheckParam.get_numeric_form_param(request, param_name, required)
+    def get_int_request_param(request, param_name: str, required: bool = True) -> Optional[int]:
+        value = CheckParam.get_numeric_request_param(request, param_name, required)
         return int(value)
     
     @staticmethod
-    def get_float_form_param(request, param_name: str, required: bool = True) -> Union[float, None]:
-        value = CheckParam.get_numeric_form_param(request, param_name, required)
+    def get_float_request_param(request, param_name: str, required: bool = True) -> Optional[float]:
+        value = CheckParam.get_numeric_request_param(request, param_name, required)
         return float(value)
     
     @staticmethod
-    def get_boolean_form_param(request, param_name: str, required: bool = True) -> Union[bool, None]:
-        value = CheckParam.get_form_param(request, param_name, required)
+    def get_boolean_request_param(request, param_name: str, required: bool = True) -> Optional[bool]:
+        value = CheckParam.get_request_param(request, param_name, required)
         return value.lower() == 'true' or value == '1' if value is not None else None
     
     @staticmethod
@@ -52,7 +57,7 @@ class CheckParam:
         return filters
     
     @staticmethod
-    def numeric_filter(param_name: str, filters, is_required: bool = True) -> None:
+    def get_numeric_filter(param_name: str, filters, is_required: bool = True) -> None:
         if filters.get(param_name, None) is None:
             if is_required:
                 raise ValueError(f'Param {param_name} is required.')
@@ -67,3 +72,24 @@ class CheckParam:
                 float(filters[param_name][operation])
             except Exception:
                 raise ValueError(f'Values from {param_name} should be numeric.')
+            
+    @staticmethod
+    def get_datetime_request_param(request, param_name: str, required: bool = True) -> Optional[datetime]:
+        value = CheckParam.get_request_param(request, param_name, required)
+        return Utils.validate_datetime(value)
+    
+    @staticmethod
+    def get_dict_request_param(request, param_name: str, required: bool = True) -> Optional[dict]:
+        value = CheckParam.get_request_param(request, param_name, required)
+        if not isinstance(value, dict):
+            raise ValueError(f'Parameter {param_name} must be a dictionary.')
+        
+        return value
+    
+    @staticmethod
+    def get_list_request_param(request, param_name: str, required: bool = True) -> Optional[dict]:
+        value = CheckParam.get_request_param(request, param_name, required)
+        if not isinstance(value, list):
+            raise ValueError(f'Parameter {param_name} must be a list.')
+        
+        return value

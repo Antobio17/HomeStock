@@ -14,12 +14,12 @@ class ChangeEquivalenceUnitsController:
     @auth_required
     def __invoke__(self, format_id: str):
         try:
-            recipe_unit = CheckParam.get_form_param(request, 'recipe_unit')
-            storage_unit = CheckParam.get_form_param(request, 'storage_unit')
-            storage_unit_equivalence = CheckParam.get_float_form_param(request, 'storage_unit_equivalence')
-            purchase_unit = CheckParam.get_form_param(request, 'purchase_unit')
-            purchase_unit_equivalence = CheckParam.get_float_form_param(request, 'purchase_unit_equivalence')
-            purchase_price = CheckParam.get_float_form_param(request, 'purchase_price')
+            recipe_unit = CheckParam.get_request_param(request, 'recipe_unit')
+            storage_unit = CheckParam.get_request_param(request, 'storage_unit')
+            storage_unit_equivalence = CheckParam.get_float_request_param(request, 'storage_unit_equivalence')
+            purchase_unit = CheckParam.get_request_param(request, 'purchase_unit')
+            purchase_unit_equivalence = CheckParam.get_float_request_param(request, 'purchase_unit_equivalence')
+            purchase_price = CheckParam.get_float_request_param(request, 'purchase_price')
             
             command = ChangeEquivalenceUnitsCommand(
                 format_id,

@@ -14,8 +14,8 @@ class CreateFormatController:
     @auth_required
     def __invoke__(self):
         try:
-            product_id = CheckParam.get_form_param(request, 'product_id')
-            name = CheckParam.get_form_param(request, 'name')
+            product_id = CheckParam.get_request_param(request, 'product_id')
+            name = CheckParam.get_request_param(request, 'name')
             
             command = CreateFormatCommand(product_id, name)     
             self.__command_bus.handle(command) 
@@ -40,7 +40,7 @@ class CreateFormatController:
                         {
                             'status': 400,
                             'title': 'An error occurred before creating format.',
-                            'details': str(e)
+                            'details': e.message
                         }
                     ]
                 }    

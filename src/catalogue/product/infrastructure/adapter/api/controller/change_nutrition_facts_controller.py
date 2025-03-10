@@ -14,11 +14,11 @@ class ChangeNutritionFactsController:
     @auth_required
     def __invoke__(self, product_id: str):
         try:
-            calories = CheckParam.get_float_form_param(request, 'calories')
-            carbohydrates = CheckParam.get_float_form_param(request, 'carbohydrates')
-            proteins = CheckParam.get_float_form_param(request, 'proteins')
-            fats = CheckParam.get_float_form_param(request, 'fats')
-            sugar = CheckParam.get_float_form_param(request, 'sugar')
+            calories = CheckParam.get_float_request_param(request, 'calories')
+            carbohydrates = CheckParam.get_float_request_param(request, 'carbohydrates')
+            proteins = CheckParam.get_float_request_param(request, 'proteins')
+            fats = CheckParam.get_float_request_param(request, 'fats')
+            sugar = CheckParam.get_float_request_param(request, 'sugar')
             
             command = ChangeNutritionFactsCommand(
                 product_id,

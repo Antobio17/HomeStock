@@ -1,0 +1,5 @@
+endpoints:
+  src.purchase.ticket.infrastructure.adapter.api.controller.submit_ticket_controller:
+    path: /v1/purchase/ticket/submit-ticket
+    methods: ['POST']
+    name: purchase_ticket_submit_ticket

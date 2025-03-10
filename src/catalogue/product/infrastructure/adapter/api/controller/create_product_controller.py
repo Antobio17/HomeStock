@@ -14,7 +14,7 @@ class CreateProductController:
     @auth_required
     def __invoke__(self):
         try:
-            name = CheckParam.get_form_param(request, 'name')
+            name = CheckParam.get_request_param(request, 'name')
             
             command = CreateProductCommand(name)     
             self.__command_bus.handle(command) 
@@ -39,7 +39,7 @@ class CreateProductController:
                         {
                             'status': 400,
                             'title': 'An error occurred before creating product.',
-                            'details': str(e)
+                            'details': e.message
                         }
                     ]
                 }    

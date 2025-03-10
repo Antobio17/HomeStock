@@ -1,4 +1,4 @@
-from typing import Union, Type
+from typing import Optional, Type
 from dataclasses import dataclass
 from sqlalchemy.exc import NoResultFound
 from src.catalogue.format.domain.model.format import Format
@@ -30,7 +30,7 @@ class SqlalchemyFormatRepository(FormatRepository):
             disabled_at = fmt.disabled_at
         )
 
-    def find_by_id(self, format_id: str) -> Union[Format, None]:
+    def find_by_id(self, format_id: str) -> Optional[Format]:
         try:
             result: Type[FormatModel] = (
                 self.__transaction_manager.session.query(FormatModel)

@@ -16,11 +16,11 @@ class GetProductsController:
         filters = CheckParam.get_filters_query(request)
 
         try:
-            CheckParam.numeric_filter('calories', filters, is_required = False)
-            CheckParam.numeric_filter('carbohydrates' ,filters, is_required = False)
-            CheckParam.numeric_filter('proteins', filters, is_required = False)
-            CheckParam.numeric_filter('fats' ,filters, is_required = False)
-            CheckParam.numeric_filter('sugar' ,filters, is_required = False)
+            CheckParam.get_numeric_filter('calories', filters, is_required = False)
+            CheckParam.get_numeric_filter('carbohydrates' ,filters, is_required = False)
+            CheckParam.get_numeric_filter('proteins', filters, is_required = False)
+            CheckParam.get_numeric_filter('fats' ,filters, is_required = False)
+            CheckParam.get_numeric_filter('sugar' ,filters, is_required = False)
             
             result = self.__query_bus.handle(GetProductsQuery(
                 name = filters.get('name', None),

@@ -1,0 +1,5 @@
+services:
+  src.purchase.ticket.domain.query_model.submit_ticket_needle_data_query:
+    class: src.purchase.ticket.infrastructure.domain.query_model.sqlalchemy.sqlalchemy_submit_ticket_needle_data_query
+    arguments:
+      - '@src.shared.database.domain.connection.connection'

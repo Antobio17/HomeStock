@@ -1,23 +1,23 @@
-from typing import Union
+from typing import Optional
 from dataclasses import dataclass
 from src.catalogue.format.domain.model.format import Format
 from src.catalogue.format.domain.model.format_repository import FormatRepository
 
 @dataclass
 class InMemoryFormatRepository(FormatRepository):
-    fmt: Format = None
-    saved: Format = None
+    __fmt: Format = None
+    __saved: Format = None
 
-    def find_by_id(self, format_id: str) -> Union[Format, None]:
-        if self.fmt is None or self.fmt.id != id:
+    def find_by_id(self, format_id: str) -> Optional[Format]:
+        if self.__fmt is None or self.__fmt.id != format_id:
             return None
-        return self.fmt
+        return self.__fmt
 
     def save(self, fmt: Format) -> None:
-        self.saved = fmt
+        self.__saved = fmt
         
     def spy(self) -> Format:
-        return self.saved
+        return self.__saved
     
     def will_return(self, fmt: Format) -> None:
-        self.fmt = fmt
+        self.__fmt = fmt

@@ -20,25 +20,3 @@ class FormatModel(Base):
     updated_at = Column(DateTime, nullable=True)
     enabled_at = Column(DateTime, nullable=False)
     disabled_at = Column(DateTime, nullable=True)
-    
-    def __str__(self) -> str:
-        return (
-            f"""
-            FormatModel(
-                id = {self.id}, 
-                product_id = {self.product_id},
-                name = {self.name},
-                recipe_unit = {self.recipe_unit},
-                storage_unit = {self.storage_unit},
-                storage_unit_equivalence = {self.storage_unit_equivalence},
-                purchase_unit = {self.purchase_unit},
-                purchase_unit_equivalence = {self.purchase_unit_equivalence},
-                purchase_price = {self.purchase_price},
-                is_enabled = {self.is_enabled},
-                created_at = {self.created_at},	
-                updated_at = {self.updated_at},
-                enabled_at = {self.enabled_at},
-                disabled_at = {self.disabled_at}
-            )
-            """
-        )

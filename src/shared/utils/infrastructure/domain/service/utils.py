@@ -1,3 +1,5 @@
+from datetime import datetime
+
 class Utils:
     
     @staticmethod
@@ -22,3 +24,10 @@ class Utils:
         for operation in conditions.keys():
             where_clause += f' {field_name} {Utils.mapping_operations(operation)} {conditions[operation]} AND'
         return where_clause 
+    
+    @staticmethod
+    def validate_datetime(value: str) -> datetime:
+        try:
+            return datetime.fromisoformat(value)
+        except Exception:
+            raise ValueError(f'Invalid datetime ISO format for {value}')

@@ -4,12 +4,12 @@ from src.shared.cqrs.application.query.query import Query
 
 @dataclass
 class GetProductsQuery(Query):
-    name: Optional[Union[str, None]]
-    calories: Optional[Union[float, dict, None]]
-    carbohydrates: Optional[Union[float, dict, None]]
-    proteins: Optional[Union[float, dict, None]]
-    fats: Optional[Union[float, dict, None]]
-    sugar: Optional[Union[float, dict, None]]
+    name: Optional[str]
+    calories: Optional[Union[float, dict]]
+    carbohydrates: Optional[Union[float, dict]]
+    proteins: Optional[Union[float, dict]]
+    fats: Optional[Union[float, dict]]
+    sugar: Optional[Union[float, dict]]
     is_enabled: bool
     page: int
     page_size: int

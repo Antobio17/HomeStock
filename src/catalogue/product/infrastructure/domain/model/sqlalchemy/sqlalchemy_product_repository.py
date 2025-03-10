@@ -1,4 +1,4 @@
-from typing import Union, Type
+from typing import Optional, Type
 from dataclasses import dataclass
 from sqlalchemy.exc import NoResultFound
 from src.catalogue.product.domain.model.product import Product
@@ -29,7 +29,7 @@ class SqlalchemyProductRepository(ProductRepository):
             disabled_at = product.disabled_at
         )
 
-    def find_by_id(self, product_id: str) -> Union[Product, None]:
+    def find_by_id(self, product_id: str) -> Optional[Product]:
         try:
             result: Type[ProductModel] = (
                 self.__transaction_manager.session.query(ProductModel)

@@ -1,0 +1,5 @@
+services:
+  src.purchase.ticket.domain.model.ticket_repository:
+    class: src.purchase.ticket.infrastructure.domain.model.sqlalchemy.sqlalchemy_ticket_repository
+    arguments:
+      - '@src.shared.database.domain.manager.transaction_manager'

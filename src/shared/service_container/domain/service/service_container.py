@@ -1,8 +1,8 @@
 import os
 import yaml
 import uuid
-from typing import Any, Dict, Union
 from importlib import import_module
+from typing import Any, Dict, Optional
 from dataclasses import dataclass, field
 from src.shared.cqrs.domain.service.dto.metadata import Metadata
 from src.shared.database.domain.connection.connection import Connection
@@ -77,15 +77,15 @@ class ServiceContainer:
         return self.__services[service]
     
     @property
-    def transaction_manager(self) ->  Union[TransactionManager, None]:
+    def transaction_manager(self) -> Optional[TransactionManager]:
         return self.__services.get('src.shared.database.domain.manager.transaction_manager', None)
     
     @property
-    def database_connection(self) ->  Union[Connection, None]:
+    def database_connection(self) -> Optional[Connection]:
         return self.__services.get('src.shared.database.domain.connection.connection', None)
     
     @property
-    def message_publisher(self) ->  Union[MessagePublisher, None]:
+    def message_publisher(self) -> Optional[MessagePublisher]:
         return self.__services.get('src.shared.cqrs.domain.service.message_publisher', None)
     
     @property
