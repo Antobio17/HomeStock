@@ -86,5 +86,5 @@ python src/manage.py
 
 Run tests:
 ```shell
-python -m unittest discover -s tests -p "test*.py" -v
+pytest
 ```

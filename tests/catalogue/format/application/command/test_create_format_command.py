@@ -16,7 +16,7 @@ class TestCreateFormatCommand(unittest.TestCase):
     def setUp(self):
         self.__message_publisher = Mock(spec=MessagePublisher)
 
-    def test_create_format_success(self):
+    def test_create_format_when_no_errors_then_success(self):
         in_memory_repository = InMemoryFormatRepository()
         needle_data_query = InMemoryCreateFormatNeedleDataQuery()
         needle_data_query.will_return(True)
@@ -56,7 +56,7 @@ class TestCreateFormatCommand(unittest.TestCase):
             )
         )
 
-    def test_create_format_name_too_long(self):
+    def test_create_format_when_name_too_long_then_fail(self):
         in_memory_repository = InMemoryFormatRepository()
         needle_data_query = InMemoryCreateFormatNeedleDataQuery()
         needle_data_query.will_return(True)
@@ -75,7 +75,7 @@ class TestCreateFormatCommand(unittest.TestCase):
         self.assertIsNone(in_memory_repository.spy())
         self.__message_publisher.execute.assert_not_called()
         
-    def test_create_format_product_does_not_exist(self):
+    def test_create_format_when_product_does_not_exist_then_fail(self):
         in_memory_repository = InMemoryFormatRepository()
         needle_data_query = InMemoryCreateFormatNeedleDataQuery()
         needle_data_query.will_return(False)
@@ -93,7 +93,3 @@ class TestCreateFormatCommand(unittest.TestCase):
         self.assertEqual(context.exception.key_translate, f'productWithID{command.product_id}NotFoundToAssignFormat')
         self.assertIsNone(in_memory_repository.spy())
         self.__message_publisher.execute.assert_not_called()
-
-
-if __name__ == '__main__':
-    unittest.main()

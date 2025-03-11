@@ -68,8 +68,8 @@ class Ticket:
                 )
             if item['quantity'] <= 0 or item['amount'] <= 0:
                 raise SubmitTicketException(
-                    f'Item {item["description"]} from ticket {reference} has invalid quantity or amount',
-                    f'item{item["description"]}FromTicket{reference}HasInvalidQuantityOrAmount'
+                    f'Item from ticket {reference} has invalid quantity or amount',
+                    f'itemFromTicket{reference}HasInvalidQuantityOrAmount'
                 )
 
             ticket_items.append(

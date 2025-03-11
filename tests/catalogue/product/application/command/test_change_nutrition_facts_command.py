@@ -15,7 +15,7 @@ class TestChangeNutritionFactsCommand(unittest.TestCase):
     def setUp(self):
         self.__message_publisher = Mock(spec=MessagePublisher)
 
-    def test_change_nutrition_facts_success(self):
+    def test_change_nutrition_facts_when_no_errors_then_success(self):
         id = str(uuid.uuid4())
         in_memory_repository = InMemoryProductRepository()
         in_memory_repository.will_return(
@@ -76,7 +76,7 @@ class TestChangeNutritionFactsCommand(unittest.TestCase):
             )
         )
         
-    def test_change_nutrition_facts_product_does_not_exist(self):
+    def test_change_nutrition_facts_when_product_does_not_exist_then_fail(self):
         id = str(uuid.uuid4())
         in_memory_repository = InMemoryProductRepository()
         
@@ -131,7 +131,3 @@ class TestChangeNutritionFactsCommand(unittest.TestCase):
         self.assertEqual(context.exception.key_translate, 'allNumericFieldsMustBeGreaterThanOrEqualToZero')
         self.assertIsNone(in_memory_repository.spy())
         self.__message_publisher.execute.assert_not_called()
-
-
-if __name__ == '__main__':
-    unittest.main()

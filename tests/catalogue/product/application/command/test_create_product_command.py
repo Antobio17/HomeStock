@@ -15,7 +15,7 @@ class TestCreateProductCommand(unittest.TestCase):
     def setUp(self):
         self.__message_publisher = Mock(spec=MessagePublisher)
 
-    def test_create_product_success(self):
+    def test_create_product_when_no_errors_then_success(self):
         in_memory_repository = InMemoryProductRepository()
         
         command = CreateProductCommand('Test Product')
@@ -49,7 +49,7 @@ class TestCreateProductCommand(unittest.TestCase):
             )
         )
 
-    def test_create_product_name_too_long(self):
+    def test_create_product_when_name_too_long_then_fail(self):
         in_memory_repository = InMemoryProductRepository()
         
         command = CreateProductCommand('a' * 65)
@@ -64,7 +64,3 @@ class TestCreateProductCommand(unittest.TestCase):
         self.assertEqual(context.exception.key_translate, 'nameOnlyAccepts64Characters')
         self.assertIsNone(in_memory_repository.spy())
         self.__message_publisher.execute.assert_not_called()
-
-
-if __name__ == '__main__':
-    unittest.main()

@@ -15,7 +15,7 @@ class TestEquivalenceUnitsCommand(unittest.TestCase):
     def setUp(self):
         self.__message_publisher = Mock(spec=MessagePublisher)
 
-    def test_equivalence_units_success(self):
+    def test_equivalence_units_when_no_errors_then_success(self):
         id = str(uuid.uuid4())
         in_memory_repository = InMemoryFormatRepository()
         in_memory_repository.will_return(
@@ -81,7 +81,7 @@ class TestEquivalenceUnitsCommand(unittest.TestCase):
             )
         )
 
-    def test_equivalence_units_values_less_than_one(self):
+    def test_equivalence_units_when_values_less_than_one_then_fail(self):
         id = str(uuid.uuid4())
         in_memory_repository = InMemoryFormatRepository()
         in_memory_repository.will_return(
@@ -114,7 +114,3 @@ class TestEquivalenceUnitsCommand(unittest.TestCase):
         self.assertEqual(context.exception.key_translate, 'equivalenceValuesMustBeGreaterThanOrEqualToOne')
         self.assertIsNone(in_memory_repository.spy())
         self.__message_publisher.execute.assert_not_called()
-
-
-if __name__ == '__main__':
-    unittest.main()
