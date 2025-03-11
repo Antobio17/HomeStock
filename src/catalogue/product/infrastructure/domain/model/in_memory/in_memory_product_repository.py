@@ -9,7 +9,7 @@ class InMemoryProductRepository(ProductRepository):
     __saved: Product = None
 
     def find_by_id(self, product_id: str) -> Optional[Product]:
-        if self.__product is None or self.__product.id != id:
+        if self.__product is None or self.__product.id != product_id:
             return None
         return self.__product
 

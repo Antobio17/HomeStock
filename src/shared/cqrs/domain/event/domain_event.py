@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from shared.cqrs.domain.service.dto.message import Message
+from src.shared.cqrs.domain.service.dto.message import Message
 
 class DomainEvent(Message, ABC):
 
