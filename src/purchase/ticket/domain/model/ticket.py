@@ -22,7 +22,7 @@ class Ticket:
     items: list[TicketItem]
     subtotal: float
     discount_amount: float
-    taxes: dict[float, float]
+    taxes: dict[str, float]
     tax_amount: float
     total: float
     purchased_at: datetime
@@ -45,7 +45,7 @@ class Ticket:
         reference: str, 
         subtotal: float, 
         discount_amount: float, 
-        taxes: dict[float, float], 
+        taxes: dict[str, float], 
         tax_amount: float, 
         total: float, 
         purchased_at: datetime,
