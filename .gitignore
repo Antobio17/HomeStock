@@ -4,3 +4,4 @@ deploy/docker/init/
 .env.local
 poetry.lock
 .idea/
+var/
