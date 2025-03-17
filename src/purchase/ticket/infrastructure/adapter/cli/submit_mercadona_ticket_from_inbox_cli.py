@@ -1,4 +1,3 @@
-from src import thread_local
 from src.shared.cqrs.application.command.command_bus import CommandBus
 from src.shared.service_container.domain.service.service_container import ServiceContainer
 from src.purchase.ticket.application.command.dto.submit_ticket_item import SubmitTicketItem
@@ -7,14 +6,13 @@ from src.purchase.ticket.domain.service.ticket_retriever_service import TicketRe
 from src.purchase.ticket.domain.exception.submit_ticket_exception import SubmitTicketException
 from src.purchase.ticket.domain.service.ticket_extractor_service import TicketExtractorService
 from src.purchase.ticket.domain.service.dto.ticket_extractor_result import TicketExtractorResult
+from src.shared.database.infrastructure.adapter.cli.sqlalchemy_multitenant_connection_cli import SqlalchemyMultitenantConnectionCli
 
-class SubmitMercadonaTicketFromInboxCli:
+class SubmitMercadonaTicketFromInboxCli(SqlalchemyMultitenantConnectionCli):
     
     def __init__(self):
         self.__command_bus = CommandBus()
         self.__service_container = ServiceContainer()
-        
-        thread_local.schema_name = '114817124855698770001'
         
     @property
     def __ticket_extractor_service(self) -> TicketExtractorService:
@@ -24,8 +22,8 @@ class SubmitMercadonaTicketFromInboxCli:
     def __ticket_retriever_service(self) -> TicketRetrieverService:
         return self.__service_container.get('src.purchase.ticket.domain.service.ticket_retriever_service_mercadona')
         
-    def execute(self):
-         while True:
+    def execute(self) -> None:
+        while True:
             file = self.__ticket_retriever_service.execute()
             if file is None:
                 break
@@ -62,4 +60,4 @@ class SubmitMercadonaTicketFromInboxCli:
                 
     
 if __name__ == '__main__':
-    SubmitMercadonaTicketFromInboxCli().execute()
+    SubmitMercadonaTicketFromInboxCli().execute_multitenant()
