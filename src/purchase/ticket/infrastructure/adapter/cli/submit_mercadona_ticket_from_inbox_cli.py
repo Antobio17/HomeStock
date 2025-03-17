@@ -4,6 +4,7 @@ from src.shared.service_container.domain.service.service_container import Servic
 from src.purchase.ticket.application.command.dto.submit_ticket_item import SubmitTicketItem
 from src.purchase.ticket.application.command.submit_ticket_command import SubmitTicketCommand
 from src.purchase.ticket.domain.service.ticket_retriever_service import TicketRetrieverService
+from src.purchase.ticket.domain.exception.submit_ticket_exception import SubmitTicketException
 from src.purchase.ticket.domain.service.ticket_extractor_service import TicketExtractorService
 from src.purchase.ticket.domain.service.dto.ticket_extractor_result import TicketExtractorResult
 
@@ -30,7 +31,10 @@ class SubmitMercadonaTicketFromInboxCli:
                 break
             
             ticket = self.__ticket_extractor_service.execute(file)
-            self.__command_bus.handle(self.__get_command(ticket))
+            try:
+                self.__command_bus.handle(self.__get_command(ticket))
+            except SubmitTicketException as e:
+                pass
     
     @staticmethod
     def __get_command(ticket: TicketExtractorResult) -> SubmitTicketCommand:
