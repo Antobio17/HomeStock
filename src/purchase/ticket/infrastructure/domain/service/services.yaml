@@ -1,0 +1,8 @@
+services:
+  src.purchase.ticket.domain.service.ticket_extractor_service_mercadona:
+    class: src.purchase.ticket.infrastructure.domain.service.mercadona.mercadona_ticket_extractor_service
+
+  src.purchase.ticket.domain.service.ticket_retriever_service_mercadona:
+    class: src.purchase.ticket.infrastructure.domain.service.mercadona.mercadona_ticket_retriever_service
+    arguments:
+      - '%GOOGLE_PASSWORD_APPLICATION'

@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 @dataclass
-class SubmitTicketItem:
+class TicketExtractorItemResult:
     description: str
     quantity: float
     amount: float
