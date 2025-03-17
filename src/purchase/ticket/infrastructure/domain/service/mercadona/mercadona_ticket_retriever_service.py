@@ -1,6 +1,7 @@
 import os
 import email
 import imaplib
+from typing import Optional
 from dataclasses import dataclass
 from email.header import decode_header
 from src.purchase.ticket.domain.service.ticket_retriever_service import TicketRetrieverService
@@ -9,17 +10,15 @@ from src.purchase.ticket.domain.service.ticket_retriever_service import TicketRe
 class MercadonaTicketRetrieverService(TicketRetrieverService):
     __google_password_application: str
 
-    def execute(self):
+    def execute(self) -> Optional[str]:
         with imaplib.IMAP4_SSL('imap.gmail.com', 993) as mail:
-            pdf_paths = []
-            
             mail.login(
                 os.getenv('GOOGLE_EMAIL_TICKETS'), 
                 self.__google_password_application
             )
             
             mail.select('inbox')
-            _, data = mail.search(None, 'ALL')
+            _, data = mail.search(None, '(UNSEEN FROM "ticket_digital@mail.mercadona.com")')
             for num in data[0].split():
                 _, data = mail.fetch(num, '(RFC822)')
                 _, bytes_data = data[0]
@@ -40,6 +39,8 @@ class MercadonaTicketRetrieverService(TicketRetrieverService):
                     filepath = os.path.join('/app/var/files/tickets/mercadona', filename)
                     with open(filepath, 'wb') as f:
                         f.write(part.get_payload(decode=True))   
-                        pdf_paths.append(filepath)
-                                             
-        return pdf_paths
+                    
+                    mail.store(num, '+FLAGS', '\\Seen')
+                    return filepath
+                          
+        return None

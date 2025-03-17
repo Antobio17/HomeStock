@@ -24,8 +24,11 @@ class SubmitMercadonaTicketFromInboxCli:
         return self.__service_container.get('src.purchase.ticket.domain.service.ticket_retriever_service_mercadona')
         
     def execute(self):
-        files = self.__ticket_retriever_service.execute()
-        for file in files:
+         while True:
+            file = self.__ticket_retriever_service.execute()
+            if file is None:
+                break
+            
             ticket = self.__ticket_extractor_service.execute(file)
             self.__command_bus.handle(self.__get_command(ticket))
     
