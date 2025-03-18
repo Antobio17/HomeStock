@@ -1,0 +1,21 @@
+rabbitmq:
+  queues:
+    - name: ticket
+      exchange: purchase
+      routing_key: 
+        - '*.purchase.*.*.ticket.*'
+      arguments:
+        x-dead-letter-exchange: purchase-failure
+        x-dead-letter-routing-key: purchase-ticket-failed
+
+    - name: ticket-delay
+      exchange: purchase-delay
+      routing_key: 
+        - '*.purchase.*.*.ticket.*'
+      arguments:
+        x-dead-letter-exchange: purchase
+
+    - name: ticket-failure
+      exchange: purchase-failure
+      routing_key: 
+        - 'purchase-ticket-failed'

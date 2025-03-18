@@ -1,0 +1,21 @@
+rabbitmq:
+  queues:
+    - name: configuration
+      exchange: system
+      routing_key: 
+        - '*.system.*.*.configuration.*'
+      arguments:
+        x-dead-letter-exchange: system-failure
+        x-dead-letter-routing-key: system-configuration-failed
+
+    - name: configuration-delay
+      exchange: system-delay
+      routing_key: 
+        - '*.system.*.*.configuration.*'
+      arguments:
+        x-dead-letter-exchange: system
+
+    - name: configuration-failure
+      exchange: system-failure
+      routing_key: 
+        - 'system-configuration-failed'
