@@ -12,6 +12,10 @@ class SqlalchemyMultitenantConnectionCli(ABC):
     def execute(self) -> None:
         pass
     
+    @abstractmethod
+    def terminate(self) -> None:
+        pass
+    
     @property
     def __schemas(self) -> list[str]:
         engine = create_engine(self.__database_reader_url)
@@ -32,3 +36,4 @@ class SqlalchemyMultitenantConnectionCli(ABC):
         for schema in self.__schemas:
             thread_local.schema_name = schema
             self.execute()
+            self.terminate()

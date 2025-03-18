@@ -33,6 +33,9 @@ class SubmitMercadonaTicketFromInboxCli(SqlalchemyMultitenantConnectionCli):
                 self.__command_bus.handle(self.__get_command(ticket))
             except SubmitTicketException as e:
                 print('Exception: ' + e.message)
+                
+    def terminate(self) -> None:
+        self.__service_container.database_connection.close()
     
     @staticmethod
     def __get_command(ticket: TicketExtractorResult) -> SubmitTicketCommand:
