@@ -5,4 +5,5 @@ services:
   src.purchase.ticket.domain.service.ticket_retriever_service_mercadona:
     class: src.purchase.ticket.infrastructure.domain.service.mercadona.mercadona_ticket_retriever_service
     arguments:
+      - '@src.purchase.ticket.domain.query_model.ticket_retriever_needle_data_query'
       - '%GOOGLE_PASSWORD_APPLICATION'

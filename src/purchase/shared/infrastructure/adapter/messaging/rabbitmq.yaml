@@ -1,0 +1,10 @@
+rabbitmq:
+  exchanges: 
+    - name: purchase
+      type: topic
+
+    - name: purchase-delay
+      type: topic
+
+    - name: purchase-failure
+      type: topic

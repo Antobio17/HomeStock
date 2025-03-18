@@ -1,0 +1,10 @@
+rabbitmq:
+  exchanges: 
+    - name: system
+      type: topic
+
+    - name: system-delay
+      type: topic
+
+    - name: system-failure
+      type: topic
