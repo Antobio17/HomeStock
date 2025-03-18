@@ -8,7 +8,7 @@ class RabbitmqSetupFabric:
     
     def __init__(self):
         self.rabbitmq_connection = RabbitmqConnection(
-            os.getenv('RABBITMQ_USERNAME'),
+            os.getenv('RABBITMQ_USER'),
             os.getenv('RABBITMQ_PASSWORD'),
             os.getenv('RABBITMQ_HOST'),
             os.getenv('RABBITMQ_PORT'),
