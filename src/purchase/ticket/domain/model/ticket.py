@@ -66,7 +66,7 @@ class Ticket:
                     f'Item from ticket {reference} has no description',
                     f'itemFromTicket{reference}HasNoDescription'
                 )
-            if item['quantity'] <= 0 or item['amount'] <= 0:
+            if item['quantity'] <= 0 or item['amount'] < 0:
                 raise SubmitTicketException(
                     f'Item from ticket {reference} has invalid quantity or amount',
                     f'itemFromTicket{reference}HasInvalidQuantityOrAmount'
