@@ -1,9 +1,10 @@
 from datetime import datetime
 from dataclasses import dataclass
+from src.shared.cqrs.application.command.command import Command
 from src.purchase.ticket.application.command.dto.submit_ticket_item import SubmitTicketItem
 
 @dataclass
-class SubmitTicketCommand:
+class SubmitTicketCommand(Command):
     supermarket: str
     reference: str
     subtotal: float

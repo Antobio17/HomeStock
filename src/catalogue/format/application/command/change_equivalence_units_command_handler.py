@@ -1,12 +1,13 @@
 
 from dataclasses import dataclass
 from src.shared.cqrs.domain.service.message_publisher import MessagePublisher
+from src.shared.cqrs.application.command.command_handler import CommandHandler
 from src.catalogue.format.domain.model.format_repository import FormatRepository
 from src.catalogue.format.application.command.change_equivalence_units_command import ChangeEquivalenceUnitsCommand
 from src.catalogue.format.domain.exception.change_equivalence_units_exception import ChangeEquivalenceUnitsException
 
 @dataclass
-class ChangeEquivalenceUnitsCommandHandler:
+class ChangeEquivalenceUnitsCommandHandler(CommandHandler):
     __format_repository: FormatRepository
     __message_publisher: MessagePublisher
 

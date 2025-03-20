@@ -1,12 +1,13 @@
 
 from dataclasses import dataclass
 from src.shared.cqrs.domain.service.message_publisher import MessagePublisher
+from src.shared.cqrs.application.command.command_handler import CommandHandler
 from src.catalogue.product.domain.model.product_repository import ProductRepository
 from src.catalogue.product.application.command.change_nutrition_facts_command import ChangeNutritionFactsCommand
 from src.catalogue.product.domain.exception.change_nutrition_facts_exception import ChangeNutritionFactsException
 
 @dataclass
-class ChangeNutritionFactsCommandHandler:
+class ChangeNutritionFactsCommandHandler(CommandHandler):
     __product_repository: ProductRepository
     __message_publisher: MessagePublisher
 
