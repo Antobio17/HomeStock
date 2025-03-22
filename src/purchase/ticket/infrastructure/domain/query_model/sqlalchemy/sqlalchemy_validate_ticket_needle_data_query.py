@@ -10,7 +10,7 @@ class SqlalchemyValidateTicketNeedleDataQuery(ValidateTicketNeedleDataQuery):
     __connection: SqlalchemyReaderConnection
     
     def all_products_exist(self, product_ids: list) -> bool:
-        if (len(product_ids) == 0):
+        if len(product_ids) == 0:
             return True
         
         sql_query = text(
@@ -21,7 +21,7 @@ class SqlalchemyValidateTicketNeedleDataQuery(ValidateTicketNeedleDataQuery):
         return result == len(product_ids)
     
     def all_formats_exist(self, format_ids: list) -> bool:
-        if (len(format_ids) == 0):
+        if len(format_ids) == 0:
             return True
         
         sql_query = text(
