@@ -58,20 +58,19 @@ class SqlalchemyTicketRepository(TicketRepository):
         except NoResultFound:
             return None
         
-        ticket_items = []
+        ticket_items = {}
         for item in items:
-            ticket_items.append(
-                TicketItem(
-                    id = item.id,
-                    ticket_id = item.ticket_id,
-                    description = item.description,
-                    quantity = item.quantity,
-                    unit_price = item.unit_price,
-                    amount = item.amount,
-                    product_id = item.product_id,
-                    format_id = item.format_id
-                )
+            ticket_items[item.id] = TicketItem(
+                item.id,
+                item.ticket_id,
+                item.description,
+                item.quantity,
+                item.unit_price,
+                item.amount,
+                item.product_id,
+                item.format_id
             )
+            
                 
         return Ticket(
             id = result.id,
@@ -79,6 +78,7 @@ class SqlalchemyTicketRepository(TicketRepository):
             reference = result.reference,
             status = result.status,
             items = ticket_items,
+            subtotal = result.subtotal,
             discount_amount = result.discount_amount,
             taxes = result.taxes,
             tax_amount = result.tax_amount,
@@ -89,6 +89,7 @@ class SqlalchemyTicketRepository(TicketRepository):
         )
 
     def save(self, ticket: Ticket) -> None:
-        for item in ticket.items:
+        self.__transaction_manager.session.query(TicketItemModel).filter_by(ticket_id=str(ticket.id)).delete()
+        for item in ticket.items.values():
             self.__transaction_manager.session.merge(self.__to_model_item(item))
         self.__transaction_manager.session.merge(self.__to_model(ticket))

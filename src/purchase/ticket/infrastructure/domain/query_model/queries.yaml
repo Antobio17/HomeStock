@@ -8,3 +8,8 @@ services:
     class: src.purchase.ticket.infrastructure.domain.query_model.sqlalchemy.sqlalchemy_ticket_retriever_needle_data_query
     arguments:
       - "@src.shared.database.domain.connection.connection"
+
+  src.purchase.ticket.domain.query_model.validate_ticket_needle_data_query:
+    class: src.purchase.ticket.infrastructure.domain.query_model.sqlalchemy.sqlalchemy_validate_ticket_needle_data_query
+    arguments:
+      - "@src.shared.database.domain.connection.connection"

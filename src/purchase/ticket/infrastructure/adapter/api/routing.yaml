@@ -3,3 +3,8 @@ endpoints:
     path: /v1/purchase/ticket/submit-ticket
     methods: ["POST"]
     name: purchase_ticket_submit_ticket
+
+  src.purchase.ticket.infrastructure.adapter.api.controller.validate_ticket_controller:
+    path: /v1/purchase/ticket/validate-ticket/<ticket_id>
+    methods: ["PUT"]
+    name: purchase_ticket_validate_ticket

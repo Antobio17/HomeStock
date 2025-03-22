@@ -24,7 +24,9 @@ class SqlalchemyReaderConnection(Connection):
         return self.__session
     
     def close(self) -> None:
-        self.__session.close()
-        self.__session = None
-        self.__engine.dispose()
-        self.__engine = None
+        if self.__session is not None:
+            self.__session.close()
+            self.__session = None
+        if self.__engine is not None:
+            self.__engine.dispose()
+            self.__engine = None

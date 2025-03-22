@@ -7,6 +7,8 @@ from src.shared.cqrs.domain.event.domain_event import DomainEvent
 from src.purchase.ticket.domain.model.ticket_item import TicketItem
 from src.purchase.ticket.domain.event.ticket_submitted import TicketSubmitted
 from src.purchase.ticket.domain.exception.submit_ticket_exception import SubmitTicketException
+from src.purchase.ticket.domain.event.ticket_validation_started import TicketValidationStarted
+from src.purchase.ticket.domain.exception.validate_ticket_exception import ValidateTicketException
 
 STATUS_PENDING = "pending"
 STATUS_VALIDATION_IN_PROGRESS = "validation_in_progress"
@@ -19,7 +21,7 @@ class Ticket:
     supermarket: str
     reference: str
     status: str
-    items: list[TicketItem]
+    items: dict[str, TicketItem]
     subtotal: float
     discount_amount: float
     taxes: dict[str, float]
@@ -72,15 +74,14 @@ class Ticket:
                     f'itemFromTicket{reference}HasInvalidQuantityOrAmount'
                 )
 
-            ticket_items.append(
-                TicketItem(
-                    str(uuid.uuid4()),
-                    ticket_id,
-                    item['description'],
-                    item['quantity'],
-                    item['amount'] / item['quantity'],
-                    item['amount']
-                )
+            ticket_item_id = str(uuid.uuid4())
+            ticket_items[ticket_item_id] = TicketItem(
+                ticket_item_id,
+                ticket_id,
+                item['description'],
+                item['quantity'],
+                item['amount'] / item['quantity'],
+                item['amount']
             )
 
         ticket = Ticket(
@@ -116,3 +117,107 @@ class Ticket:
         )
 
         return ticket
+
+    def validate(
+        self,
+        reference: str, 
+        subtotal: float, 
+        discount_amount: float, 
+        taxes: dict[str, float], 
+        tax_amount: float, 
+        total: float, 
+        purchased_at: datetime,
+        items: list
+    ) -> None:
+        if self.status != STATUS_PENDING:
+            raise ValidateTicketException(
+                'Ticket can not start validating process due to incorrect status',
+                'ticketCanNotStartValidatingProcessDueToIncorrectStatus'
+            )
+            
+        self.__validate_totals(
+            subtotal,
+            discount_amount,
+            taxes,
+            tax_amount,
+            total,
+            items 
+        )
+        
+        self.items = {}
+        for item in items:
+            if item['description'] == '':
+                raise ValidateTicketException(
+                    f'Item from ticket {reference} has no description',
+                    f'itemFromTicket{reference}HasNoDescription'
+                )
+            if item['quantity'] <= 0 or item['amount'] < 0:
+                raise ValidateTicketException(
+                    f'Item from ticket {reference} has invalid quantity or amount',
+                    f'itemFromTicket{reference}HasInvalidQuantityOrAmount'
+                )
+            
+            ticket_item_id = str(uuid.uuid4())
+            ticket_item = TicketItem(
+                ticket_item_id,
+                self.id,
+                item['description'],
+                item['quantity'],
+                item['amount'] / item['quantity'],
+                item['amount'],
+                item['format_id'],
+                item['product_id']
+            )
+            self.items[ticket_item_id] = ticket_item
+        
+        self.reference = reference
+        self.subtotal = subtotal
+        self.discount_amount = discount_amount
+        self.taxes = taxes
+        self.tax_amount = tax_amount
+        self.total = total
+        self.purchased_at = purchased_at
+        self.status = STATUS_VALIDATION_IN_PROGRESS
+        self.updated_at = datetime.now()
+        
+        self.record(
+            TicketValidationStarted(
+                self.id,
+                reference,
+                STATUS_PENDING,
+                items,
+                subtotal,
+                discount_amount,
+                taxes,
+                tax_amount,
+                total,
+                self.purchased_at,
+                self.updated_at
+            )
+        )
+        
+        
+    @staticmethod
+    def __validate_totals(
+        subtotal: float, 
+        discount_amount: float, 
+        taxes: dict[str, float], 
+        tax_amount: float, 
+        total: float, 
+        items: list
+    ) -> None:
+        if round(sum(taxes.values()), 2) != tax_amount:
+            raise ValidateTicketException(
+                'Tax amount value not match with tax ammount from taxes summation',
+                'taxAmountValueNotMatchWithTaxAmountFromTaxesSummation'
+            )
+        if round(subtotal - discount_amount + tax_amount, 2) != round(total, 2):
+            raise ValidateTicketException(
+                'Total value not match with subtotal operations',
+                'totalValueNotMatchWithSubtotalOperations'
+            )
+        if round(sum(float(item['amount']) for item in items), 2) != round(total, 2):
+            raise ValidateTicketException(
+                'Total value not match with total items summation',
+                'totalValueNotMatchWithTotalItemsSummation'
+            )
