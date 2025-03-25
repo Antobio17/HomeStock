@@ -16,7 +16,7 @@ class RabbitmqProducer(Producer):
     ) -> None:
         if headers is None:
             headers = {}
-        headers['schema'] = thread_local.schema_name
+        headers['schema_name'] = thread_local.schema_name
         headers['routing_key'] = routing_key
         
         self.__connection.publish_message(
