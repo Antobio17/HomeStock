@@ -1,3 +1,4 @@
+from src import thread_local
 from dataclasses import dataclass
 from src.shared.message_broker.domain.service.producer import Producer
 from src.shared.message_broker.domain.connection.connection import Connection
@@ -13,10 +14,15 @@ class RabbitmqProducer(Producer):
         to_delay: bool = False,
         routing_key: str = '',
     ) -> None:
+        if headers is None:
+            headers = {}
+        headers['schema'] = thread_local.schema_name
+        headers['routing_key'] = routing_key
+        
         self.__connection.publish_message(
             exchange = RabbitmqProducer.__exchange_name(routing_key, to_delay),
             routing_key = routing_key,
-            headers = headers if headers is not None else {},
+            headers = headers,
             body = message
         )
         

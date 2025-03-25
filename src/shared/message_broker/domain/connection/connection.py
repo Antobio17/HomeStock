@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 class Connection(ABC):
     
     @abstractmethod
-    def start_consuming(self, queue_name: str, callback: callable, auto_ack: bool = True):
+    def start_consuming(self, queue_name: str, callback: callable, auto_ack: bool = False):
         pass
     
     @abstractmethod
@@ -38,4 +38,8 @@ class Connection(ABC):
         exchange: str, 
         routing_key: str
     ):
+        pass
+    
+    @abstractmethod
+    def close(self) -> None:
         pass

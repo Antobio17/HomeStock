@@ -61,7 +61,7 @@ class Ticket:
 
         ticket_id = str(uuid.uuid4())
 
-        ticket_items = []
+        ticket_items = {}
         for item in items:
             if item['description'] == '':
                 raise SubmitTicketException(

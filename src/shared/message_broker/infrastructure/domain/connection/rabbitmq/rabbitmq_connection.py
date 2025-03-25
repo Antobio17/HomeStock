@@ -30,8 +30,9 @@ class RabbitmqConnection(Connection):
             
         return self.__connection
     
-    def start_consuming(self, queue_name: str, callback: callable, auto_ack: bool = True):
+    def start_consuming(self, queue_name: str, callback: callable, auto_ack: bool = False):
         channel = self.__connect.channel()
+        channel.basic_qos(prefetch_count = 1)
         channel.basic_consume(
             queue = queue_name,
             on_message_callback = callback,
@@ -100,3 +101,9 @@ class RabbitmqConnection(Connection):
             routing_key = routing_key
         )
         channel.close()
+        
+    def close(self) -> None:
+        if not self.__connection.is_closed:
+            self.__connection.close()
+            
+        self.__connection = None

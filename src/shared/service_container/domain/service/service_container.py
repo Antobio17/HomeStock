@@ -78,15 +78,15 @@ class ServiceContainer:
     
     @property
     def transaction_manager(self) -> Optional[TransactionManager]:
-        return self.__services.get('src.shared.database.domain.manager.transaction_manager', None)
+        return self.__services.get(TransactionManager.__module__, None)
     
     @property
     def database_connection(self) -> Optional[Connection]:
-        return self.__services.get('src.shared.database.domain.connection.connection', None)
+        return self.__services.get(Connection.__module__, None)
     
     @property
     def message_publisher(self) -> Optional[MessagePublisher]:
-        return self.__services.get('src.shared.cqrs.domain.service.message_publisher', None)
+        return self.__services.get(MessagePublisher.__module__, None)
     
     @property
     def metadata(self) -> Metadata:

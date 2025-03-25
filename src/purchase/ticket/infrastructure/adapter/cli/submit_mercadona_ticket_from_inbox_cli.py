@@ -16,11 +16,11 @@ class SubmitMercadonaTicketFromInboxCli(SqlalchemyMultitenantConnectionCli):
         
     @property
     def __ticket_extractor_service(self) -> TicketExtractorService:
-        return self.__service_container.get('src.purchase.ticket.domain.service.ticket_extractor_service_mercadona')
+        return self.__service_container.get(TicketExtractorService.__module__ + '_mercadona')
         
     @property
     def __ticket_retriever_service(self) -> TicketRetrieverService:
-        return self.__service_container.get('src.purchase.ticket.domain.service.ticket_retriever_service_mercadona')
+        return self.__service_container.get(TicketRetrieverService.__module__ + '_mercadona')
         
     def execute(self) -> None:
         while True:
