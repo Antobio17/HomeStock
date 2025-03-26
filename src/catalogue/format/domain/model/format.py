@@ -24,7 +24,7 @@ class Format:
     purchase_price: float = 0.0
     updated_at: Optional[datetime] = None
     disabled_at: Optional[datetime] = None
-    domain_events: list[DomainEvent] = field(default_factory=list)
+    domain_events: list[DomainEvent] = field(default_factory = list)
     
 
     def record(self, domain_event: DomainEvent) -> None:

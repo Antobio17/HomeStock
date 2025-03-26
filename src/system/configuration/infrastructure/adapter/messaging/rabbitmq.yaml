@@ -18,4 +18,5 @@ rabbitmq:
     - name: configuration-failure
       exchange: system-failure
       routing_key: 
+        - '*.system.*.*.configuration.*'
         - 'system-configuration-failed'

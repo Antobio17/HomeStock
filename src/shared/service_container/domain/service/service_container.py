@@ -11,7 +11,7 @@ from src.shared.database.domain.manager.transaction_manager import TransactionMa
 
 @dataclass
 class ServiceContainer:
-    __services: Dict[str, Any] = field(default_factory=dict)
+    __services: Dict[str, Any] = field(default_factory = dict)
     __metadata: Metadata = None
 
     
@@ -22,6 +22,8 @@ class ServiceContainer:
         
         if 'command_handler' in service:
             yaml_path = '/'.join(split[:3] + ['infrastructure/application/command_handlers.yaml'])
+        if 'subscriber' in service:
+            yaml_path = '/'.join(split[:3] + ['infrastructure/application/subscribers.yaml'])
         if 'query_handler' in service:
             yaml_path = '/'.join(split[:3] + ['infrastructure/application/query_handlers.yaml'])
         if 'repository' in service:
@@ -102,6 +104,12 @@ class ServiceContainer:
             causation_id = str(uuid.uuid4()),
             correlation_id = str(uuid.uuid4())
         )
+    
+    def clear(self):
+        self.transaction_manager.close() if self.transaction_manager is not None else None
+        self.database_connection.close() if self.database_connection is not None else None
+        self.__services.clear()
+        self.__metadata = None
         
     def initialize_metadata(self, metadata: Metadata) -> None:
         self.__metadata = metadata

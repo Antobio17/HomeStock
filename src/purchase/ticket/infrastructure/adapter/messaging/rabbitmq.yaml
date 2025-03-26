@@ -18,4 +18,5 @@ rabbitmq:
     - name: ticket-failure
       exchange: purchase-failure
       routing_key: 
+        - '*.purchase.*.*.ticket.*'
         - 'purchase-ticket-failed'

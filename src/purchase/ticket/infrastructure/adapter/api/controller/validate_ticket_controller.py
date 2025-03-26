@@ -10,7 +10,7 @@ from src.authentication.oauth.infrastructure.domain.decorator.authorization_requ
 
 @dataclass
 class ValidateTicketController:
-    __command_bus: CommandBus = field(default_factory=lambda: CommandBus())
+    __command_bus: CommandBus = field(default_factory = lambda: CommandBus())
     
     @auth_required
     def __invoke__(self, ticket_id: str):

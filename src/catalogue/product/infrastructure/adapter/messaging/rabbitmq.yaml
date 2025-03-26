@@ -18,4 +18,5 @@ rabbitmq:
     - name: product-failure
       exchange: catalogue-failure
       routing_key: 
+        - '*.catalogue.*.*.product.*'
         - 'catalogue-product-failed'

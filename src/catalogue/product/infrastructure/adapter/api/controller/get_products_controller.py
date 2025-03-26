@@ -9,7 +9,7 @@ from src.catalogue.product.infrastructure.adapter.api.data_transform.api_get_pro
 
 @dataclass
 class GetProductsController:
-    __query_bus: QueryBus = field(default_factory=lambda: QueryBus())
+    __query_bus: QueryBus = field(default_factory = lambda: QueryBus())
     
     @auth_required
     def __invoke__(self):

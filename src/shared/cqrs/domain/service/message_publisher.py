@@ -9,7 +9,7 @@ from src.shared.message_broker.domain.service.producer import Producer
 class MessagePublisher:
     __producer: Producer
     __publish_instantly: bool = True
-    __messages: list[Message] = field(default_factory=list)
+    __messages: list[Message] = field(default_factory = list)
     
     def execute(
         self,

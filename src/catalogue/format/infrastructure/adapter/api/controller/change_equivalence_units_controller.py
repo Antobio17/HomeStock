@@ -9,7 +9,7 @@ from src.catalogue.format.domain.exception.change_equivalence_units_exception im
 
 @dataclass
 class ChangeEquivalenceUnitsController:
-    __command_bus: CommandBus = field(default_factory=lambda: CommandBus())
+    __command_bus: CommandBus = field(default_factory = lambda: CommandBus())
     
     @auth_required
     def __invoke__(self, format_id: str):

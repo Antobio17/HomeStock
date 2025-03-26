@@ -9,7 +9,7 @@ from src.authentication.oauth.infrastructure.domain.decorator.authorization_requ
 
 @dataclass
 class ChangeNutritionFactsController:
-    __command_bus: CommandBus = field(default_factory=lambda: CommandBus())
+    __command_bus: CommandBus = field(default_factory = lambda: CommandBus())
     
     @auth_required
     def __invoke__(self, product_id: str):

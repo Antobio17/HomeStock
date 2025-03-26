@@ -8,7 +8,7 @@ from src.shared.cqrs.application.middleware.database_connection_middleware impor
 
 @dataclass
 class QueryBus:
-    __container: ServiceContainer = field(default_factory=lambda: ServiceContainer())
+    __container: ServiceContainer = field(default_factory = lambda: ServiceContainer())
     
     def middlewares(self) -> list[Middleware]:
         return [

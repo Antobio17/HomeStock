@@ -18,4 +18,5 @@ rabbitmq:
     - name: format-failure
       exchange: catalogue-failure
       routing_key: 
+        - '*.catalogue.*.*.format.*'
         - 'catalogue-format-failed'

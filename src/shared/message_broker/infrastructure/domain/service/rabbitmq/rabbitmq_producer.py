@@ -17,7 +17,6 @@ class RabbitmqProducer(Producer):
         if headers is None:
             headers = {}
         headers['schema_name'] = thread_local.schema_name
-        headers['routing_key'] = routing_key
         
         self.__connection.publish_message(
             exchange = RabbitmqProducer.__exchange_name(routing_key, to_delay),

@@ -30,7 +30,7 @@ class Ticket:
     purchased_at: datetime
     created_at: datetime
     updated_at: Optional[datetime] = None
-    domain_events: list[DomainEvent] = field(default_factory=list)
+    domain_events: list[DomainEvent] = field(default_factory = list)
     
     
     def record(self, domain_event: DomainEvent) -> None:
