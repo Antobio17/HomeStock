@@ -8,7 +8,7 @@ from src.purchase.ticket.domain.model.ticket_item import TicketItem
 from src.purchase.ticket.domain.event.ticket_submitted import TicketSubmitted
 from src.purchase.ticket.domain.exception.submit_ticket_exception import SubmitTicketException
 from src.purchase.ticket.domain.event.ticket_validation_started import TicketValidationStarted
-from src.purchase.ticket.domain.exception.validate_ticket_exception import ValidateTicketException
+from src.purchase.ticket.domain.exception.start_ticket_validation_exception import StartTicketValidationException
 
 STATUS_PENDING = "pending"
 STATUS_VALIDATION_IN_PROGRESS = "validation_in_progress"
@@ -118,7 +118,7 @@ class Ticket:
 
         return ticket
 
-    def validate(
+    def start_validation(
         self,
         reference: str, 
         subtotal: float, 
@@ -130,7 +130,7 @@ class Ticket:
         items: list
     ) -> None:
         if self.status != STATUS_PENDING:
-            raise ValidateTicketException(
+            raise StartTicketValidationException(
                 'Ticket can not start validating process due to incorrect status',
                 'ticketCanNotStartValidatingProcessDueToIncorrectStatus'
             )
@@ -147,12 +147,12 @@ class Ticket:
         self.items = {}
         for item in items:
             if item['description'] == '':
-                raise ValidateTicketException(
+                raise StartTicketValidationException(
                     f'Item from ticket {reference} has no description',
                     f'itemFromTicket{reference}HasNoDescription'
                 )
             if item['quantity'] <= 0 or item['amount'] < 0:
-                raise ValidateTicketException(
+                raise StartTicketValidationException(
                     f'Item from ticket {reference} has invalid quantity or amount',
                     f'itemFromTicket{reference}HasInvalidQuantityOrAmount'
                 )
@@ -207,17 +207,17 @@ class Ticket:
         items: list
     ) -> None:
         if round(sum(taxes.values()), 2) != tax_amount:
-            raise ValidateTicketException(
+            raise StartTicketValidationException(
                 'Tax amount value not match with tax ammount from taxes summation',
                 'taxAmountValueNotMatchWithTaxAmountFromTaxesSummation'
             )
         if round(subtotal - discount_amount + tax_amount, 2) != round(total, 2):
-            raise ValidateTicketException(
+            raise StartTicketValidationException(
                 'Total value not match with subtotal operations',
                 'totalValueNotMatchWithSubtotalOperations'
             )
         if round(sum(float(item['amount']) for item in items), 2) != round(total, 2):
-            raise ValidateTicketException(
+            raise StartTicketValidationException(
                 'Total value not match with total items summation',
                 'totalValueNotMatchWithTotalItemsSummation'
             )

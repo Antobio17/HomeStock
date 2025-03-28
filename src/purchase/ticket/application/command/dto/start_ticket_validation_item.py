@@ -2,7 +2,7 @@ from typing import Optional
 from dataclasses import dataclass
 
 @dataclass
-class ValidateTicketItem:
+class StartTicketValidationItem:
     description: str
     quantity: float
     amount: float

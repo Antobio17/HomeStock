@@ -6,9 +6,9 @@ services:
       - "@src.purchase.ticket.domain.model.ticket_repository"
       - "@src.shared.cqrs.domain.service.message_publisher"
 
-  src.purchase.ticket.application.command.validate_ticket_command_handler:
-    class: src.purchase.ticket.application.command.validate_ticket_command_handler
+  src.purchase.ticket.application.command.start_ticket_validation_command_handler:
+    class: src.purchase.ticket.application.command.start_ticket_validation_command_handler
     arguments:
-      - "@src.purchase.ticket.domain.query_model.validate_ticket_needle_data_query"
+      - "@src.purchase.ticket.domain.query_model.start_ticket_validation_needle_data_query"
       - "@src.purchase.ticket.domain.model.ticket_repository"
       - "@src.shared.cqrs.domain.service.message_publisher"

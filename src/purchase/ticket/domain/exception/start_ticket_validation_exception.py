@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
 @dataclass
-class ValidateTicketException(Exception):
+class StartTicketValidationException(Exception):
     message: str
     key_translate: str

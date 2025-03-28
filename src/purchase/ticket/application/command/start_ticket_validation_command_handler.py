@@ -3,20 +3,20 @@ from dataclasses import dataclass
 from src.shared.cqrs.domain.service.message_publisher import MessagePublisher
 from src.shared.cqrs.application.command.command_handler import CommandHandler
 from src.purchase.ticket.domain.model.ticket_repository import TicketRepository
-from src.purchase.ticket.application.command.validate_ticket_command import ValidateTicketCommand
-from src.purchase.ticket.domain.exception.validate_ticket_exception import ValidateTicketException
-from src.purchase.ticket.domain.query_model.validate_ticket_needle_data_query import ValidateTicketNeedleDataQuery
+from src.purchase.ticket.application.command.start_ticket_validation_command import StartTicketValidationCommand
+from src.purchase.ticket.domain.exception.start_ticket_validation_exception import StartTicketValidationException
+from src.purchase.ticket.domain.query_model.start_ticket_validation_needle_data_query import StartTicketValidationNeedleDataQuery
 
 @dataclass
-class ValidateTicketCommandHandler(CommandHandler):
-    __needle_data_query: ValidateTicketNeedleDataQuery
+class StartTicketValidationCommandHandler(CommandHandler):
+    __needle_data_query: StartTicketValidationNeedleDataQuery
     __ticket_repository: TicketRepository
     __message_publisher: MessagePublisher
     
-    def handle(self, command: ValidateTicketCommand):
+    def handle(self, command: StartTicketValidationCommand):
         ticket = self.__ticket_repository.find_by_id(command.ticket_id)
         if ticket is None:
-            raise ValidateTicketException(
+            raise StartTicketValidationException(
                 f'Ticket with id {command.ticket_id} does not found',
                 f'ticketWithId{command.ticket_id}DoesNotFound'
             )
@@ -39,18 +39,18 @@ class ValidateTicketCommandHandler(CommandHandler):
         
         product_ids = list(set(product_ids))
         if not self.__needle_data_query.all_products_exist(product_ids):
-            raise ValidateTicketException(
+            raise StartTicketValidationException(
                 f'Not all product ids passed exist',
                 f'NotAllProductIdsPassedExist'
             )
         format_ids = list(set(format_ids))
         if not self.__needle_data_query.all_formats_exist(format_ids):
-            raise ValidateTicketException(
+            raise StartTicketValidationException(
                 f'Not all format ids passed exist',
                 f'NotAllFormatIdsPassedExist'
             )
         
-        ticket.validate(
+        ticket.start_validation(
             command.reference,
             command.subtotal,   
             command.discount_amount,

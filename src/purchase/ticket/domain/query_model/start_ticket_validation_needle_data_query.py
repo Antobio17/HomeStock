@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-class ValidateTicketNeedleDataQuery(ABC):
+class StartTicketValidationNeedleDataQuery(ABC):
     
     @abstractmethod
     def all_products_exist(self, product_ids: list) -> bool:

@@ -4,7 +4,7 @@ endpoints:
     methods: ["POST"]
     name: purchase_ticket_submit_ticket
 
-  src.purchase.ticket.infrastructure.adapter.api.controller.validate_ticket_controller:
-    path: /v1/purchase/ticket/validate-ticket/<ticket_id>
+  src.purchase.ticket.infrastructure.adapter.api.controller.start_ticket_validation_controller:
+    path: /v1/purchase/ticket/start-ticket-validation/<ticket_id>
     methods: ["PUT"]
-    name: purchase_ticket_validate_ticket
+    name: purchase_ticket_start_ticket_validation

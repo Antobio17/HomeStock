@@ -1,12 +1,12 @@
 from sqlalchemy.sql import text
 from dataclasses import dataclass
-from src.purchase.ticket.domain.query_model.validate_ticket_needle_data_query import ValidateTicketNeedleDataQuery
+from src.purchase.ticket.domain.query_model.start_ticket_validation_needle_data_query import StartTicketValidationNeedleDataQuery
 from src.shared.database.infrastructure.domain.connection.sqlalchemy.sqlalchemy_reader_connection import (
     SqlalchemyReaderConnection
 )
 
 @dataclass
-class SqlalchemyValidateTicketNeedleDataQuery(ValidateTicketNeedleDataQuery):
+class SqlalchemyStartTicketValidationNeedleDataQuery(StartTicketValidationNeedleDataQuery):
     __connection: SqlalchemyReaderConnection
     
     def all_products_exist(self, product_ids: list) -> bool:

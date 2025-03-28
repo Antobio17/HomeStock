@@ -1,10 +1,10 @@
 from datetime import datetime
 from dataclasses import dataclass
 from src.shared.cqrs.application.command.command import Command
-from src.purchase.ticket.application.command.dto.validate_ticket_item import ValidateTicketItem
+from src.purchase.ticket.application.command.dto.start_ticket_validation_item import StartTicketValidationItem
 
 @dataclass
-class ValidateTicketCommand(Command):
+class StartTicketValidationCommand(Command):
     ticket_id: str
     reference: str
     subtotal: float
@@ -13,7 +13,7 @@ class ValidateTicketCommand(Command):
     tax_amount: float
     total: float
     purchased_at: datetime
-    items: list[ValidateTicketItem]
+    items: list[StartTicketValidationItem]
     
     @staticmethod
     def get_name() -> str:

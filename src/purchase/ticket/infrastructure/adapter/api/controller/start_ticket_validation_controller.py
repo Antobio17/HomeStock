@@ -3,13 +3,13 @@ from flask import request, jsonify
 from dataclasses import dataclass, field
 from src.shared.cqrs.application.command.command_bus import CommandBus
 from src.shared.utils.infrastructure.domain.service.check_param import CheckParam
-from src.purchase.ticket.application.command.dto.validate_ticket_item import ValidateTicketItem
-from src.purchase.ticket.application.command.validate_ticket_command import ValidateTicketCommand
-from src.purchase.ticket.domain.exception.validate_ticket_exception import ValidateTicketException
+from src.purchase.ticket.application.command.dto.start_ticket_validation_item import StartTicketValidationItem
+from src.purchase.ticket.application.command.start_ticket_validation_command import StartTicketValidationCommand
+from src.purchase.ticket.domain.exception.start_ticket_validation_exception import StartTicketValidationException
 from src.authentication.oauth.infrastructure.domain.decorator.authorization_required_decorator import auth_required
 
 @dataclass
-class ValidateTicketController:
+class StartTicketValidationTicketController:
     __command_bus: CommandBus = field(default_factory = lambda: CommandBus())
     
     @auth_required
@@ -24,7 +24,7 @@ class ValidateTicketController:
             purchased_at = CheckParam.get_datetime_request_param(request, 'purchased_at')
             items = self.__get_items(request)
             
-            command = ValidateTicketCommand(
+            command = StartTicketValidationCommand(
                 ticket_id,
                 reference,
                 subtotal,
@@ -50,7 +50,7 @@ class ValidateTicketController:
                     ]
                 }    
             ), 400
-        except ValidateTicketException as e:
+        except StartTicketValidationException as e:
             return jsonify(
                 {
                     'errors': [
@@ -77,14 +77,14 @@ class ValidateTicketController:
             ), 500  
             
             
-    def __get_items(self, request) -> list[ValidateTicketItem]:
+    def __get_items(self, request) -> list[StartTicketValidationItem]:
         items = []
         for item in CheckParam.get_list_request_param(request, 'items'):
             if not isinstance(item, dict):
                 raise ValueError('Items should be a list of dictionaries.')
             
             items.append(
-                ValidateTicketItem(
+                StartTicketValidationItem(
                     item.get('description', ''),
                     float(item.get('quantity', 0)),
                     float(item.get('amount', 0)),
