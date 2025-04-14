@@ -9,7 +9,7 @@ from src.purchase.ticket.domain.exception.start_ticket_validation_exception impo
 from src.authentication.oauth.infrastructure.domain.decorator.authorization_required_decorator import auth_required
 
 @dataclass
-class StartTicketValidationTicketController:
+class StartTicketValidationController:
     __command_bus: CommandBus = field(default_factory = lambda: CommandBus())
     
     @auth_required

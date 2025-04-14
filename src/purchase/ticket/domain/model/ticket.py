@@ -165,8 +165,8 @@ class Ticket:
                 item['quantity'],
                 item['amount'] / item['quantity'],
                 item['amount'],
-                item['format_id'],
-                item['product_id']
+                item['product_id'],
+                item['format_id']
             )
             self.items[ticket_item_id] = ticket_item
         
@@ -195,6 +195,21 @@ class Ticket:
                 self.updated_at
             )
         )
+        
+    def finish_validation(
+        self,
+        items: dict[str, str]
+    ):
+        self.status = STATUS_VALIDATED
+
+        for ticket_item_id, item in self.items.items():
+            format_id = items.get(ticket_item_id, None)
+            if format_id is None:
+                continue
+            
+            item.assign_format_id(format_id)
+        
+        
         
         
     @staticmethod

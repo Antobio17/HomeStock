@@ -22,7 +22,7 @@ class MessagePublisher:
             return
                 
         self.__producer.publish(
-            message = json.dumps(message.__dict__, default=str),
+            message = json.dumps(message.__dict__, ensure_ascii=False, default=str),
             headers = headers if headers is not None else {},
             to_delay = to_delay,
             routing_key = message.get_name()

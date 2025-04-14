@@ -1,0 +1,6 @@
+services:
+  src.purchase.ticket.application.subscriber.validate_ticket_due_to_ticket_validation_started_subscriber:
+    class: src.purchase.ticket.application.subscriber.validate_ticket_due_to_ticket_validation_started_subscriber
+    arguments:
+      - '@src.purchase.ticket.domain.query_model.validate_ticket_needle_data_query'
+    event_name: 'homestock.purchase.1.event.ticket.validation_started'

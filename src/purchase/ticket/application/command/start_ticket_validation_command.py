@@ -17,4 +17,4 @@ class StartTicketValidationCommand(Command):
     
     @staticmethod
     def get_name() -> str:
-        return 'homestock.purchase.1.command.ticket.validate'
+        return 'homestock.purchase.1.command.ticket.start_validation'
