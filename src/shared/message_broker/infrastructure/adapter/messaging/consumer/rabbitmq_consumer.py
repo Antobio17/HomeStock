@@ -43,8 +43,13 @@ class RabbitmqConsumer:
             ch.basic_ack(method.delivery_tag)
             return
 
-        thread_local.schema_name = schema_name
-        self.__message_dispatcher.execute(routing_key, json.loads(body))
+        try:
+            thread_local.schema_name = schema_name
+            self.__message_dispatcher.execute(routing_key, json.loads(body))
+            # TODO ch.basic_ack(method.delivery_tag)
+        except Exception as e:
+            # TODO self.__send_to_delay_queue(routing_key, properties.headers, body)
+            ch.basic_ack(method.delivery_tag)
         
     def execute(self) -> None:
         while True:

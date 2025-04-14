@@ -47,4 +47,4 @@ class MessageDispatcher:
             raise ValueError(f'Substring event or command not found in {routing_key}')
         
         self.__dispatch_event(routing_key, body) if 'event' in routing_key else None
-        # self.__dispatch_command(routing_key, body) if 'command' in routing_key else None
+        # TODO self.__dispatch_command(routing_key, body) if 'command' in routing_key else None
