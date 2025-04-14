@@ -42,3 +42,26 @@ services:
       - RABBITMQ_DEFAULT_PASS=guest
     networks:
       - hometock-network
+
+  homestock-elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.10.2
+    container_name: homestock-elasticsearch-container
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - xpack.security.http.ssl.enabled=false
+      - xpack.security.enrollment.enabled=false
+    ports:
+      - "9200:9200"
+    networks:
+      - hometock-network
+
+  homestock-kibana:
+    image: docker.elastic.co/kibana/kibana:8.10.2
+    container_name: homestock-kibana-container
+    environment:
+      - ELASTICSEARCH_HOSTS=http://homestock-elasticsearch:9200
+    ports:
+      - "5601:5601"
+    networks:
+      - hometock-network
