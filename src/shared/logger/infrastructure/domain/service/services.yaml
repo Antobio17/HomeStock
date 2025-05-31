@@ -1,0 +1,6 @@
+services:
+  src.shared.logger.domain.service.logger_service:
+    class: src.shared.logger.infrastructure.domain.service.elasticsearch.elasticsearch_logger_service
+    arguments:
+      - "%ELASTICSEARCH_URL"
+      - "%ELASTICSEARCH_PREFIX_INDEX"

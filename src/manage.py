@@ -1,3 +1,4 @@
+import os
 import glob
 import yaml
 from flask.cli import FlaskGroup
@@ -16,9 +17,6 @@ def __load_config(module: str) -> dict:
     split = module.split('.')
     yaml_path = '/'.join(split[:3] + ['infrastructure/adapter/api/routing.yaml'])
     
-    if yaml_path is None:
-        raise FileNotFoundError(f'YAML file not found for module: {module}')
-    
     with open(yaml_path, 'r') as file:
         config = yaml.safe_load(file)
     
@@ -32,7 +30,7 @@ def __load_config(module: str) -> dict:
 
 def create_app():
     flask_app = Flask(__name__, instance_relative_config = True)
-    flask_app.secret_key = 'your secret key'
+    flask_app.secret_key = os.getenv('SECRET_KEY')
     init_oauth(flask_app)
     
     pattern = 'src/*/*/infrastructure/adapter/api/controller/*.py'
