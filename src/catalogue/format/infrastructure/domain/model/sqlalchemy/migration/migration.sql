@@ -14,3 +14,4 @@ CREATE TABLE IF NOT EXISTS `format` (
   `enabled_at` TIMESTAMP NOT NULL,
   `disabled_at` TIMESTAMP DEFAULT NULL,
   PRIMARY KEY (`id`));
+  CREATE INDEX index_product_id ON `format` (`product_id`);

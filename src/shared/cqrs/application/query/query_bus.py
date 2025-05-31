@@ -2,6 +2,7 @@ from dataclasses import dataclass, field
 from src.shared.cqrs.application.query.query import Query
 from src.shared.cqrs.application.middleware.middleware import Middleware
 from src.shared.cqrs.application.query.dto.query_result import QueryResult
+from src.shared.cqrs.application.middleware.logger_middleware import LoggerMiddleware
 from src.shared.service_container.domain.service.service_container import ServiceContainer
 from src.shared.cqrs.application.middleware.database_connection_middleware import DatabaseConnectionMiddleware
 
@@ -10,14 +11,15 @@ from src.shared.cqrs.application.middleware.database_connection_middleware impor
 class QueryBus:
     __container: ServiceContainer = field(default_factory = lambda: ServiceContainer())
     
-    def middlewares(self) -> list[Middleware]:
+    def __middlewares(self) -> list[Middleware]:
         return [
             DatabaseConnectionMiddleware(self.__container.database_connection),
         ]
         
-    def in_exception_middlewares(self) -> list[Middleware]:
+    def __in_exception_middlewares(self, exception: Exception) -> list[Middleware]:
         return [
             DatabaseConnectionMiddleware(self.__container.database_connection),
+            LoggerMiddleware(self.__container.logger, exception),
         ]
         
     @staticmethod
@@ -32,17 +34,17 @@ class QueryBus:
         handler_class = self.__get_handler_module(query)
         query_handler = self.__container.get(handler_class)
         
-        for middleware in self.middlewares():
+        for middleware in self.__middlewares():
             middleware.before_handle()
         
         try:
             query_result = query_handler.handle(query)
         except Exception as e:
-            for middleware in reversed(self.in_exception_middlewares()):
+            for middleware in reversed(self.__in_exception_middlewares(e)):
                 middleware.after_handle()
             raise e
     
-        for middleware in reversed(self.middlewares()):
+        for middleware in reversed(self.__middlewares()):
             middleware.after_handle()
             
         return query_result

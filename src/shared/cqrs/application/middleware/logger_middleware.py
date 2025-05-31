@@ -1,14 +1,15 @@
 from dataclasses import dataclass
-from src.shared.database.domain.connection.connection import Connection
 from src.shared.cqrs.application.middleware.middleware import Middleware
+from src.shared.logger.domain.service.logger_service import LoggerService
 
 @dataclass
-class DatabaseConnectionMiddleware(Middleware):
-    __connection: Connection
+class LoggerMiddleware(Middleware):
+    __logger: LoggerService
+    __exception: Exception 
 
     def before_handle(self) -> None:
         'Do nothing.'
         pass
 
     def after_handle(self) -> None:
-        self.__connection.close()
+        self.__logger.error(str(self.__exception))

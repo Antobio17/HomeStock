@@ -1,5 +1,5 @@
 import requests
-from datetime import datetime
+from datetime import datetime, UTC
 from dataclasses import dataclass
 from src.shared.logger.domain.service.logger_service import LoggerService
 
@@ -22,11 +22,11 @@ class ElasticsearchLoggerService(LoggerService):
 
     def __log(self, level: str, message: str) -> None:
         try:
-            today = datetime.now().strftime('%Y_%m_%d')
+            today = datetime.now().strftime('%Y-%m-%d')
             requests.post(
-                f'{self.__url}/{self.__prefix_index_name}_{today}/_doc', 
+                f'{self.__url}/{self.__prefix_index_name}-{today}/_doc', 
                 json = {
-                    'timestamp': datetime.now(datetime.UTC).isoformat(),
+                    'timestamp': datetime.now(UTC).isoformat(),
                     'level': level,
                     'message': message,
                 }

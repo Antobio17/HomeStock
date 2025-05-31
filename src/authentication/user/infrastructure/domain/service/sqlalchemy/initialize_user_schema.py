@@ -40,7 +40,13 @@ class InitializeUserSchema:
             pattern = 'src/*/*/infrastructure/domain/model/sqlalchemy/migration/*.sql'
             for filepath in glob.glob(pattern):
                 with open(filepath, 'r') as file:
-                    connection.execute(text(file.read()))
+                    statements = file.read().split(';')
+                    for statement in statements:
+                        stmt = statement.strip()
+                        if stmt is None or stmt == '':
+                            continue
+                        
+                        connection.execute(text(stmt))
             
             connection.execute(text(sql), {
                 'uuid': uuid.uuid4(),

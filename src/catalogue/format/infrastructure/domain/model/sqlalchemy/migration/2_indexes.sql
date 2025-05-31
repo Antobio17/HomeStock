@@ -1,1 +1,0 @@
-CREATE INDEX index_product_id ON `format` (`product_id`);

@@ -6,6 +6,7 @@ from typing import Any, Dict, Optional
 from dataclasses import dataclass, field
 from src.shared.cqrs.domain.service.dto.metadata import Metadata
 from src.shared.database.domain.connection.connection import Connection
+from src.shared.logger.domain.service.logger_service import LoggerService
 from src.shared.cqrs.domain.service.message_publisher import MessagePublisher
 from src.shared.database.domain.manager.transaction_manager import TransactionManager
 
@@ -85,6 +86,10 @@ class ServiceContainer:
     @property
     def database_connection(self) -> Optional[Connection]:
         return self.__services.get(Connection.__module__, None)
+    
+    @property
+    def logger(self) -> Optional[LoggerService]:
+        return self.get(LoggerService.__module__)
     
     @property
     def message_publisher(self) -> Optional[MessagePublisher]:
