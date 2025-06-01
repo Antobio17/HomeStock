@@ -3,6 +3,7 @@ from src import thread_local
 from dataclasses import dataclass, field
 from pika.spec import Basic, BasicProperties
 from pika.adapters.blocking_connection import BlockingChannel
+from src.shared.logger.domain.service.logger_service import LoggerService
 from src.shared.message_broker.domain.connection.connection import Connection
 from src.shared.cqrs.application.dispatcher.message_dispatcher import MessageDispatcher
 from src.shared.service_container.domain.service.service_container import ServiceContainer
@@ -19,6 +20,22 @@ class RabbitmqConsumer:
     @property
     def __rabbitmq_connection(self) -> RabbitmqConnection:
         return self.__service_container.get(Connection.__module__)
+    
+    @property
+    def __logger(self) -> LoggerService:
+        return self.__service_container.get(LoggerService.__module__)
+        
+    def __send_to_delay_queue(self, routing_key: str, headers: dict, body: str) -> None:
+        delay = headers.get('x-delay', 0)
+        delay = int(delay) + 5000
+
+        headers['x-delay'] = delay
+        self.__rabbitmq_connection.publish_message(
+            self.__exchange + '-delay',
+            routing_key,
+            headers,
+            body
+        )
         
     def __send_to_failure_queue(self, routing_key: str, headers: dict, body: str) -> None:
         self.__rabbitmq_connection.publish_message(
@@ -46,9 +63,9 @@ class RabbitmqConsumer:
         try:
             thread_local.schema_name = schema_name
             self.__message_dispatcher.execute(routing_key, json.loads(body))
-            # TODO ch.basic_ack(method.delivery_tag)
-        except Exception as e:
-            # TODO self.__send_to_delay_queue(routing_key, properties.headers, body)
+            ch.basic_ack(method.delivery_tag)
+        except Exception:
+            self.__send_to_delay_queue(routing_key, properties.headers, body)
             ch.basic_ack(method.delivery_tag)
         
     def execute(self) -> None:
@@ -59,12 +76,12 @@ class RabbitmqConsumer:
                     callback = self.on_message_callback
                 )
             except ConnectionClosedByBroker as e:
-                print(e)
+                self.__logger.error(f'Connection closed by broker: {e}')
                 break
             except AMQPChannelError as e:
-                print(e)
+                self.__logger.error(f'AMQP channel error: {e}')
                 break
             except AMQPConnectionError as e:
-                print(e)
+                self.__logger.error(f'AMQP connection error: {e}')
                 self.__rabbitmq_connection.close()
                 continue
