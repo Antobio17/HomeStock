@@ -11,4 +11,7 @@ class DatabaseConnectionMiddleware(Middleware):
         pass
 
     def after_handle(self) -> None:
+        if self.__connection is None:
+            return
+        
         self.__connection.close()

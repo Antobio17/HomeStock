@@ -10,5 +10,8 @@ class TransactionMiddleware(Middleware):
         self.__transaction_mediator.begin()
 
     def after_handle(self) -> None:
+        if self.__transaction_mediator is None:
+            return
+        
         self.__transaction_mediator.commit()
         self.__transaction_mediator.close()
