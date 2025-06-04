@@ -13,5 +13,6 @@ RUN poetry config virtualenvs.create false && \
     poetry install --no-root
 
 EXPOSE 80
+EXPOSE 5678
 
 CMD ["python", "src/app.py"]

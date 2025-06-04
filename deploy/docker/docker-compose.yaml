@@ -6,6 +6,7 @@ services:
     container_name: homestock-python-container
     ports:
       - "8080:80"
+      - "5678:5678"
     volumes:
       - ../../.:/app
     networks:

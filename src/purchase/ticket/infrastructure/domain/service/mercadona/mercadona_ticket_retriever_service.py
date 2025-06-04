@@ -30,7 +30,7 @@ class MercadonaTicketRetrieverService(TicketRetrieverService):
             mail.select('inbox')
             _, data = mail.search(None, '(UNSEEN FROM "ticket_digital@mail.mercadona.com")')
             for num in data[0].split():
-                _, data = mail.fetch(num, '(RFC822)')
+                _, data = mail.fetch(num, '(BODY.PEEK[])')
                 _, bytes_data = data[0]
                 email_message = email.message_from_bytes(bytes_data)
                 
