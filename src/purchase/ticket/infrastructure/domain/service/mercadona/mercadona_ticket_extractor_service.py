@@ -50,6 +50,10 @@ class MercadonaTicketExtractorService(TicketExtractorService):
                     'amount': amount * quantity
                 })
             
+            if 'PARKING' in line:
+                skip_next = True
+                continue
+            
             if items_start and not pattern.match(line) and 'Descripción' not in line:
                 description = line.split(' ', 1)[-1]
                 quantity = float(lines[index + 1].split(' ')[0].replace(',', '.'))
