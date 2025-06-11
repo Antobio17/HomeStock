@@ -28,12 +28,13 @@ class RabbitmqSetupFabric:
                 config = yaml.safe_load(file)
                 exchanges += config['rabbitmq']['exchanges']
         
-        for exchange in exchanges:     
+        for exchange in exchanges:            
             self.rabbitmq_connection.exchange_declare(
                 exchange = exchange['name'],
                 exchange_type = exchange['type'],
                 durable = exchange.get('durable', True),
-                auto_delete = exchange.get('auto_delete', False)
+                auto_delete = exchange.get('auto_delete', False),
+                arguments = exchange.get('arguments', {})
             )
             
     def __declare_queues(self):
@@ -58,7 +59,8 @@ class RabbitmqSetupFabric:
                 self.rabbitmq_connection.queue_bind(
                     queue = queue['name'],
                     exchange = queue['exchange'],
-                    routing_key = binding
+                    routing_key = binding,
+                    arguments = queue.get('arguments', None)
                 )
         
 

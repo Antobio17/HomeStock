@@ -22,6 +22,7 @@ class RabbitmqProducer(Producer):
             exchange = RabbitmqProducer.__exchange_name(routing_key, to_delay),
             routing_key = routing_key,
             headers = headers,
+            properties = {},
             body = message
         )
         

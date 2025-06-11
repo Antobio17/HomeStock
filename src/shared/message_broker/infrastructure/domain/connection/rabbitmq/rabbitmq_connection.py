@@ -40,7 +40,14 @@ class RabbitmqConnection(Connection):
         )
         channel.start_consuming()
     
-    def publish_message(self, exchange: str, routing_key: str, headers: dict, body: str):
+    def publish_message(
+        self, 
+        exchange: str, 
+        routing_key: str, 
+        headers: dict, 
+        properties: dict, 
+        body: str
+    ):
         channel = self.__connect.channel()
         channel.basic_publish(
             exchange = exchange,
@@ -49,7 +56,8 @@ class RabbitmqConnection(Connection):
             properties = pika.BasicProperties(
                 headers = headers,
                 delivery_mode = 2,
-                content_type = 'text/plain'   
+                content_type = 'text/plain',   
+                expiration = properties.get('expiration', None)
             ) 
         )
         channel.close()
@@ -59,14 +67,16 @@ class RabbitmqConnection(Connection):
         exchange: str, 
         exchange_type: str,
         durable: bool = True, 
-        auto_delete: bool = False
+        auto_delete: bool = False,
+        arguments: dict = None
     ):
         channel = self.__connect.channel()
         channel.exchange_declare(
             exchange = exchange,
             exchange_type = exchange_type,
             durable = durable,
-            auto_delete = auto_delete
+            auto_delete = auto_delete,
+            arguments = arguments
         )
         channel.close()
         
@@ -92,13 +102,15 @@ class RabbitmqConnection(Connection):
         self, 
         queue: str, 
         exchange: str, 
-        routing_key: str
+        routing_key: str,
+        arguments: dict = None
     ):
         channel = self.__connect.channel()
         channel.queue_bind(
             queue = queue,
             exchange = exchange,
-            routing_key = routing_key
+            routing_key = routing_key,
+            arguments = arguments
         )
         channel.close()
         

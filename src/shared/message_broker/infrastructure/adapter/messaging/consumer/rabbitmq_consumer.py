@@ -26,15 +26,20 @@ class RabbitmqConsumer:
         return self.__service_container.get(LoggerService.__module__)
         
     def __send_to_delay_queue(self, routing_key: str, headers: dict, body: str) -> None:
-        delay = headers.get('x-delay', 0)
-        delay = int(delay) + 5000
-
-        headers['x-delay'] = delay
+        retries = headers.get('retries', 0)
+        retries = retries + 1
+        
+        if retries > 5:
+            self.__send_to_failure_queue(routing_key, headers, body)
+            return
+        
+        headers['retries'] = retries
         self.__rabbitmq_connection.publish_message(
             self.__exchange + '-delay',
             routing_key,
             headers,
-            body
+            {'expiration': str(retries * 5000)},
+            body,
         )
         
     def __send_to_failure_queue(self, routing_key: str, headers: dict, body: str) -> None:
@@ -42,6 +47,7 @@ class RabbitmqConsumer:
             self.__exchange + '-failure',
             routing_key,
             headers,
+            {},
             body
         )
     

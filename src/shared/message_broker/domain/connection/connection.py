@@ -7,7 +7,14 @@ class Connection(ABC):
         pass
     
     @abstractmethod
-    def publish_message(self, exchange: str, routing_key: str, headers: dict, body: str):
+    def publish_message(
+        self, 
+        exchange: str, 
+        routing_key: str, 
+        headers: dict, 
+        properties: dict, 
+        body: str
+    ):
         pass
     
     @abstractmethod
@@ -16,7 +23,8 @@ class Connection(ABC):
         exchange: str, 
         exchange_type: str,
         durable: bool = True, 
-        auto_delete: bool = False
+        auto_delete: bool = False,
+        arguments: dict = None
     ):
         pass
     
@@ -36,7 +44,8 @@ class Connection(ABC):
         self, 
         queue: str, 
         exchange: str, 
-        routing_key: str
+        routing_key: str,
+        arguments: dict = None
     ):
         pass
     
